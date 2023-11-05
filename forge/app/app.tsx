@@ -1,10 +1,13 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import { Route, NativeRouter, Link, Routes } from "react-router-native";
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, View } from 'react-native';
+import { Route, NativeRouter, Link, Routes } from 'react-router-native';
+
+import { Button } from './framework/components/button';
 
 const Home = () => (
   <View style={styles.container}>
     <Text>Open up App.js to start working on your app!!!</Text>
+    <Button title="test" />
     <StatusBar style="auto" />
   </View>
 );
@@ -58,19 +61,19 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   nav: {
-    flexDirection: "row",
-    justifyContent: "space-around",
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
   navItem: {
     flex: 1,
-    alignItems: "center",
+    alignItems: 'center',
     padding: 10,
   },
   subNavItem: {
     padding: 5,
   },
   topic: {
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: 15,
   },
 });
