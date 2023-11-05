@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { Route, NativeRouter, Link, Routes } from 'react-router-native';
 
-import { Button } from './framework/components/button';
+import { Button } from './@odysseus/components/button';
 
 const Home = () => (
   <View style={styles.container}>
