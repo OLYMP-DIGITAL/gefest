@@ -6,6 +6,8 @@
 
     "paths": {
       "core/*": ["./core/*"]
-    }
+    },
+
+    "types": ["node"]
   }
 }

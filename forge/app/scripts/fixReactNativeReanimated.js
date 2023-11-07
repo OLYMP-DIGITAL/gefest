@@ -14,21 +14,25 @@ fs.readFile(filePath, 'utf8', (err, data) => {
     return;
   }
 
-  const exportPattern = /export { _default as default };/g;
-  const insertLine = 'export default _default;';
+  const searchString = 'export { _default as default };';
+  const replacementString =
+    '// export { _default as default };\nexport default _default;';
 
-  const modifiedData = data.replace(exportPattern, (match) => {
-    if (match === 'export { _default as default };') {
-      return `// ${match}\n${insertLine}`;
-    }
-    return match;
-  });
+  if (data.includes(searchString)) {
+    if (!data.includes('// export { _default as default };')) {
+      const updatedData = data.replace(searchString, replacementString);
 
-  fs.writeFile(filePath, modifiedData, 'utf8', (err) => {
-    if (err) {
-      console.error('Error writing file:', err);
-      return;
+      fs.writeFile(filePath, updatedData, (err) => {
+        if (err) {
+          console.error('Error writing file:', err);
+        } else {
+          console.log('File has been successfully updated.');
+        }
+      });
+    } else {
+      console.log('The line is already commented.');
     }
-    console.log('File modified successfully!');
-  });
+  } else {
+    console.log('Line not found in the file.');
+  }
 });

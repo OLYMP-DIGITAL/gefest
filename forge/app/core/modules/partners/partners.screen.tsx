@@ -4,10 +4,11 @@ import { Button, Text, View } from 'react-native';
 import { NavigationStack } from 'core/types/navigation';
 
 import api from 'core/services/api';
+import { DrawerScreenProps } from '@react-navigation/drawer';
 
-type Props = NativeStackScreenProps<NavigationStack, 'Partners'>;
-
-export const PartnersScreen = ({ navigation }: Props) => {
+export const PartnersScreen = ({
+  navigation,
+}: DrawerScreenProps<NavigationStack>) => {
   useEffect(() => {
     api.get('api/partners').then((result) => {
       console.log('RESULT!', result);
