@@ -46,7 +46,7 @@ export function SignUpScreen() {
         validationSchema={validationSchema}
         onSubmit={(values) => {
           // Отправка данных формы
-          console.log('done!');
+          console.log('done!', values);
         }}
       >
         {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
