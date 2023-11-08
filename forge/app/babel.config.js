@@ -3,10 +3,12 @@ module.exports = function (api) {
     '@babel/plugin-proposal-export-namespace-from', // need for reanimated
     'react-native-reanimated/plugin',
     [
-      'module-resolver',
+      require.resolve('babel-plugin-module-resolver'),
       {
+        extensions: ['.ts', '.tsx', '.js', '.ios.js', '.android.js'],
         alias: {
-          core: './core',
+          '@core': './core',
+          '@assets': './assets',
         },
       },
     ],

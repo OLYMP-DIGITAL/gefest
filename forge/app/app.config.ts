@@ -12,7 +12,7 @@ interface ExpoConfig {
 
 const defaultEnv: Env = {
   API_HOST: 'http://192.168.185.96:1337',
-  DEFAULT_LANGUAGE: 'en',
+  DEFAULT_LANGUAGE: 'ru',
 };
 
 module.exports = ({ config }: { config: ExpoConfig }): ExpoConfig => {

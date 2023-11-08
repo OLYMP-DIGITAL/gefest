@@ -1,17 +1,29 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import env from 'core/services/env';
+import env from '@core/services/env';
 
 const resources = {
   en: {
     translation: {
-      welcome: 'Your welcome!',
+      welcome: {
+        title: 'Your welcome to the Scandinavian financial capital',
+        signIn: 'Sign in',
+        signUp: 'Sign up',
+        registered: 'Already have an account?',
+        emailContinue: 'Continue with email',
+      },
     },
   },
 
   ru: {
     translation: {
-      welcome: 'Добро пожаловать!',
+      welcome: {
+        title: 'Добро пожаловать в Scandinavian Financial Capita',
+        signIn: 'Войти',
+        signUp: 'Зарегестрироваться',
+        registered: 'Уже есть аккаунт?',
+        emailContinue: 'Продолжить с email',
+      },
     },
   },
 

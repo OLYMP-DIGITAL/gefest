@@ -3,7 +3,7 @@ import { NavigationStack } from 'core/types/navigation';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { StyleSheet, Text, View } from 'react-native';
 
-import Button from 'core/components/button';
+import Button from '@core/components/button';
 
 export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
   const { t } = useTranslation();

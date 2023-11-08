@@ -5,9 +5,11 @@
     "baseUrl": ".",
 
     "paths": {
-      "core/*": ["./core/*"]
+      "@core/*": ["./core/*"],
+      "@assets/*": ["./assets/*"]
     },
 
     "types": ["node"]
-  }
+  },
+  "exclude": ["node_modules", "babel.config.js", "metro.config.js"],
 }

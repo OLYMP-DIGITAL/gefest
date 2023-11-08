@@ -5,7 +5,7 @@ import {
   createDrawerNavigator,
   DrawerContentScrollView,
 } from '@react-navigation/drawer';
-import { NavigationStack } from 'core/types/navigation';
+import { NavigationStack } from '@core/types/navigation';
 
 interface DrawerMenuItem {
   label: string;
@@ -40,20 +40,20 @@ interface DrawerProps {
   menuItems?: Array<DrawerMenuItem>;
 }
 
-const DrawerInstance = createDrawerNavigator();
+const DrawerNavigatorInstance = createDrawerNavigator();
 
-export function Drawer({ screens }: DrawerProps) {
+export function AppNavigator({ screens }: DrawerProps) {
   return (
-    <DrawerInstance.Navigator
+    <DrawerNavigatorInstance.Navigator
       drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
       {screens.map(({ name, component: Component }) => (
-        <DrawerInstance.Screen
+        <DrawerNavigatorInstance.Screen
           key={`screen-${name}`}
           name={name}
           component={Component as any}
         />
       ))}
-    </DrawerInstance.Navigator>
+    </DrawerNavigatorInstance.Navigator>
   );
 }

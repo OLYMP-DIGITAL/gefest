@@ -1,28 +1,21 @@
-import { Drawer } from 'core/components/drawer';
-import { PartnersScreen } from 'core/modules/partners';
+import { Provider, atom } from 'jotai';
 import { NavigationContainer } from '@react-navigation/native';
 
-import HomeScreen from './home/home.screen';
+import { Navigator } from './navigator';
+import { ThemeProvider } from '@core/providers/theme.provider';
 
 import i18n from './i18';
 const initI18n = i18n;
 
 function App() {
   return (
-    <NavigationContainer>
-      <Drawer
-        screens={[
-          {
-            name: 'Home',
-            component: HomeScreen,
-          },
-          {
-            name: 'Partners',
-            component: PartnersScreen,
-          },
-        ]}
-      />
-    </NavigationContainer>
+    <Provider>
+      <ThemeProvider>
+        <NavigationContainer>
+          <Navigator />
+        </NavigationContainer>
+      </ThemeProvider>
+    </Provider>
   );
 }
 

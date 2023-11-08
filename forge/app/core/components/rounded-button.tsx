@@ -12,7 +12,7 @@ interface Props {
   onPress?: (event: GestureResponderEvent) => void;
 }
 
-export const Button = ({ title, onPress }: Props) => {
+export const RoundedButton = ({ title, onPress }: Props) => {
   const { theme } = useTheme();
 
   const styles = useMemo(
@@ -21,19 +21,18 @@ export const Button = ({ title, onPress }: Props) => {
         button: {
           paddingHorizontal: 32,
           paddingVertical: 18,
-          borderRadius: 8,
-          backgroundColor: theme.white,
-          borderWidth: 1,
-          borderStyle: 'solid',
-          borderColor: theme.greyscale200,
+          borderRadius: 100,
+          backgroundColor: theme.primary,
         },
         buttonText: {
+          textAlign: 'center',
           fontFamily: 'Urbanist',
           fontSize: 16,
           fontStyle: 'normal',
           fontWeight: '600',
           lineHeight: 22,
           letterSpacing: 0.2,
+          color: theme.white,
         },
       }),
     [theme]
@@ -46,4 +45,4 @@ export const Button = ({ title, onPress }: Props) => {
   );
 };
 
-export default Button;
+export default RoundedButton;
