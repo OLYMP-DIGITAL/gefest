@@ -46,10 +46,12 @@ function WelcomeScreen({
             title={t('welcome.signIn')}
             onPress={() => navigation.navigate('SignIn')}
           />
-          <Link
-            title={t('welcome.signUp')}
-            onPress={() => navigation.navigate('SignUp')}
-          />
+          <View style={styles.signUpWrapper}>
+            <Link
+              title={t('welcome.signUp')}
+              onPress={() => navigation.navigate('SignUp')}
+            />
+          </View>
         </View>
       </View>
     </View>
@@ -77,6 +79,10 @@ const styles = StyleSheet.create({
 
   sides: {
     display: 'flex',
+  },
+
+  signUpWrapper: {
+    marginTop: 15,
   },
 });
 

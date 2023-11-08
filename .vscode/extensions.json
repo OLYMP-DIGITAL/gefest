@@ -1,3 +1,5 @@
 {
-  "recommendations": []
+  "recommendations": [
+    "expo.vscode-expo-tools"
+  ]
 }

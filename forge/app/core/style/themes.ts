@@ -5,7 +5,9 @@ export const lightTheme = {
   link: '#246BFD',
   white: '#ffff',
   primary: '#D43238',
+  greyscale50: '#FAFAFA',
   greyscale200: '#EEEEEE',
+  greyscale500: '#9E9E9E',
   greyscale900: '#212121',
   primaryBackground: '#ffffff', // Светлый фон
   primaryText: '#000000', // Цвет текста на светлом фоне
@@ -17,7 +19,9 @@ export const darkTheme: typeof lightTheme = {
   link: '#246BFD',
   white: '#ffff',
   primary: '#D43238',
+  greyscale50: '#FAFAFA',
   greyscale200: '#EEEEEE',
+  greyscale500: '#9E9E9E',
   greyscale900: '#212121',
   primaryBackground: '#000000', // Темный фон
   primaryText: '#ffffff', // Цвет текста на темном фоне

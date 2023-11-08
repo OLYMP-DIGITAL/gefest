@@ -4,15 +4,14 @@ import {
   TouchableOpacity,
   Text,
   StyleSheet,
-  GestureResponderEvent,
+  TouchableOpacityProps,
 } from 'react-native';
 
-interface Props {
+interface Props extends TouchableOpacityProps {
   title?: string;
-  onPress?: (event: GestureResponderEvent) => void;
 }
 
-export const RoundedButton = ({ title, onPress }: Props) => {
+export const RoundedButton = ({ title, disabled, ...rest }: Props) => {
   const { theme } = useTheme();
 
   const styles = useMemo(
@@ -22,7 +21,7 @@ export const RoundedButton = ({ title, onPress }: Props) => {
           paddingHorizontal: 32,
           paddingVertical: 18,
           borderRadius: 100,
-          backgroundColor: theme.primary,
+          backgroundColor: disabled ? theme.greyscale200 : theme.primary,
         },
         buttonText: {
           textAlign: 'center',
@@ -32,14 +31,14 @@ export const RoundedButton = ({ title, onPress }: Props) => {
           fontWeight: '600',
           lineHeight: 22,
           letterSpacing: 0.2,
-          color: theme.white,
+          color: disabled ? theme.greyscale500 : theme.white,
         },
       }),
-    [theme]
+    [theme, disabled]
   );
 
   return (
-    <TouchableOpacity style={styles.button} onPress={onPress || undefined}>
+    <TouchableOpacity style={styles.button} disabled={disabled} {...rest}>
       <Text style={styles.buttonText}>{title ?? 'Button'}</Text>
     </TouchableOpacity>
   );
