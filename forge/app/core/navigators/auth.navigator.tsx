@@ -11,6 +11,7 @@ import { useTheme } from '@core/providers/theme.provider';
 import SignInScreen from '@core/modules/auth/sign-in.screen';
 import WelcomeScreen from '@core/modules/auth/welcome.screen';
 import SignUpScreen from '@core/modules/auth/sign-up.screen';
+import FinishedScreen from '@core/modules/auth/finished.screen';
 
 const navigationOptions: NativeStackNavigationOptions = {
   title: 'Custom Header Title', // Заголовок шапки
@@ -37,6 +38,10 @@ const screens: Array<NavigatorItem> = [
   {
     name: SignUpScreen.route,
     component: SignUpScreen,
+  },
+  {
+    name: FinishedScreen.route,
+    component: FinishedScreen,
   },
 ];
 
@@ -67,7 +72,7 @@ export function AuthNavigator() {
   );
 
   return (
-    <Stack.Navigator initialRouteName="Welcome">
+    <Stack.Navigator initialRouteName={WelcomeScreen.route}>
       {screens.map(({ name, component }) => (
         <Stack.Screen
           key={`navigator-screen-${name}`}

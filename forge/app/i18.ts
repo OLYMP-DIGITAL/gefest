@@ -6,9 +6,10 @@ const resources = {
   en: {
     translation: {
       user: {
-        name: 'Name',
         email: 'Email',
         sername: 'Sername',
+        username: 'Name',
+        password: 'Password',
         patronymic: 'Patronymic',
       },
 
@@ -33,15 +34,20 @@ const resources = {
         setNameMessage:
           'Enter your full name exactly as it is written in your passport',
       },
+      finished: {
+        title: 'Registration is completed',
+        toHome: 'To home',
+      },
     },
   },
 
   ru: {
     translation: {
       user: {
-        name: 'Имя',
         email: 'Email',
         sername: 'Фамилия',
+        username: 'Имя',
+        password: 'Пароль',
         patronymic: 'Отчество',
       },
 
@@ -55,7 +61,7 @@ const resources = {
       },
 
       welcome: {
-        title: 'Добро пожаловать в Scandinavian Financial Capita',
+        title: 'Добро пожаловать в Scandinavian Financial Capital',
         signIn: 'Войти',
         signUp: 'Зарегестрироваться',
         registered: 'Уже есть аккаунт?',
@@ -64,6 +70,12 @@ const resources = {
       signUp: {
         title: 'Регистрация',
         setNameMessage: 'Укажите ФИО именно так, как написанно в паспорте',
+      },
+      finished: {
+        title: 'Регистрация завершена',
+        toHome: 'На главную',
+        subscribe: 'Подпишись на наши соцсети',
+        beFirst: 'Будешь первый в курсе всех событий',
       },
     },
   },

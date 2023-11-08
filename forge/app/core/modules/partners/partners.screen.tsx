@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Button, Text, View } from 'react-native';
+import { Button, Image, Text, View } from 'react-native';
 import { NavigationStack } from '@core/types/navigation';
 
 import api from '@core/services/api';
@@ -19,15 +19,20 @@ export const PartnersScreen = ({
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Partners Screen</Text>
-      <Button
-        title="Go to Details"
-        onPress={() => navigation.navigate('Home')}
+      {/* <Text>{t('welcome')}</Text> */}
+      <Image
+        style={{ width: '70%', height: '100%' }}
+        source={{ uri: require('@assets/partners.png') }}
       />
 
-      {partners.map((partner: any, index) => (
-        <Text key={`partner-title-${index}`}>{partner.attributes.title}</Text>
-      ))}
+      {/* <View style={styles.line}>
+        <Button
+          title="Go to parters"
+          onPress={() => navigation.navigate('Partners')}
+        />
+      </View>
+
+      <Button title="Open drawer" onPress={() => navigation.openDrawer()} /> */}
     </View>
   );
 };
