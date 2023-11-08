@@ -11,7 +11,8 @@ interface ExpoConfig {
 }
 
 const defaultEnv: Env = {
-  API_HOST: 'http://192.168.185.96:1337',
+  // API_HOST: 'http://192.168.185.96:1337',
+  API_HOST: 'http://localhost:1337',
   DEFAULT_LANGUAGE: 'ru',
 };
 
