@@ -1,0 +1,11 @@
+services:
+  web:
+    container_name: web
+    env_file: .env
+
+    build:
+      dockerfile: web-build.dockerfile
+      context: ./forge/app
+
+    ports:
+      - 8081:80
