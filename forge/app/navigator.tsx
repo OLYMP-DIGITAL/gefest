@@ -16,7 +16,7 @@ export function Navigator() {
   const [token] = useAtom(tokenAtom);
 
   return (
-    (token && (
+    (!token && (
       <AppNavigator
         screens={[
           {
