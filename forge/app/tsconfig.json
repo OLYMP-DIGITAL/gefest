@@ -1,15 +1,17 @@
 {
   "extends": "@tsconfig/react-native/tsconfig.json",
   "compilerOptions": {
+    // "jsx": "react",
+    "types": ["node", "react-native", "jest", "react"],
     "strict": true,
-    "baseUrl": ".",
+    "baseUrl": "./src",
+    "forceConsistentCasingInFileNames": true,
 
     "paths": {
-      "@core/*": ["./core/*"],
-      "@assets/*": ["./assets/*"]
+      "@core/*": ["core/*"],
+      "@assets/*": ["assets/*"]
     },
-
-    "types": ["node"]
   },
-  "exclude": ["node_modules", "babel.config.js", "metro.config.js"],
+
+  "exclude": ["node_modules"]
 }
