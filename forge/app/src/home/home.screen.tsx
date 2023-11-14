@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { NavigationStack } from 'core/types/navigation';
 import { DrawerScreenProps } from '@react-navigation/drawer';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 
 // import Button from 'core/components/button';
 
