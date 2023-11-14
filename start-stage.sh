@@ -2,7 +2,9 @@
 
 # Подгружаем переменные окружения из файла .env
 if [[ -f .env ]]; then
-    export $(grep -v '^#' .env | xargs)
+    cat .env                                                                    
+    # export $(grep -v '^#' .env | xargs)                                       
+    source .env || export $(cat .env | grep -v '^#' | xargs) 
 else
     echo "Файл .env не найден."
     exit 1
