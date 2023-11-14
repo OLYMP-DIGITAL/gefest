@@ -1,3 +1,3 @@
-#!/etc/bash
+#!/bin/bash
 
 cp .env.example .env
