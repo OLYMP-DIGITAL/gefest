@@ -14,8 +14,10 @@ if ! command -v certbot &> /dev/null; then
     exit 1
 fi
 
+echo "Поиск сертификатов для $DOMAIN"
+
 # Проверяем наличие сертификата для указанного домена
-if $(sudo certbot certificates) | grep -q $DOMAIN; then
+if sudo certbot certificates | grep -q $DOMAIN; then
     echo "Сертификат для домена $DOMAIN существует."
     docker compose -f docker-compose.yml -f docker-compose.web.yml -f docker-compose.nginx.yml up -d --no-deps --build
 else
