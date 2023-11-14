@@ -21,7 +21,7 @@ echo "Поиск сертификатов для $DOMAIN"
 # Проверяем наличие сертификата для указанного домена
 if sudo certbot certificates | grep -q $DOMAIN; then
     echo "Сертификат для домена $DOMAIN существует."
-    docker compose -f docker-compose.api.stage.yml -f docker-compose.web.stage.yml -f docker-compose.nginx.yml up -d --no-deps --build
+    docker compose -f docker-compose.api.stage.yml -f docker-compose.web.stage.yml -f docker-compose.nginx.yml up -d --build
 else
     echo "Сертификат для домена $DOMAIN не найден."
 fi
