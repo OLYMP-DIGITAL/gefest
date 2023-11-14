@@ -72,5 +72,5 @@ volumes:
 
 networks:
   api_stage:
-    name: Api
+    name: api_stage
     driver: bridge

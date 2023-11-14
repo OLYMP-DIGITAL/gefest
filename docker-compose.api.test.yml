@@ -72,5 +72,5 @@ volumes:
 
 networks:
   api_test:
-    name: Api
+    name: api_test
     driver: bridge
