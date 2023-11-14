@@ -1,7 +1,7 @@
 version: '3'
 services:
   api:
-    container_name: api
+    container_name: api_stage
     build:
       dockerfile: dockerfile
       context: ./forge/api
@@ -29,12 +29,12 @@ services:
     ports:
       - '1337:1337'
     networks:
-      - api
+      - api_stage
     depends_on:
       - apiDB
       
   apiDB:
-    container_name: apiDB
+    container_name: api_db_stage
     platform: linux/amd64 #for platform error on Apple M1 chips
     restart: unless-stopped
     env_file: .env
@@ -47,15 +47,15 @@ services:
       MYSQL_DATABASE: ${DATABASE_NAME}
       MYSQL_ROOT_HOST: '%'
     volumes:
-      - api-data:/var/lib/mysql
+      - api-data-stage:/var/lib/mysql
       #- ./data:/var/lib/postgresql/data/ # if you want to use a bind folder
     ports:
       - '3306:3306'
     networks:
-      - api
+      - api_stage
       
   apiAdminer:
-    container_name: apiAdminer
+    container_name: api_adminer_stage
     image: adminer
     restart: unless-stopped
     ports:
@@ -63,14 +63,14 @@ services:
     environment:
       - ADMINER_DEFAULT_SERVER=apiDB
     networks:
-      - api
+      - api_stage
     depends_on:
       - apiDB
 
 volumes:
-  api-data:
+  api-data-stage:
 
 networks:
-  api:
+  api_stage:
     name: Api
     driver: bridge

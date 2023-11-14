@@ -1,0 +1,11 @@
+services:
+  web:
+    container_name: web_test
+    env_file: .env
+
+    build:
+      dockerfile: web-build.dockerfile
+      context: ./forge/app
+
+    ports:
+      - "${WEB_PORT}:80"
