@@ -8,4 +8,4 @@ services:
       context: ./forge/app
 
     ports:
-      - 8081:80
+      - "${WEB_PORT}:80"
