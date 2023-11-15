@@ -1,5 +1,6 @@
 {
   "recommendations": [
-    "expo.vscode-expo-tools"
+    "expo.vscode-expo-tools",
+    "ahmadalli.vscode-nginx-conf"
   ]
 }
