@@ -38,7 +38,7 @@ services:
       context: ./forge/app
 
     ports:
-      - "${WEB_STAGE_PORT}:80"
+      - "${WEB_PORT}:80"
 
 # ================================= API STRAPI =================================
   api:
