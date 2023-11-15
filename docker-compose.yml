@@ -1,18 +1,13 @@
 version: '3'
 
-# volumes:
-#   api-data-stage:
-
-# networks:
-#   api_stage:
-#     name: api_stage
-#     driver: bridge
+volumes:
+  api-data-stage:
 
 services:
-
 # ================================= NGINX ======================================
   nginx:
     image: nginx:latest
+    restart: unless-stopped
     container_name: gefest_nginx
 
     depends_on:
@@ -34,66 +29,68 @@ services:
 
 # ================================= WEB ========================================
   web:
+    restart: unless-stopped
     env_file: .env
     container_name: web_stage
 
     build:
-      dockerfile: web-build.dockerfile
+      dockerfile: web.dockerfile
       context: ./forge/app
 
     ports:
       - "${WEB_STAGE_PORT}:80"
 
-#   api:
-#     container_name: api_stage
-#     build:
-#       dockerfile: dockerfile
-#       context: ./forge/api
-#     image: api:latest
-#     restart: unless-stopped
-#     env_file: .env
-#     environment:
-#       DATABASE_CLIENT: ${DATABASE_CLIENT}
-#       DATABASE_HOST: apiDB
-#       DATABASE_NAME: ${DATABASE_NAME}
-#       DATABASE_USERNAME: ${DATABASE_USERNAME}
-#       DATABASE_PORT: ${DATABASE_PORT}
-#       JWT_SECRET: ${JWT_SECRET}
-#       ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
-#       DATABASE_PASSWORD: ${DATABASE_PASSWORD}
-#       NODE_ENV: ${NODE_ENV}
-#     volumes:
-#       - ./forge/api/config:/opt/app/config
-#       - ./forge/api/src:/opt/app/src
-#       - ./forge/api/package.json:/opt/package.json
-#       - ./forge/api/package-lock.json:/opt/package-lock.json
+# ================================= API STRAPI =================================
+  api:
+    container_name: api
+    build:
+      dockerfile: dockerfile
+      context: ./forge/api
+    image: api:latest
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_CLIENT: ${DATABASE_CLIENT}
+      DATABASE_HOST: apiDB
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PORT: ${DATABASE_PORT}
+      JWT_SECRET: ${JWT_SECRET}
+      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      NODE_ENV: ${NODE_ENV}
 
-#       - ./.env:/opt/app/.env
-#       - ./forge/api/public/uploads:/opt/app/public/uploads
-#     ports:
-#       - '1337:1337'
-#     networks:
-#       - api_stage
-#     depends_on:
-#       - apiDB
-      
-#   apiDB:
-#     container_name: api_db_stage
-#     platform: linux/amd64 #for platform error on Apple M1 chips
-#     restart: unless-stopped
-#     env_file: .env
-#     image: mysql:latest
-#     command: --default-authentication-plugin=mysql_native_password
-#     environment:
-#       MYSQL_USER: ${DATABASE_USERNAME}
-#       MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}
-#       MYSQL_PASSWORD: ${DATABASE_PASSWORD}
-#       MYSQL_DATABASE: ${DATABASE_NAME}
-#       MYSQL_ROOT_HOST: '%'
-#     volumes:
-#       - api-data-stage:/var/lib/mysql
-#       #- ./data:/var/lib/postgresql/data/ # if you want to use a bind folder
-#     ports:
-#       - '3306:3306'
-#     networks:
-#       - api_stage
+    volumes:
+      - ./forge/api/config:/opt/app/config
+      - ./forge/api/src:/opt/app/src
+      - ./forge/api/package.json:/opt/package.json
+      - ./forge/api/package-lock.json:/opt/package-lock.json
+
+      - ./.env:/opt/app/.env
+      - ./forge/api/public/uploads:/opt/app/public/uploads
+
+    ports:
+      - "${API_PORT}:1337"
+
+    depends_on:
+      - apiDB
+  
+# ================================= MYSQL ======================================
+  apiDB:
+    container_name: api_db_stage
+    platform: linux/amd64 #for platform error on Apple M1 chips
+    restart: unless-stopped
+    env_file: .env
+    image: mysql:latest
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_USER: ${DATABASE_USERNAME}
+      MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD}
+      MYSQL_DATABASE: ${DATABASE_NAME}
+      MYSQL_ROOT_HOST: '%'
+    volumes:
+      - api-data-stage:/var/lib/mysql
+
+    ports:
+      - "${DATABASE_PORT}:3306"

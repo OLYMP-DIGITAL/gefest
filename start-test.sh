@@ -1,1 +1,0 @@
-docker compose -f docker-compose.api.test.yml -f docker-compose.web.test.yml up -d --no-deps --build web
