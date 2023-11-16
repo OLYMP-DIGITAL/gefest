@@ -17,7 +17,7 @@ RUN npx expo export:web
 FROM nginx:alpine
 
 # Copy config
-COPY ./nginx.web.conf /etc/nginx/conf.d
+COPY ./nginx.conf /etc/nginx/conf.d
 
 # Copy error pages
 COPY ./public/50x.html /usr/share/nginx/html

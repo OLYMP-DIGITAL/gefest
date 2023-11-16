@@ -2,16 +2,25 @@
   "extends": "@tsconfig/react-native/tsconfig.json",
   "compilerOptions": {
     // "jsx": "react",
-    "types": ["node", "react-native", "jest", "react"],
+    "types": [
+      "node",
+      "react-native",
+      "jest",
+      "react"
+    ],
     "strict": true,
     "baseUrl": "./src",
     "forceConsistentCasingInFileNames": true,
-
     "paths": {
-      "@core/*": ["core/*"],
-      "@assets/*": ["assets/*"]
+      "@core/*": [
+        "core/*"
+      ],
+      "@assets/*": [
+        "assets/*"
+      ]
     },
   },
-
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }
