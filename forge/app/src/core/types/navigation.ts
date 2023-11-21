@@ -1,4 +1,4 @@
-import SignInScreen from 'core/modules/auth/sign-in.screen';
+import { User } from 'core/features/users/users.types';
 
 export type NavigationStack = {
   Home: undefined;
@@ -8,5 +8,5 @@ export type NavigationStack = {
   SignIn: undefined;
   SignUp: undefined;
   Welcome: undefined;
-  Finished: undefined;
+  Finished: { user: User };
 };

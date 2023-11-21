@@ -13,6 +13,7 @@ import api from 'core/services/api';
 import { NavigationProp } from '@react-navigation/native';
 import { NavigationStack } from 'core/types/navigation';
 import { saveToken } from 'core/services/token';
+import { User } from 'core/features/users/users.types';
 // import { saveToken } from '@core/services/token';
 
 interface SignUpUser {
@@ -25,7 +26,7 @@ interface SignUpUser {
 
 interface RegistrationResponse {
   jwt: string;
-  user: SignUpUser;
+  user: User;
 }
 
 export function SignUpScreen({
@@ -64,7 +65,7 @@ export function SignUpScreen({
 
   const onSubmit = useCallback((values: SignUpUser) => {
     api
-      .post<RegistrationResponse>('api/auth/local/register', values)
+      .post<RegistrationResponse>('auth/local/register', values)
       .then((response) => {
         // Handle success.
         console.log('Well done!');
@@ -73,7 +74,7 @@ export function SignUpScreen({
 
         if (response.jwt) {
           saveToken(response.jwt);
-          navigation.navigate('Finished');
+          navigation.navigate('Finished', { user: response.user });
         }
       })
       .catch((error) => {

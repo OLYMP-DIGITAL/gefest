@@ -4,7 +4,7 @@
 #  Скрипт для запуска рабочего окружения #
 # ########################################
 
-docker compose up api apiDB -d
+docker compose up web api adpiDB -d --build
 cd "$(dirname "$0")"/forge/app
 echo $PWD
 npx expo start --clear

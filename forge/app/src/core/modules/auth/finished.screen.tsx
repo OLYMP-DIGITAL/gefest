@@ -12,6 +12,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, Linking, StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useAuth } from 'core/providers/auth.provider';
+import { User } from 'core/features/users/users.types';
 
 interface SocialAttributes {
   link: string;
@@ -35,11 +37,13 @@ interface SocialsResponse {
 }
 
 export const FinishedScreen = ({
+  user,
   navigation,
 }: {
+  user: User;
   navigation: NavigationProp<NavigationStack, 'Finished'>;
 }) => {
-  const [token, setToken] = useState<string>('');
+  const { setUser } = useAuth();
   const { t } = useTranslation();
   const { theme } = useTheme();
   const [socials, setSocials] = useState<Social[]>([]);
@@ -90,11 +94,8 @@ export const FinishedScreen = ({
         <RoundedButton
           title={t('finished.toHome')}
           onPress={() => {
-            getToken().then((jwtToken) => {
-              if (jwtToken) {
-                setToken(jwtToken);
-              }
-            });
+            setUser(user);
+            // navigation.navigate('Home');
           }}
         />
       </View>
@@ -103,27 +104,28 @@ export const FinishedScreen = ({
       <BodyXlRegular text={t('finished.subscribe')} />
 
       <View style={styles.socialsWrapper}>
-        {socials.map((social) => (
-          <TouchableOpacity
-            key={`social-image-${social.id}`}
-            style={styles.socialImage}
-            onPress={() => {
-              const url = social.attributes.link;
-              Linking.openURL(url)
-                .then(() => console.log(`Открыт URL: ${url}`))
-                .catch((err) =>
-                  console.error('Ошибка при открытии URL: ', err)
-                );
-            }}
-          >
-            <Image
+        {Array.isArray(socials) &&
+          socials.map((social) => (
+            <TouchableOpacity
+              key={`social-image-${social.id}`}
               style={styles.socialImage}
-              source={{
-                uri: `${env.API_HOST}${social.attributes.logo.data.attributes.url}`,
+              onPress={() => {
+                const url = social.attributes.link;
+                Linking.openURL(url)
+                  .then(() => console.log(`Открыт URL: ${url}`))
+                  .catch((err) =>
+                    console.error('Ошибка при открытии URL: ', err)
+                  );
               }}
-            />
-          </TouchableOpacity>
-        ))}
+            >
+              <Image
+                style={styles.socialImage}
+                source={{
+                  uri: `${env.API_HOST}${social.attributes.logo.data.attributes.url}`,
+                }}
+              />
+            </TouchableOpacity>
+          ))}
       </View>
     </View>
   );

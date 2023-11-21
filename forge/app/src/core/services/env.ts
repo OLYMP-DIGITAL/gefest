@@ -2,6 +2,7 @@ import Constants from 'expo-constants';
 
 export enum envKyes {
   apiHost = 'API_HOST',
+  defaultToken = 'DEFAULT_TOKEN',
 }
 
 const env: Env =

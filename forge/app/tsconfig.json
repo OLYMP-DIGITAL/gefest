@@ -11,14 +11,6 @@
     "strict": true,
     "baseUrl": "./src",
     "forceConsistentCasingInFileNames": true,
-    "paths": {
-      "@core/*": [
-        "core/*"
-      ],
-      "@assets/*": [
-        "assets/*"
-      ]
-    },
   },
   "exclude": [
     "node_modules"

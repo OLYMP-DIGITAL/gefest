@@ -10,6 +10,7 @@ import { useMemo } from 'react';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { useTheme } from 'core/providers/theme.provider';
+import { useAuth } from 'core/providers/auth.provider';
 
 interface DrawerMenuItem {
   label: string;
@@ -112,6 +113,7 @@ interface CustomHeaderProps {
 }
 
 const CustomHeader: React.FC<CustomHeaderProps> = ({ title, navigation }) => {
+  const { user } = useAuth();
   const { theme } = useTheme();
 
   return (
@@ -146,8 +148,10 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({ title, navigation }) => {
       <View style={styles.infoContainer}>
         <Text style={{ color: '#fff' }}>en rus</Text>
       </View>
-      <View style={styles.infoContainer}>
-        <Text>NIkolay A.</Text>
+      <View style={styles.userWrapper}>
+        <Text style={styles.valueText}>
+          {user?.username} {(user?.sername ? user?.sername[0] : '') + '.'}
+        </Text>
         <Image
           style={styles.profileImage}
           source={require('assets/avatar.png')} // Путь к случайному круглому фото
@@ -166,6 +170,11 @@ function getCurrentTime() {
 }
 
 const styles = StyleSheet.create({
+  userWrapper: {
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
   headerContainer: {
     color: 'white',
     flexDirection: 'row',
@@ -191,6 +200,10 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
+  },
+
+  valueText: {
+    color: '#fff',
   },
 });
 
