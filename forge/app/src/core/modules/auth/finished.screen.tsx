@@ -5,15 +5,15 @@ import { H4Text } from 'core/components/text/h4.text';
 import { useTheme } from 'core/providers/theme.provider';
 import api from 'core/services/api';
 import env from 'core/services/env';
-import { getToken } from 'core/services/token';
 import { NavigationStack } from 'core/types/navigation';
 import { NavigationProp } from '@react-navigation/native';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, Linking, StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useAuth } from 'core/providers/auth.provider';
 import { User } from 'core/features/users/users.types';
+import { useSetRecoilState } from 'recoil';
+import { userAtom } from 'core/features/users/users.atoms';
 
 interface SocialAttributes {
   link: string;
@@ -37,16 +37,22 @@ interface SocialsResponse {
 }
 
 export const FinishedScreen = ({
-  user,
+  route,
   navigation,
 }: {
-  user: User;
+  route: { params?: { user: User } };
   navigation: NavigationProp<NavigationStack, 'Finished'>;
 }) => {
-  const { setUser } = useAuth();
+  const setUser = useSetRecoilState(userAtom);
   const { t } = useTranslation();
   const { theme } = useTheme();
   const [socials, setSocials] = useState<Social[]>([]);
+
+  console.log('[FinishedScreen] user:', {
+    user: route.params?.user,
+    params: route.params,
+    navState: navigation.getState(),
+  });
 
   useEffect(() => {
     try {
@@ -94,7 +100,7 @@ export const FinishedScreen = ({
         <RoundedButton
           title={t('finished.toHome')}
           onPress={() => {
-            setUser(user);
+            setUser(route.params?.user || null);
             // navigation.navigate('Home');
           }}
         />

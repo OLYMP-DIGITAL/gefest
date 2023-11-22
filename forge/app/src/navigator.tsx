@@ -8,9 +8,11 @@ import WalletScreen from 'core/modules/WalletScreen';
 import PartnersScreen from 'core/modules/partners/partners.screen';
 import DocumentsScreen from 'core/modules/DocumentsScreen';
 import GrowthChartScreen from 'core/modules/GrowthChartScreen';
+
 import { useAuth } from 'core/providers/auth.provider';
+import { userAtom } from 'core/features/users/users.atoms';
+import { useRecoilValue } from 'recoil';
 import { ActivityIndicator, View } from 'react-native';
-import { useEffect } from 'react';
 
 const LoaderView = () => {
   return (
@@ -29,17 +31,12 @@ const LoaderView = () => {
 };
 
 export function Navigator() {
-  const { isLoading, user } = useAuth();
+  const { isLoading } = useAuth();
+  const user = useRecoilValue(userAtom);
 
   if (isLoading) {
     return <LoaderView />;
   }
-
-  console.log('USER!!!', user);
-
-  useEffect(() => {
-    console.log('User was updated', user);
-  }, [user]);
 
   return (
     (user && (

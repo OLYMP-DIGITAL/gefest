@@ -5,17 +5,20 @@ import { ThemeProvider } from 'core/providers/theme.provider';
 
 import i18n from './i18';
 import AuthProvider from 'core/providers/auth.provider';
+import { RecoilRoot } from 'recoil';
 const initI18n = i18n;
 
 function App() {
   return (
-    <AuthProvider>
-      <ThemeProvider>
-        <NavigationContainer>
-          <Navigator />
-        </NavigationContainer>
-      </ThemeProvider>
-    </AuthProvider>
+    <RecoilRoot>
+      <AuthProvider>
+        <ThemeProvider>
+          <NavigationContainer>
+            <Navigator />
+          </NavigationContainer>
+        </ThemeProvider>
+      </AuthProvider>
+    </RecoilRoot>
   );
 }
 

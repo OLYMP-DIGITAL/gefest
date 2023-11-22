@@ -1,3 +1,5 @@
+import { fetchMe } from 'core/features/users/users.api';
+import { userAtom } from 'core/features/users/users.atoms';
 import { User } from 'core/features/users/users.types';
 import api from 'core/services/api';
 import { getToken } from 'core/services/token';
@@ -8,31 +10,30 @@ import {
   useEffect,
   useState,
 } from 'react';
+import { useRecoilState } from 'recoil';
 
 interface Auth {
-  user?: User;
+  user: User | null;
   isLoading: boolean;
   setUser(user: User): void;
 }
 
 export const AuthContext = createContext<Auth>({
-  user: undefined,
+  user: null,
   isLoading: false,
-  setUser() {
-    console.log('Stub debugging');
-  },
+  setUser() {},
 });
 
 export const useAuth = () => useContext(AuthContext);
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User>();
+  const [user, setUser] = useRecoilState(userAtom);
   const [token, setToken] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const fetchLoggedInUser = async () => {
     try {
-      const response = await api.get<User>('users/me');
+      const response = await fetchMe();
       console.log('Goted response!', response);
 
       if (response && response.id) {

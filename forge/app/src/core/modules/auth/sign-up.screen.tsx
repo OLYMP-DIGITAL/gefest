@@ -1,5 +1,4 @@
 import * as yup from 'yup'; // Библиотека для валидации
-// import { t } from 'i18next';
 import { Formik } from 'formik';
 import { H3Text } from 'core/components/text/h3.text';
 import { Text, View } from 'react-native';
@@ -14,7 +13,6 @@ import { NavigationProp } from '@react-navigation/native';
 import { NavigationStack } from 'core/types/navigation';
 import { saveToken } from 'core/services/token';
 import { User } from 'core/features/users/users.types';
-// import { saveToken } from '@core/services/token';
 
 interface SignUpUser {
   email: string;
@@ -68,9 +66,7 @@ export function SignUpScreen({
       .post<RegistrationResponse>('auth/local/register', values)
       .then((response) => {
         // Handle success.
-        console.log('Well done!');
-        console.log('User profile', response.user);
-        console.log('User token', response.jwt);
+        console.log('[SignUpScreen] signup.response:', response);
 
         if (response.jwt) {
           saveToken(response.jwt);
