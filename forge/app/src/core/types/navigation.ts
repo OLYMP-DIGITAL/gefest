@@ -8,5 +8,5 @@ export type NavigationStack = {
   SignIn: undefined;
   SignUp: undefined;
   Welcome: undefined;
-  Finished: { user: User };
+  Finished: undefined;
 };

@@ -20,6 +20,7 @@ const resources = {
       messages: {
         isRequired: 'is required field',
         invalidEmail: 'invalid email',
+        requestFailed: 'Request is failed. Please, try later',
       },
 
       welcome: {
@@ -58,6 +59,8 @@ const resources = {
       messages: {
         isRequired: 'обязательное поле',
         invalidEmail: 'неправильный email',
+        requestFailed:
+          'Произошла ошбка во время запроса. Пожалйста, повторите позже',
       },
 
       welcome: {

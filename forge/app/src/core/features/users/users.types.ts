@@ -1,3 +1,5 @@
+import { ErrorResponse } from 'core/types/requests';
+
 export const UserAtomKey = 'UserAtomKey';
 
 export interface User {
@@ -11,4 +13,16 @@ export interface User {
   patronymic: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export type SignInResponse = ErrorResponse & SignInSuccessResponse;
+
+export interface SignInPayload {
+  identifier: string;
+  password: string;
+}
+
+export interface SignInSuccessResponse {
+  jwt: string;
+  user: User;
 }

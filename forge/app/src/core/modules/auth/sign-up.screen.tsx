@@ -13,6 +13,8 @@ import { NavigationProp } from '@react-navigation/native';
 import { NavigationStack } from 'core/types/navigation';
 import { saveToken } from 'core/services/token';
 import { User } from 'core/features/users/users.types';
+import { useToast } from 'react-native-toast-notifications';
+import { ErrorResponse } from 'core/types/requests';
 
 interface SignUpUser {
   email: string;
@@ -22,7 +24,9 @@ interface SignUpUser {
   patronymic: string;
 }
 
-interface RegistrationResponse {
+type RegistrationResponse = RegistrationSuccessResponse & ErrorResponse;
+
+interface RegistrationSuccessResponse {
   jwt: string;
   user: User;
 }
@@ -32,6 +36,7 @@ export function SignUpScreen({
 }: {
   navigation: NavigationProp<NavigationStack, 'SignUp'>;
 }) {
+  const toast = useToast();
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -68,14 +73,24 @@ export function SignUpScreen({
         // Handle success.
         console.log('[SignUpScreen] signup.response:', response);
 
-        if (response.jwt) {
-          saveToken(response.jwt);
-          navigation.navigate('Finished', { user: response.user });
+        if (response.error) {
+          return toast.show(response.error.message, {
+            type: 'danger',
+          });
         }
+
+        navigation.navigate('Finished');
+
+        // Если не понадобиться подтверждение почты
+        // if (response.jwt) {
+        //   saveToken(response.jwt);
+        //   navigation.navigate('Finished');
+        // }
       })
       .catch((error) => {
         // Handle error.
         console.log('An error occurred:', error);
+        toast.show(t('messages.requestFailed'));
       });
   }, []);
 
@@ -96,10 +111,10 @@ export function SignUpScreen({
 
       <Formik
         initialValues={{
-          username: 'name',
-          sername: 'sername',
-          patronymic: 'patronymic',
-          email: 'mail@mail.ru',
+          username: 'Pavel',
+          sername: 'Tretyakov',
+          patronymic: 'Vyacheslavovich',
+          email: 'paveltretyakov.ru@gmail.com',
           password: '123456',
         }}
         validationSchema={validationSchema}

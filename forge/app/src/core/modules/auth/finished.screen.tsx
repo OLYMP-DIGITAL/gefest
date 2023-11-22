@@ -11,9 +11,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, Linking, StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { User } from 'core/features/users/users.types';
-import { useSetRecoilState } from 'recoil';
-import { userAtom } from 'core/features/users/users.atoms';
 
 interface SocialAttributes {
   link: string;
@@ -37,20 +34,15 @@ interface SocialsResponse {
 }
 
 export const FinishedScreen = ({
-  route,
   navigation,
 }: {
-  route: { params?: { user: User } };
   navigation: NavigationProp<NavigationStack, 'Finished'>;
 }) => {
-  const setUser = useSetRecoilState(userAtom);
   const { t } = useTranslation();
   const { theme } = useTheme();
   const [socials, setSocials] = useState<Social[]>([]);
 
   console.log('[FinishedScreen] user:', {
-    user: route.params?.user,
-    params: route.params,
     navState: navigation.getState(),
   });
 
@@ -96,12 +88,14 @@ export const FinishedScreen = ({
     <View style={styles.wrapper}>
       <H3Text text={t('finished.title')} />
 
+      <BodyXlRegular text={t('finished.continue')} />
+
       <View style={styles.toHomeWrapper}>
         <RoundedButton
-          title={t('finished.toHome')}
+          title={t('finished.toSignIn')}
           onPress={() => {
-            setUser(route.params?.user || null);
-            // navigation.navigate('Home');
+            // setUser(route.params?.user || null);
+            navigation.navigate('SignIn');
           }}
         />
       </View>

@@ -19,7 +19,7 @@ class Api {
       })
       .then((data) => {
         // Обработка данных защищенного ресурса
-        console.log('Reponse data!', data);
+        console.log('Response data!', data);
         return data as T;
       })
       .catch((error) => {
@@ -50,7 +50,7 @@ class Api {
       })
       .then((data) => {
         // Обработка данных защищенного ресурса
-        console.log('Reponse data!', data);
+        console.log('Response data!', data);
         return data as T;
       })
       .catch((error) => {
