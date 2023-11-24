@@ -8,7 +8,7 @@ import { Image, View } from 'react-native';
 
 import { useTheme } from 'core/providers/theme.provider';
 
-import SignInScreen from 'core/modules/auth/sign-in.screen';
+import SignInScreen from 'core/modules/auth/sign-in/sign-in.screen';
 import WelcomeScreen from 'core/modules/auth/welcome.screen';
 import SignUpScreen from 'core/modules/auth/sign-up.screen';
 import FinishedScreen from 'core/modules/auth/finished.screen';

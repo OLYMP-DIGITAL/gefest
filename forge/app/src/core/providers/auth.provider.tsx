@@ -1,8 +1,8 @@
 import { fetchMe } from 'core/features/users/users.api';
-import { userAtom } from 'core/features/users/users.atoms';
+import { tokenAtom, userAtom } from 'core/features/users/users.atoms';
 import { User } from 'core/features/users/users.types';
 import api from 'core/services/api';
-import { getToken } from 'core/services/token';
+import { getToken, saveToken } from 'core/services/token';
 import {
   ReactNode,
   createContext,
@@ -28,7 +28,7 @@ export const useAuth = () => useContext(AuthContext);
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useRecoilState(userAtom);
-  const [token, setToken] = useState<string>('');
+  const [token, setToken] = useRecoilState(tokenAtom);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const fetchLoggedInUser = async () => {
@@ -61,6 +61,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (token) {
       api.token = token;
+      saveToken(token);
       fetchLoggedInUser();
     }
   }, [token]);

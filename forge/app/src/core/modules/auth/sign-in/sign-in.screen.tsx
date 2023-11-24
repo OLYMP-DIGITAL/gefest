@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Formik } from 'formik';
@@ -7,15 +7,27 @@ import { signIn } from 'core/features/users/users.api';
 import { Input } from 'core/components/input';
 import RoundedButton from 'core/components/rounded-button';
 import { useToast } from 'react-native-toast-notifications';
+import { atom, useRecoilState, useSetRecoilState } from 'recoil';
+import { tokenAtom, userAtom } from 'core/features/users/users.atoms';
+import { ResponseErrorName } from 'core/types/requests';
+import { ConfirmButton } from './components/confirm-button';
 
 interface SignInUser {
   email: string;
   password: string;
 }
 
+// const showResendEmailAtom = atom({
+//   key: 'ShowResendEmail',
+//   default: false,
+// });
+
 function SignInScreen() {
   const toast = useToast();
   const { t } = useTranslation();
+  const [showResendEmail, setShowResendEmail] = useState<boolean>(false);
+  const setUser = useSetRecoilState(userAtom);
+  const setToken = useSetRecoilState(tokenAtom);
 
   useEffect(() => {
     toast.show('Test', { type: 'success' });
@@ -42,7 +54,29 @@ function SignInScreen() {
     })
       .then((response) => {
         if (response.error) {
+          /**
+           * Самое вероятное выполнения условий
+           * - пользователь не подтвердил почту
+           *
+           * Если попадает в блок по другим причинам, то нужно искать другой
+           * вариант отлова "пользователь не подтвердил почту"
+           */
+          if (
+            response.error.status === 400 &&
+            response.error.name === ResponseErrorName.application
+          ) {
+            setShowResendEmail(true);
+          }
+
           throw new Error(response.error.message);
+        }
+
+        /**
+         * Сохранение токена и пользователя в глобальном стейте
+         */
+        if (response.jwt && response.user) {
+          setToken(response.jwt);
+          setUser(response.user);
         }
       })
       .catch((e) => {
@@ -54,7 +88,7 @@ function SignInScreen() {
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Formik
         initialValues={{
-          email: 'mail@mail.ru',
+          email: 'paveltretyakov.ru@gmail.com',
           password: '123456',
         }}
         onSubmit={onSubmit}
@@ -95,6 +129,8 @@ function SignInScreen() {
                 disabled={Object.keys(errors).length > 0}
               />
             </View>
+
+            {showResendEmail && <ConfirmButton email={values.email} />}
           </View>
         )}
       </Formik>

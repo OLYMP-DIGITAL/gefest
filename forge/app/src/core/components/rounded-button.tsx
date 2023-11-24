@@ -9,9 +9,15 @@ import {
 
 interface Props extends TouchableOpacityProps {
   title?: string;
+  secondary?: boolean;
 }
 
-export const RoundedButton = ({ title, disabled, ...rest }: Props) => {
+export const RoundedButton = ({
+  title,
+  disabled,
+  secondary,
+  ...rest
+}: Props) => {
   const { theme } = useTheme();
 
   const styles = useMemo(
@@ -21,7 +27,17 @@ export const RoundedButton = ({ title, disabled, ...rest }: Props) => {
           paddingHorizontal: 32,
           paddingVertical: 18,
           borderRadius: 100,
-          backgroundColor: disabled ? theme.greyscale200 : theme.primary,
+          backgroundColor: (() => {
+            if (disabled) {
+              return theme.greyscale200;
+            }
+
+            if (secondary) {
+              return theme.white;
+            }
+
+            return theme.primary;
+          })(),
         },
         buttonText: {
           textAlign: 'center',
@@ -31,7 +47,17 @@ export const RoundedButton = ({ title, disabled, ...rest }: Props) => {
           fontWeight: '600',
           lineHeight: 22,
           letterSpacing: 0.2,
-          color: disabled ? theme.greyscale500 : theme.white,
+          color: (() => {
+            if (disabled) {
+              return theme.greyscale500;
+            }
+
+            if (secondary) {
+              return theme.primary;
+            }
+
+            return theme.white;
+          })(),
         },
       }),
     [theme, disabled]

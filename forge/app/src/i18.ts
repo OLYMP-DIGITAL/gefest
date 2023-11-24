@@ -13,6 +13,10 @@ const resources = {
         patronymic: 'Patronymic',
       },
 
+      units: {
+        s: 'sec.',
+      },
+
       buttons: {
         submit: 'Submit',
       },
@@ -21,6 +25,7 @@ const resources = {
         isRequired: 'is required field',
         invalidEmail: 'invalid email',
         requestFailed: 'Request is failed. Please, try later',
+        requestSuccess: 'Request completed successfully',
       },
 
       welcome: {
@@ -30,6 +35,13 @@ const resources = {
         registered: 'Already have an account?',
         emailContinue: 'Continue with email',
       },
+      signIn: {
+        text: '',
+        timerText: 'You can resend the code via',
+        resendEmail: 'Send confirmation by email',
+        checkEmail:
+          "Check your email, you should receive instructions to confirm your email address. If you didn't have any massage, you can try to resend message",
+      },
       signUp: {
         title: 'Registration',
         setNameMessage:
@@ -38,6 +50,8 @@ const resources = {
       finished: {
         title: 'Registration is completed',
         toHome: 'To home',
+        continue: 'A confirmation email has been sent to your email.',
+        toSignIn: 'Sign in',
       },
     },
   },
@@ -52,6 +66,10 @@ const resources = {
         patronymic: 'Отчество',
       },
 
+      units: {
+        s: 'сек.',
+      },
+
       buttons: {
         submit: 'Отправить',
       },
@@ -61,6 +79,7 @@ const resources = {
         invalidEmail: 'неправильный email',
         requestFailed:
           'Произошла ошбка во время запроса. Пожалйста, повторите позже',
+        requestSuccess: 'Запрос выполнен успешно',
       },
 
       welcome: {
@@ -74,9 +93,17 @@ const resources = {
         title: 'Регистрация',
         setNameMessage: 'Укажите ФИО именно так, как написанно в паспорте',
       },
+      signIn: {
+        timerText: 'Отправить код повторно можно будет через',
+        resendEmail: 'Отправить подтверждение на почту',
+        checkEmail:
+          'Проверьте почту, на неё должна прийти инструкция для подтверждения адреса электронной почты',
+      },
       finished: {
         title: 'Регистрация завершена',
         toHome: 'На главную',
+        continue: 'На Вашу почту отправлено письмо с подтверждением',
+        toSignIn: 'Войти',
         subscribe: 'Подпишись на наши соцсети',
         beFirst: 'Будешь первый в курсе всех событий',
       },

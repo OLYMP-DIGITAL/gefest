@@ -1,6 +1,7 @@
 import { ErrorResponse } from 'core/types/requests';
 
 export const UserAtomKey = 'UserAtomKey';
+export const TokenAtomKey = 'TokenKey';
 
 export interface User {
   id: number;
