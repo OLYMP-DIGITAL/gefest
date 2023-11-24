@@ -84,8 +84,10 @@ function SignInScreen() {
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Formik
         initialValues={{
-          email: 'paveltretyakov.ru@gmail.com',
-          password: '123456',
+          // email: 'paveltretyakov.ru@gmail.com',
+          // password: '123456',
+          email: '',
+          password: '',
         }}
         onSubmit={onSubmit}
         validationSchema={validationSchema}

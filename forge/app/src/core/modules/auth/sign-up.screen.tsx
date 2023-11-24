@@ -111,11 +111,16 @@ export function SignUpScreen({
 
       <Formik
         initialValues={{
-          username: 'Pavel',
-          sername: 'Tretyakov',
-          patronymic: 'Vyacheslavovich',
-          email: 'paveltretyakov.ru@gmail.com',
-          password: '123456',
+          // username: 'Pavel',
+          // sername: 'Tretyakov',
+          // patronymic: 'Vyacheslavovich',
+          // email: 'paveltretyakov.ru@gmail.com',
+          // password: '123456',
+          username: '',
+          sername: '',
+          patronymic: '',
+          email: '',
+          password: '',
         }}
         validationSchema={validationSchema}
         onSubmit={onSubmit}
