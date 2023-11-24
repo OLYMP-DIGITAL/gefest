@@ -29,10 +29,6 @@ function SignInScreen() {
   const setUser = useSetRecoilState(userAtom);
   const setToken = useSetRecoilState(tokenAtom);
 
-  useEffect(() => {
-    toast.show('Test', { type: 'success' });
-  }, []);
-
   const validationSchema = useMemo(
     () =>
       yup.object().shape({
