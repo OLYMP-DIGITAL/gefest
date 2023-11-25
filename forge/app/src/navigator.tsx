@@ -43,12 +43,12 @@ export function Navigator() {
       <AppNavigator
         screens={[
           {
-            name: 'Личный кабинет',
-            component: HomeScreen,
-          },
-          {
             name: 'Мой кошелек',
             component: WalletScreen,
+          },
+          {
+            name: 'Личный кабинет',
+            component: HomeScreen,
           },
           {
             name: 'График роста',
