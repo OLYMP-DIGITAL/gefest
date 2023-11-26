@@ -8,7 +8,7 @@
     "description": ""
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
@@ -37,7 +37,9 @@
       "type": "enumeration",
       "enum": [
         "pending",
-        "waiting_for_capture"
+        "waiting_for_capture",
+        "succeeded",
+        "canceled"
       ]
     },
     "user": {

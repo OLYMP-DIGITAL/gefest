@@ -1,10 +1,26 @@
 /**
  * A set of functions called "actions" for `transaction`
  */
-import { ICreatePayment, YooCheckout } from '@a2seven/yoo-checkout';
+import {
+  ICreatePayment,
+  IPaymentStatus,
+  YooCheckout,
+} from '@a2seven/yoo-checkout';
+import { APP_KEY, SHOP_ID } from '../../config/constants';
 
-const SHOP_ID = '284512';
-const APP_KEY = 'test_K6ytkqh91lioiAtww7Gp0HJLxJRlvXPaSwSc6drYaoU';
+enum Currency {
+  rub = 'RUB',
+  usd = 'USD',
+}
+
+export interface Transaction {
+  value: number;
+  currency: Currency;
+  payment: string;
+  confirmation_url: string;
+  status: IPaymentStatus;
+  user: any;
+}
 
 function makeid(length) {
   let result = '';
@@ -20,6 +36,24 @@ function makeid(length) {
 }
 
 export default {
+  async get(ctx) {
+    const { id } = ctx.request.params;
+
+    try {
+      const transaction = await strapi
+        .query('api::transaction.transaction')
+        .findOne({
+          where: {
+            payment: id,
+          },
+        });
+
+      ctx.body = transaction;
+    } catch (e) {
+      ctx.body = e;
+    }
+  },
+
   async check(ctx) {
     const { id } = ctx.request.body;
 
@@ -36,53 +70,71 @@ export default {
       console.error('[ERROR CHECK PAYMENT]', error);
       ctx.body = error;
     }
-
-    // const checkout = new YooCheckout({
-    //   shopId: SHOP_ID,
-    //   secretKey: APP_KEY,
-    // });
   },
 
   make: async (ctx, next) => {
     const { value } = ctx.request.body;
     const config = await strapi.entityService.findOne('api::config.config', 1);
 
-    ctx.body = 'some result';
+    const checkout = new YooCheckout({
+      shopId: SHOP_ID,
+      secretKey: APP_KEY,
+    });
 
-    // const checkout = new YooCheckout({
-    //   shopId: SHOP_ID,
-    //   secretKey: APP_KEY,
-    // });
+    const idempotenceKey = makeid(30);
 
-    // const idempotenceKey = makeid(30);
+    const createPayload: ICreatePayment = {
+      amount: {
+        value: Number(value).toFixed(2),
+        currency: 'RUB',
+      },
+      payment_method_data: {
+        type: 'bank_card',
+      },
+      confirmation: {
+        type: 'redirect',
+        return_url: config.payloadRedirect as string,
+      },
+    };
 
-    // const createPayload: ICreatePayment = {
-    //   amount: {
-    //     value: Number(value).toFixed(2),
-    //     currency: 'RUB',
-    //   },
-    //   payment_method_data: {
-    //     type: 'bank_card',
-    //   },
-    //   confirmation: {
-    //     type: 'redirect',
-    //     return_url: 'https://www.google.com/search?q=hello+world',
-    //   },
-    // };
+    try {
+      const payment = await checkout.createPayment(
+        createPayload,
+        idempotenceKey
+      );
 
-    // try {
-    //   const payment = await checkout.createPayment(
-    //     createPayload,
-    //     idempotenceKey
-    //   );
+      console.log('[Payment body] ', payment);
 
-    //   console.log('[Payment body] ', payment);
+      const data: Transaction = {
+        confirmation_url: payment.confirmation.confirmation_url,
+        currency: payment.amount.currency as Currency,
+        payment: payment.id,
+        status: payment.status,
+        value: value,
+        user: ctx.state.user,
+      };
 
-    //   ctx.body = payment;
-    // } catch (error) {
-    //   console.error('[Payment exception] ', error);
-    //   ctx.body = error;
-    // }
+      const transaction = await strapi.entityService.create(
+        'api::transaction.transaction',
+        {
+          data,
+        }
+      );
+
+      ctx.body = transaction;
+      // ctx.body = 'some body';
+    } catch (error) {
+      console.error('[Payment exception] ', error);
+      ctx.body = error;
+    }
+  },
+
+  testAction: async (ctx, next) => {
+    try {
+      ctx.body = 'ok';
+    } catch (err) {
+      ctx.body = err;
+    }
   },
   // exampleAction: async (ctx, next) => {
   //   try {

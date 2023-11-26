@@ -23,6 +23,7 @@ const resources = {
 
       payment: {
         deposit: 'Deposit amount',
+        goToPay: 'Go to pay page',
         replenish: 'Replenish the balance',
         payloaderInfo: 'To transfer funds we use the yoomoney transfer system',
       },
@@ -82,6 +83,7 @@ const resources = {
 
       payment: {
         deposit: 'Сумма пополнения',
+        goToPay: 'Перейти к форме оплаты',
         replenish: 'Пополнение баланса',
         payloaderInfo:
           'Для перевода денежных средств мы используем систему переводов Yoomoney',
