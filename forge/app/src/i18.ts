@@ -21,6 +21,12 @@ const resources = {
         submit: 'Submit',
       },
 
+      payment: {
+        deposit: 'Deposit amount',
+        replenish: 'Replenish the balance',
+        payloaderInfo: 'To transfer funds we use the yoomoney transfer system',
+      },
+
       messages: {
         isRequired: 'is required field',
         invalidEmail: 'invalid email',
@@ -72,6 +78,13 @@ const resources = {
 
       buttons: {
         submit: 'Отправить',
+      },
+
+      payment: {
+        deposit: 'Сумма пополнения',
+        replenish: 'Пополнение баланса',
+        payloaderInfo:
+          'Для перевода денежных средств мы используем систему переводов Yoomoney',
       },
 
       messages: {
