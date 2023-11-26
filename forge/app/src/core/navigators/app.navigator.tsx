@@ -6,11 +6,14 @@ import {
   DrawerContentScrollView,
 } from '@react-navigation/drawer';
 import { NavigationStack } from 'core/types/navigation';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { useTheme } from 'core/providers/theme.provider';
 import { useAuth } from 'core/providers/auth.provider';
+import { PaymentScreen } from 'core/modules/payment/payment.screen';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { configAtom, fetchConfig } from 'core/features/config/config.feature';
 
 interface DrawerMenuItem {
   label: string;
@@ -23,10 +26,21 @@ interface DrawerScreen {
 }
 
 function CustomDrawerContent(props: any) {
+  const { state, ...rest } = props;
+  const newState = { ...state };
+
+  /**
+   * Один из способо убрать элементы из меню
+   */
+  // newState.routes = newState.routes.filter(
+  //   (item: any) => item.name !== 'Payment'
+  // );
+
   return (
     <DrawerContentScrollView {...props}>
-      <DrawerItemList {...props} />
+      <DrawerItemList state={newState} {...rest} />
 
+      {/* Дополнительные манипуляции с выпадающем меню */}
       {/* <DrawerItem
         label="Close drawer"
         onPress={() => props.navigation.closeDrawer()}
@@ -57,6 +71,15 @@ const DrawerNavigatorInstance = createDrawerNavigator();
 
 export function AppNavigator({ screens, nav }: DrawerProps) {
   const { theme } = useTheme();
+  const [config, setConfig] = useRecoilState(configAtom);
+
+  useEffect(() => {
+    fetchConfig().then((conf) => {
+      if (conf.data) {
+        setConfig(config);
+      }
+    });
+  }, []);
 
   const options = useMemo(
     () => ({
@@ -68,11 +91,6 @@ export function AppNavigator({ screens, nav }: DrawerProps) {
       headerTitle() {
         return (
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            {/* <DrawerItem
-              label="☰"
-              onPress={() => navigation.toggleDrawer()}
-            /> */}
-
             <Image
               style={{ width: 200, height: 40, marginRight: 10 }}
               source={require('assets/logo.png')}
@@ -88,12 +106,34 @@ export function AppNavigator({ screens, nav }: DrawerProps) {
     <DrawerNavigatorInstance.Navigator
       drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
+      <DrawerNavigatorInstance.Screen
+        name="Payment"
+        component={PaymentScreen}
+        options={{
+          ...(options as any),
+          drawerItemStyle: { display: 'none' },
+
+          /**
+           * Отрисовка дополнительных элементов верхнего бара
+           */
+          header: ({ navigation }) => (
+            <>
+              <CustomHeader navigation={navigation} title={'Payment'} />
+            </>
+          ),
+        }}
+      />
+
       {screens.map(({ name, component: Component }) => (
         <DrawerNavigatorInstance.Screen
           key={`screen-${name}`}
           name={name}
           options={{
             ...(options as any),
+
+            /**
+             * Отрисовка дополнительных элементов верхнего бара
+             */
             header: ({ navigation }) => (
               <>
                 <CustomHeader navigation={navigation} title={name} />
@@ -112,6 +152,15 @@ interface CustomHeaderProps {
   navigation: any;
 }
 
+const Burger = () => {
+  return (
+    <Image
+      style={{ width: 40, height: 40, marginRight: 10 }}
+      source={require('assets/burger-1.png')}
+    />
+  );
+};
+
 const CustomHeader: React.FC<CustomHeaderProps> = ({ title, navigation }) => {
   const { user } = useAuth();
   const { theme } = useTheme();
@@ -119,39 +168,42 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({ title, navigation }) => {
   return (
     <View style={[styles.headerContainer, { backgroundColor: theme.dark }]}>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <DrawerItem label="☰" onPress={() => navigation.toggleDrawer()} />
-        {/* <Image
-          style={{ width: 40, height: 40, marginRight: 10 }}
-          source={require('assets/burger-1.png')}
-        /> */}
+        <DrawerItem label={Burger} onPress={() => navigation.toggleDrawer()} />
       </View>
+
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <Image
           style={{ width: 200, height: 40, marginRight: 10 }}
           source={require('assets/logo.png')}
         />
       </View>
+
       <View style={styles.infoContainer}>
         <Text style={styles.boldText}>Реферальная ссылка</Text>
         <Text style={{ color: '#fff' }}>https://PUaOVKv96YbJWEW/eZSYLEL</Text>
       </View>
-      <View style={styles.infoContainer}>
+
+      {/* <View style={styles.infoContainer}>
         <Text style={styles.boldText}>Время</Text>
         <Text style={{ color: '#fff' }}>{getCurrentTime()}</Text>
-      </View>
+      </View> */}
+
       <View style={styles.infoContainer}>
         <Text style={styles.boldText}>Стоимость компаний</Text>
         <Text style={{ color: '#fff' }}>
           10000$ <Text style={styles.greenText}>+850%</Text>
         </Text>
       </View>
+
       <View style={styles.infoContainer}>
         <Text style={{ color: '#fff' }}>en rus</Text>
       </View>
+
       <View style={styles.userWrapper}>
         <Text style={styles.valueText}>
           {user?.username} {(user?.sername ? user?.sername[0] : '') + '.'}
         </Text>
+
         <Image
           style={styles.profileImage}
           source={require('assets/avatar.png')} // Путь к случайному круглому фото

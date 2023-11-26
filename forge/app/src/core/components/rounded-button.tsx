@@ -9,11 +9,13 @@ import {
 
 interface Props extends TouchableOpacityProps {
   title?: string;
+  small?: boolean;
   secondary?: boolean;
 }
 
 export const RoundedButton = ({
   title,
+  small,
   disabled,
   secondary,
   ...rest
@@ -24,8 +26,8 @@ export const RoundedButton = ({
     () =>
       StyleSheet.create({
         button: {
-          paddingHorizontal: 32,
-          paddingVertical: 18,
+          paddingHorizontal: small ? 16 : 32,
+          paddingVertical: small ? 9 : 18,
           borderRadius: 100,
           backgroundColor: (() => {
             if (disabled) {

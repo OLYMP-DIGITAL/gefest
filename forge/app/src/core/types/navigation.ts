@@ -1,8 +1,24 @@
+import { NavigationProp } from '@react-navigation/native';
 import { User } from 'core/features/users/users.types';
+
+export type ScreenNames = [
+  'Home',
+  'Partners',
+  'Payment',
+  'SignIn',
+  'SignUp',
+  'Welcome',
+  'Finished'
+]; // type these manually
+export type RootStackParamList = Record<ScreenNames[number], undefined>;
+export type StackNavigation = NavigationProp<RootStackParamList>;
 
 export type NavigationStack = {
   Home: undefined;
   Partners: undefined;
+
+  // Payment
+  Payment: undefined;
 
   // Auth navigator
   SignIn: undefined;

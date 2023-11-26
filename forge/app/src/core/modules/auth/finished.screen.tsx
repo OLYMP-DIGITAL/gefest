@@ -100,8 +100,8 @@ export const FinishedScreen = ({
         />
       </View>
 
-      <H4Text text={t('finished.subscribe')} />
-      <BodyXlRegular text={t('finished.subscribe')} />
+      {/* <H4Text text={t('finished.subscribe')} />
+      <BodyXlRegular text={t('finished.subscribe')} /> */}
 
       <View style={styles.socialsWrapper}>
         {Array.isArray(socials) &&
