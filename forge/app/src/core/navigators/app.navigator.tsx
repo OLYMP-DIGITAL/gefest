@@ -6,12 +6,14 @@ import {
   DrawerContentScrollView,
 } from '@react-navigation/drawer';
 import { NavigationStack } from 'core/types/navigation';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { useTheme } from 'core/providers/theme.provider';
 import { useAuth } from 'core/providers/auth.provider';
 import { PaymentScreen } from 'core/modules/payment/payment.screen';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { configAtom, fetchConfig } from 'core/features/config/config.feature';
 
 interface DrawerMenuItem {
   label: string;
@@ -69,6 +71,15 @@ const DrawerNavigatorInstance = createDrawerNavigator();
 
 export function AppNavigator({ screens, nav }: DrawerProps) {
   const { theme } = useTheme();
+  const [config, setConfig] = useRecoilState(configAtom);
+
+  useEffect(() => {
+    fetchConfig().then((conf) => {
+      if (conf.data) {
+        setConfig(config);
+      }
+    });
+  }, []);
 
   const options = useMemo(
     () => ({

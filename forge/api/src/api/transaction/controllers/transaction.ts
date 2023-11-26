@@ -5,7 +5,6 @@ import { ICreatePayment, YooCheckout } from '@a2seven/yoo-checkout';
 
 const SHOP_ID = '284512';
 const APP_KEY = 'test_K6ytkqh91lioiAtww7Gp0HJLxJRlvXPaSwSc6drYaoU';
-const RANDOM_CODE = 'any-random-string-in-my-code';
 
 function makeid(length) {
   let result = '';
@@ -46,6 +45,7 @@ export default {
 
   make: async (ctx, next) => {
     const { value } = ctx.request.body;
+    const config = await strapi.entityService.findOne('api::config.config', 1);
 
     ctx.body = 'some result';
 

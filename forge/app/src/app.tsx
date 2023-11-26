@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 
 import { Navigator } from './navigator';
-import { ThemeProvider } from 'core/providers/theme.provider';
+import { ThemeProvider } from './core/providers/theme.provider';
 
 import i18n from './i18';
 import AuthProvider from 'core/providers/auth.provider';
