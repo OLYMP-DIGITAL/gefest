@@ -4,7 +4,7 @@ import { AuthNavigator } from 'core/navigators/auth.navigator';
 import FaqScreen from 'core/modules/FaqScreen';
 import NewsScreen from 'core/modules/NewsScreen';
 import HomeScreen from './home/home.screen';
-import WalletScreen from 'core/modules/WalletScreen';
+import WalletScreen from 'core/modules/wallet/wallet.screen';
 import PartnersScreen from 'core/modules/partners/partners.screen';
 import DocumentsScreen from 'core/modules/DocumentsScreen';
 import GrowthChartScreen from 'core/modules/GrowthChartScreen';
@@ -12,30 +12,14 @@ import GrowthChartScreen from 'core/modules/GrowthChartScreen';
 import { useAuth } from 'core/providers/auth.provider';
 import { userAtom } from 'core/features/users/users.atoms';
 import { useRecoilValue } from 'recoil';
-import { ActivityIndicator, View } from 'react-native';
-
-const LoaderView = () => {
-  return (
-    <View
-      style={{
-        width: '100%',
-        height: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      <ActivityIndicator size={'large'} />
-    </View>
-  );
-};
+import { Loader } from 'core/components/loader';
 
 export function Navigator() {
   const { isLoading } = useAuth();
   const user = useRecoilValue(userAtom);
 
   if (isLoading) {
-    return <LoaderView />;
+    return <Loader />;
   }
 
   return (

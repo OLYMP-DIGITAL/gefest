@@ -1,0 +1,49 @@
+{
+  "kind": "collectionType",
+  "collectionName": "transactions",
+  "info": {
+    "singularName": "transaction",
+    "pluralName": "transactions",
+    "displayName": "Транзакции",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "value": {
+      "type": "decimal",
+      "required": true,
+      "min": 0,
+      "max": 5000000
+    },
+    "currency": {
+      "type": "enumeration",
+      "enum": [
+        "RUB",
+        "USD"
+      ],
+      "required": true
+    },
+    "payment": {
+      "type": "string",
+      "required": true
+    },
+    "confirmation_url": {
+      "type": "string"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "pending",
+        "waiting_for_capture"
+      ]
+    },
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    }
+  }
+}
