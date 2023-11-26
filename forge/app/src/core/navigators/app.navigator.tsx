@@ -6,10 +6,10 @@ import {
   DrawerContentScrollView,
 } from '@react-navigation/drawer';
 import { NavigationStack } from 'core/types/navigation';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { Image, StyleSheet, Text, View } from 'react-native';
-import { useTheme } from 'core/providers/theme.provider';
+import { useWindowSize, useTheme, ScreenSize } from 'core/providers/theme.provider';
 import { useAuth } from 'core/providers/auth.provider';
 import { PaymentScreen } from 'core/modules/payment/payment.screen';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -146,16 +146,21 @@ export function AppNavigator({ screens, nav }: DrawerProps) {
     </DrawerNavigatorInstance.Navigator>
   );
 }
-
 interface CustomHeaderProps {
   title: string;
   navigation: any;
 }
 
+enum logoStyles {
+  smallLogo = 'smallLogo',
+  mediumLogo = 'mediumLogo',
+  largeLogo = 'largeLogo'
+}
+
 const Burger = () => {
   return (
     <Image
-      style={{ width: 40, height: 40, marginRight: 10 }}
+      style={{ width: 40, height: 40 }}
       source={require('assets/burger-1.png')}
     />
   );
@@ -164,21 +169,31 @@ const Burger = () => {
 const CustomHeader: React.FC<CustomHeaderProps> = ({ title, navigation }) => {
   const { user } = useAuth();
   const { theme } = useTheme();
+  const { size, sizeType } = useWindowSize();
+
+  const [hideItems, setHideItems] = useState<boolean>(false);
+
+  useEffect(() => {
+    size?.width < 900 ? setHideItems(true) : setHideItems(false)
+  }, [size.width])
 
   return (
-    <View style={[styles.headerContainer, { backgroundColor: theme.dark }]}>
+    <View style={[styles.headerContainer, { backgroundColor: theme.dark }, hideItems && {
+      paddingHorizontal: 5,
+      paddingVertical: 5
+    }]}>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <DrawerItem label={Burger} onPress={() => navigation.toggleDrawer()} />
       </View>
 
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <Image
-          style={{ width: 200, height: 40, marginRight: 10 }}
+          style={styles[`${sizeType}Logo` as logoStyles]}
           source={require('assets/logo.png')}
         />
       </View>
 
-      <View style={styles.infoContainer}>
+      <View style={[styles.infoContainer, hideItems && { display: 'none' }]}>
         <Text style={styles.boldText}>Реферальная ссылка</Text>
         <Text style={{ color: '#fff' }}>https://PUaOVKv96YbJWEW/eZSYLEL</Text>
       </View>
@@ -188,18 +203,18 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({ title, navigation }) => {
         <Text style={{ color: '#fff' }}>{getCurrentTime()}</Text>
       </View> */}
 
-      <View style={styles.infoContainer}>
-        <Text style={styles.boldText}>Стоимость компаний</Text>
-        <Text style={{ color: '#fff' }}>
+      <View style={[styles.infoContainer, { marginRight: 10 }]}>
+        <Text style={hideItems ? styles.thinText : styles.boldText}>Стоимость компаний</Text>
+        <Text style={[{ color: '#fff' }, hideItems && { fontSize: 12 }]}>
           10000$ <Text style={styles.greenText}>+850%</Text>
         </Text>
       </View>
 
-      <View style={styles.infoContainer}>
+      <View style={[styles.infoContainer, hideItems && { display: 'none' }]}>
         <Text style={{ color: '#fff' }}>en rus</Text>
       </View>
 
-      <View style={styles.userWrapper}>
+      <View style={[styles.userWrapper, hideItems && { display: 'none' }]}>
         <Text style={styles.valueText}>
           {user?.username} {(user?.sername ? user?.sername[0] : '') + '.'}
         </Text>
@@ -215,9 +230,8 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({ title, navigation }) => {
 
 function getCurrentTime() {
   const now = new Date();
-  const formattedDate = `${now.getDate()}.${
-    now.getMonth() + 1
-  }.${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}`;
+  const formattedDate = `${now.getDate()}.${now.getMonth() + 1
+    }.${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}`;
   return formattedDate;
 }
 
@@ -244,6 +258,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 20,
   },
+  thinText: {
+    color: 'white',
+    fontWeight: '200',
+    fontSize: 12,
+    textTransform: 'uppercase'
+  },
   greenText: {
     color: 'green',
     fontWeight: 'bold',
@@ -257,6 +277,23 @@ const styles = StyleSheet.create({
   valueText: {
     color: '#fff',
   },
+
+  smallLogo: {
+    width: 140,
+    height: 28,
+    marginRight: 10,
+    marginLeft: -30
+  },
+  mediumLogo: {
+    width: 180,
+    height: 36,
+    marginRight: 10
+  },
+  largeLogo: {
+    width: 200,
+    height: 40,
+    marginRight: 10
+  }
 });
 
 // export default CustomHeader;

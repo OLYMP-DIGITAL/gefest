@@ -1,5 +1,7 @@
+import { useEffectOnce } from 'usehooks-ts';
 import { darkTheme, lightTheme } from '../style/themes';
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
+import { Dimensions } from 'react-native';
 
 interface ThemeContextType {
   theme: typeof lightTheme | typeof darkTheme;
@@ -12,6 +14,17 @@ const ThemeContext = createContext<ThemeContextType>({
     // ...
   },
 });
+
+interface WindowSizeType {
+  height: number,
+  width: number
+}
+
+export enum ScreenSize {
+  small = 'small', medium = 'medium', large = 'large'
+}
+
+const windowDimensions = Dimensions.get('window');
 
 export const ThemeProvider = ({ children }: { children: JSX.Element }) => {
   const [theme, setTheme] = useState(lightTheme);
@@ -38,3 +51,30 @@ export const useTheme = () => {
 
   return context;
 };
+
+export const useWindowSize = () => {
+  const [size, setSize] = useState<WindowSizeType>({ height: windowDimensions.height, width: windowDimensions.width });
+  const [sizeType, setSizeType] = useState<ScreenSize>(ScreenSize.small);
+
+  useEffect(() => {
+    const subscription = Dimensions.addEventListener(
+      'change',
+      ({ window }) => {
+        setSize({ height: window.height, width: window.width });
+      },
+    );
+    return () => subscription?.remove();
+  }, []);
+
+  useEffect(() => {
+    if (size?.width >= 1000) {
+      setSizeType(ScreenSize.large)
+    } else if (size?.width < 1000 && size?.width > 600) {
+      setSizeType(ScreenSize.medium)
+    } else {
+      setSizeType(ScreenSize.small)
+    }
+  }, [size])
+
+  return { size, sizeType }
+} 
