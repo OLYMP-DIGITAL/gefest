@@ -1,12 +1,20 @@
 import api from 'core/services/api';
-import { MakeTransactionResponse } from './transactions.types';
+import { MakeTransactionResponse, Transaction } from './transactions.types';
 
 export enum TransactionsRoute {
+  user = 'transaction/user',
   make = 'transaction/make',
+  get = 'transaction/:id',
 }
 
-export const makeTransaction = (
-  value: number
-): Promise<MakeTransactionResponse> => {
-  return api.post<MakeTransactionResponse>(TransactionsRoute.make, { value });
+export const makeTransaction = (value: number): Promise<Transaction> => {
+  return api.post<Transaction>(TransactionsRoute.make, { value });
+};
+
+export const getTransaction = (paymentId: string): Promise<Transaction> => {
+  return api.get<Transaction>(TransactionsRoute.get.replace(/:id/g, paymentId));
+};
+
+export const fetchUserTransactions = (): Promise<Transaction> => {
+  return api.get<Transaction>(TransactionsRoute.user);
 };
