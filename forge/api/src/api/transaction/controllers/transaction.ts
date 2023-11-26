@@ -36,6 +36,24 @@ function makeid(length) {
 }
 
 export default {
+  async user(ctx) {
+    try {
+      const transactions = await strapi
+        .query('api::transaction.transaction')
+        .findMany({
+          where: {
+            user: ctx.state.user,
+          },
+        });
+
+      console.log('User transactions', transactions);
+
+      ctx.body = transactions;
+    } catch (error) {
+      ctx.body = error;
+    }
+  },
+
   async get(ctx) {
     const { id } = ctx.request.params;
 

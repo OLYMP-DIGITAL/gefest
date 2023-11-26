@@ -26,6 +26,9 @@ const resources = {
         goToPay: 'Go to pay page',
         replenish: 'Replenish the balance',
         payloaderInfo: 'To transfer funds we use the yoomoney transfer system',
+        goHome: 'Go home',
+        topUp: 'Account top-up',
+        totalBalance: 'Total balance',
       },
 
       messages: {
@@ -60,6 +63,12 @@ const resources = {
         continue: 'A confirmation email has been sent to your email.',
         toSignIn: 'Sign in',
       },
+      wallet: {
+        title: 'Wallet',
+        step: '1 Step of investment',
+        stepLabel: 'Initial Investment Offering',
+        desc: 'Unique conditions in connection with the beginning of the formation of the initial capital of a targeted investment project.',
+      },
     },
   },
 
@@ -87,6 +96,9 @@ const resources = {
         replenish: 'Пополнение баланса',
         payloaderInfo:
           'Для перевода денежных средств мы используем систему переводов Yoomoney',
+        goHome: 'Вернуться домой',
+        topUp: 'Пополнение счёта',
+        totalBalance: 'Общий баланс',
       },
 
       messages: {
@@ -121,6 +133,12 @@ const resources = {
         toSignIn: 'Войти',
         subscribe: 'Подпишись на наши соцсети',
         beFirst: 'Будешь первый в курсе всех событий',
+      },
+      wallet: {
+        title: 'Мой кошелёк',
+        step: '1 этап инвестиций',
+        stepLabel: 'Initial Investment Offering',
+        desc: 'Уникальные условия в связи с началом формирования первоначального капитала адресного инвестиционного проекта.',
       },
     },
   },

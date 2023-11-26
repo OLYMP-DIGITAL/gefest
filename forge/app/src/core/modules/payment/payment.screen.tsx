@@ -32,7 +32,7 @@ export const PaymentScreen = () => {
       yup.object().shape({
         deposit: yup
           .number()
-          .min(0, 'Minum 0')
+          .min(0)
           .required(`${t('payment.deposit')} ${t('messages.isRequired')}`),
       }),
     []

@@ -106,24 +106,6 @@ export function AppNavigator({ screens, nav }: DrawerProps) {
     <DrawerNavigatorInstance.Navigator
       drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
-      <DrawerNavigatorInstance.Screen
-        name="Payment"
-        component={PaymentScreen}
-        options={{
-          ...(options as any),
-          drawerItemStyle: { display: 'none' },
-
-          /**
-           * Отрисовка дополнительных элементов верхнего бара
-           */
-          header: ({ navigation }) => (
-            <>
-              <CustomHeader navigation={navigation} title={'Payment'} />
-            </>
-          ),
-        }}
-      />
-
       {screens.map(({ name, component: Component }) => (
         <DrawerNavigatorInstance.Screen
           key={`screen-${name}`}
@@ -143,6 +125,24 @@ export function AppNavigator({ screens, nav }: DrawerProps) {
           component={Component as any}
         />
       ))}
+
+      <DrawerNavigatorInstance.Screen
+        name="Payment"
+        component={PaymentScreen}
+        options={{
+          ...(options as any),
+          drawerItemStyle: { display: 'none' },
+
+          /**
+           * Отрисовка дополнительных элементов верхнего бара
+           */
+          header: ({ navigation }) => (
+            <>
+              <CustomHeader navigation={navigation} title={'Payment'} />
+            </>
+          ),
+        }}
+      />
     </DrawerNavigatorInstance.Navigator>
   );
 }
