@@ -15,6 +15,7 @@ import { PaymentScreen } from 'core/modules/payment/payment.screen';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { configAtom, fetchConfig } from 'core/features/config/config.feature';
 import { useCopyToClipboard } from 'usehooks-ts';
+import { ScrollView } from 'react-native-gesture-handler';
 
 interface DrawerMenuItem {
   label: string;

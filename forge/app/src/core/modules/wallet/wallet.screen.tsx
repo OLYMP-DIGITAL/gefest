@@ -8,6 +8,7 @@ import { useInterval } from 'usehooks-ts';
 import { StepText } from './components/step-text';
 import { H1Text } from 'core/components/text/h1.text';
 import { useTranslation } from 'react-i18next';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const WalletScreen = () => {
   const { t } = useTranslation();
@@ -32,17 +33,19 @@ const WalletScreen = () => {
   }, 60000);
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <H1Text text={t('wallet.title')} />
+    <ScrollView>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <H1Text text={t('wallet.title')} />
 
-      <View style={{ display: 'flex', flexDirection: 'column' }}>
-        <BalanceCard transactions={transactions} />
+        <View style={{ display: 'flex', flexDirection: 'column' }}>
+          <BalanceCard transactions={transactions} />
 
-        <StepText />
+          <StepText />
 
-        <TransactionsTable transactions={transactions} />
+          <TransactionsTable transactions={transactions} />
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

@@ -5,6 +5,7 @@ import { NavigationStack } from 'core/types/navigation';
 import api from 'core/services/api';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import env, { envKyes } from 'core/services/env';
+import { ScrollView } from 'react-native-gesture-handler';
 
 interface ImageData {
   name: string,
@@ -41,19 +42,21 @@ export const PartnersScreen = ({
   }, [partners])
 
   return (
-    <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: "row" }}>
-      <View style={{ margin: 10, flexWrap: 'wrap' }}>
-        {images && images.map((image) =>
-          <View key={`image-${image.name}`}
-            style={{ margin: 10 }}>
-            <Image
-              style={{ width: 300, height: 150 }}
-              source={{ uri: `${env[envKyes.apiHost]}${image.link}` }}
-            />
-          </View>
-        )}
+    <ScrollView>
+      <View style={{ padding: 20 }}>
+        <View style={{ flex: 1, flexDirection: "row", flexWrap: 'wrap', alignContent: 'flex-start', justifyContent: 'center' }}>
+          {images && images.map((image) =>
+            <View key={`image-${image.name}`}
+              style={{ margin: 10 }}>
+              <Image
+                style={{ width: 300, height: 150 }}
+                source={{ uri: `${env[envKyes.apiHost]}${image.link}` }}
+              />
+            </View>
+          )}
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
