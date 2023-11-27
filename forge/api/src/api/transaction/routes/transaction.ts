@@ -1,6 +1,18 @@
 export default {
   routes: [
     {
+      method: 'GET',
+      path: '/transaction/user',
+      handler: 'transaction.user',
+    },
+
+    {
+      method: 'GET',
+      path: '/transaction/:id',
+      handler: 'transaction.get',
+    },
+
+    {
       method: 'POST',
       path: '/transaction/make',
       handler: 'transaction.make',

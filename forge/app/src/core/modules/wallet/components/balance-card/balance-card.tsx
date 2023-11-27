@@ -1,16 +1,35 @@
 import { useNavigation } from '@react-navigation/native';
 import RoundedButton from 'core/components/rounded-button';
-import { balanceAtom } from 'core/features/balance/balance.state';
+import { Transaction } from 'core/features/transactions/transactions.types';
 import { useTheme } from 'core/providers/theme.provider';
 import { StackNavigation } from 'core/types/navigation';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Image, StyleSheet, Text, View } from 'react-native';
-import { useRecoilValue } from 'recoil';
 
-export const BalanceCard = () => {
+interface Props {
+  transactions: Transaction[];
+}
+
+export const BalanceCard = ({ transactions }: Props) => {
+  const { t } = useTranslation();
   const { theme } = useTheme();
-  const { value } = useRecoilValue(balanceAtom);
+  const [balance, setBalance] = useState<number>(0);
   const navigation = useNavigation<StackNavigation>();
+
+  useEffect(() => {
+    if (transactions.length) {
+      setBalance(
+        transactions.reduce((prev, curr) => {
+          if (curr.status === 'succeeded') {
+            return prev + curr.value;
+          }
+
+          return prev;
+        }, 0)
+      );
+    }
+  }, [transactions]);
 
   const styles = useMemo(
     () =>
@@ -25,6 +44,8 @@ export const BalanceCard = () => {
           justifyContent: 'space-between',
           paddingVertical: 22,
           paddingHorizontal: 25,
+          backgroundColor: theme.white,
+          marginVertical: 30,
         },
 
         info: {
@@ -39,6 +60,14 @@ export const BalanceCard = () => {
           marginTop: 20,
           flexDirection: 'row',
         },
+
+        text: {
+          display: 'flex',
+        },
+
+        amount: {
+          fontSize: 24,
+        },
       }),
     [theme]
   );
@@ -51,15 +80,16 @@ export const BalanceCard = () => {
           source={{ uri: require('./assets/wallet.png') }}
         />
 
-        <Text>Общий баланс</Text>
-
-        <Text>₽{value}</Text>
+        <View style={styles.text}>
+          <Text>{t('payment.totalBalance')}</Text>
+          <Text style={styles.amount}>₽{balance}</Text>
+        </View>
       </View>
 
       <View style={styles.actions}>
         <RoundedButton
           small
-          title="Пополнить"
+          title={t('payment.topUp')}
           onPress={() => navigation.navigate('Payment')}
         />
       </View>

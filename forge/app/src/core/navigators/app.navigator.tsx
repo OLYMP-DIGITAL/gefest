@@ -165,25 +165,6 @@ export function AppNavigator({ screens }: DrawerProps) {
     <DrawerNavigatorInstance.Navigator
       drawerContent={(props) => <CustomDrawerContent {...props} smallScreen={smallScreen || false} />}
     >
-      <DrawerNavigatorInstance.Screen
-        name="Payment"
-        component={PaymentScreen}
-        options={{
-          ...(options as any),
-          ...(screenOptions as any),
-          drawerLabelStyle: styles.menuItems,
-          drawerItemStyle: { display: 'none' },
-          /**
-           * Отрисовка дополнительных элементов верхнего бара
-           */
-          header: ({ navigation }) => (
-            <>
-              <CustomHeader navigation={navigation} title={'Payment'} hideItems={smallScreen} sizeType={sizeType} />
-            </>
-          ),
-        }}
-      />
-
       {screens.map(({ name, component: Component, iconSrc }) => (
         <DrawerNavigatorInstance.Screen
           key={`screen-${name}`}
@@ -208,6 +189,25 @@ export function AppNavigator({ screens }: DrawerProps) {
           component={Component as any}
         />
       ))}
+
+      <DrawerNavigatorInstance.Screen
+        name="Payment"
+        component={PaymentScreen}
+        options={{
+          ...(options as any),
+          drawerItemStyle: { display: 'none' },
+          ...(screenOptions as any),
+          drawerLabelStyle: styles.menuItems,
+          /**
+           * Отрисовка дополнительных элементов верхнего бара
+           */
+          header: ({ navigation }) => (
+            <>
+              <CustomHeader navigation={navigation} title={'Payment'} hideItems={smallScreen} sizeType={sizeType} />
+            </>
+          ),
+        }}
+      />
     </DrawerNavigatorInstance.Navigator>
   );
 }
