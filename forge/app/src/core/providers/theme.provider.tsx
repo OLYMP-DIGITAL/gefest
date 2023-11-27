@@ -54,7 +54,7 @@ export const useTheme = () => {
 
 export const useWindowSize = () => {
   const [size, setSize] = useState<WindowSizeType>({ height: windowDimensions.height, width: windowDimensions.width });
-  const [sizeType, setSizeType] = useState<ScreenSize>(ScreenSize.small);
+  const [sizeType, setSizeType] = useState<ScreenSize>();
 
   useEffect(() => {
     const subscription = Dimensions.addEventListener(

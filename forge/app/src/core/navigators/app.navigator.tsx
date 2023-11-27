@@ -8,12 +8,13 @@ import {
 import { NavigationStack } from 'core/types/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View, ImageBackground } from 'react-native';
 import { useWindowSize, useTheme, ScreenSize } from 'core/providers/theme.provider';
 import { useAuth } from 'core/providers/auth.provider';
 import { PaymentScreen } from 'core/modules/payment/payment.screen';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { configAtom, fetchConfig } from 'core/features/config/config.feature';
+import { useCopyToClipboard } from 'usehooks-ts';
 
 interface DrawerMenuItem {
   label: string;
@@ -23,11 +24,17 @@ interface DrawerMenuItem {
 interface DrawerScreen {
   name: string;
   component: ({ navigation }: DrawerScreenProps<NavigationStack>) => Element;
+  iconSrc: any;
 }
 
+const refValue = 'https://PUaOVKv96YbJWEW/eZSYLEL';
+
 function CustomDrawerContent(props: any) {
-  const { state, ...rest } = props;
+  const { state, smallScreen, ...rest } = props;
   const newState = { ...state };
+
+  const { user } = useAuth();
+  const [, setCopiedValue] = useCopyToClipboard();
 
   /**
    * Один из способо убрать элементы из меню
@@ -37,20 +44,58 @@ function CustomDrawerContent(props: any) {
   // );
 
   return (
-    <DrawerContentScrollView {...props}>
-      <DrawerItemList state={newState} {...rest} />
+    <ImageBackground source={require('assets/sidebarBack.png')} resizeMode='stretch' style={styles.backgroundImage}>
+      <View style={[styles.sidebarBlock, !smallScreen && { paddingVertical: 30 }]}>
+        <DrawerContentScrollView {...props} >
 
-      {/* Дополнительные манипуляции с выпадающем меню */}
-      {/* <DrawerItem
-        label="Close drawer"
-        onPress={() => props.navigation.closeDrawer()}
-      />
+          {smallScreen &&
+            <>
+              <View style={[styles.sidebarBlock, { padding: 20 }]}>
+                <View style={styles.reverseRow}>
+                  <Text style={styles.sidebarInfo}>en   rus</Text>
+                </View>
 
-      <DrawerItem
-        label="Toggle drawer"
-        onPress={() => props.navigation.toggleDrawer()}
-      /> */}
-    </DrawerContentScrollView>
+                <View style={[styles.sidebarBlock, { paddingTop: 10 }]}>
+                  <Image
+                    style={styles.profileImage}
+                    source={require('assets/avatar.png')} // Путь к случайному круглому фото
+                  />
+                  <Text style={[styles.sidebarInfo, { paddingTop: 10 }]}>
+                    {user?.username} {(user?.sername ? user?.sername[0] : '') + '.'}
+                  </Text>
+                </View>
+              </View>
+
+
+              <DrawerItem
+                label="Реферальная ссылка"
+                onPress={() => {
+                  setCopiedValue(refValue);
+                  console.log('Copied')
+                }}
+                labelStyle={styles.menuItems}
+                icon={() => <Image
+                  style={{ width: 20, height: 19, marginLeft: 10 }}
+                  source={require('assets/ref-icon.png')}
+                />}
+              />
+            </>}
+
+          <DrawerItemList state={newState} {...rest} />
+
+          {/* Дополнительные манипуляции с выпадающем меню */}
+          {/* <DrawerItem
+            label="Close drawer"
+            onPress={() => props.navigation.closeDrawer()}
+          />
+
+          <DrawerItem
+            label="Toggle drawer"
+            onPress={() => props.navigation.toggleDrawer()}
+          /> */}
+        </DrawerContentScrollView>
+      </View>
+    </ImageBackground>
   );
 }
 
@@ -62,6 +107,13 @@ const navigationOptions: NativeStackNavigationOptions = {
   headerTintColor: 'white', // Цвет текста в шапке
 };
 
+const screenOptions: any = {
+  drawerActiveTintColor: 'white',
+  drawerInactiveTintColor: 'white',
+  activeBackgroundColor: 'white',
+  inactiveBackgroundColor: 'white',
+}
+
 interface DrawerProps {
   screens: Array<DrawerScreen>;
   menuItems?: Array<DrawerMenuItem>;
@@ -69,9 +121,12 @@ interface DrawerProps {
 
 const DrawerNavigatorInstance = createDrawerNavigator();
 
-export function AppNavigator({ screens, nav }: DrawerProps) {
+export function AppNavigator({ screens }: DrawerProps) {
   const { theme } = useTheme();
+  const { size, sizeType } = useWindowSize();
+
   const [config, setConfig] = useRecoilState(configAtom);
+  const [smallScreen, setSmallScreen] = useState<boolean>(true);
 
   useEffect(() => {
     fetchConfig().then((conf) => {
@@ -80,6 +135,10 @@ export function AppNavigator({ screens, nav }: DrawerProps) {
       }
     });
   }, []);
+
+  useEffect(() => {
+    size?.width < 900 ? setSmallScreen(true) : setSmallScreen(false)
+  }, [size.width])
 
   const options = useMemo(
     () => ({
@@ -104,39 +163,45 @@ export function AppNavigator({ screens, nav }: DrawerProps) {
 
   return (
     <DrawerNavigatorInstance.Navigator
-      drawerContent={(props) => <CustomDrawerContent {...props} />}
+      drawerContent={(props) => <CustomDrawerContent {...props} smallScreen={smallScreen || false} />}
     >
       <DrawerNavigatorInstance.Screen
         name="Payment"
         component={PaymentScreen}
         options={{
           ...(options as any),
+          ...(screenOptions as any),
+          drawerLabelStyle: styles.menuItems,
           drawerItemStyle: { display: 'none' },
-
           /**
            * Отрисовка дополнительных элементов верхнего бара
            */
           header: ({ navigation }) => (
             <>
-              <CustomHeader navigation={navigation} title={'Payment'} />
+              <CustomHeader navigation={navigation} title={'Payment'} hideItems={smallScreen} sizeType={sizeType} />
             </>
           ),
         }}
       />
 
-      {screens.map(({ name, component: Component }) => (
+      {screens.map(({ name, component: Component, iconSrc }) => (
         <DrawerNavigatorInstance.Screen
           key={`screen-${name}`}
           name={name}
           options={{
             ...(options as any),
-
+            ...(screenOptions as any),
+            drawerLabelStyle: styles.menuItems,
+            drawerIcon: () => <Image
+              style={{ width: 20, height: 20, marginLeft: 10 }}
+              source={iconSrc}
+            />,
             /**
              * Отрисовка дополнительных элементов верхнего бара
              */
             header: ({ navigation }) => (
               <>
-                <CustomHeader navigation={navigation} title={name} />
+                <CustomHeader navigation={navigation} title={name} hideItems={smallScreen} sizeType={sizeType} />
               </>
             ),
           }}
@@ -149,6 +214,8 @@ export function AppNavigator({ screens, nav }: DrawerProps) {
 interface CustomHeaderProps {
   title: string;
   navigation: any;
+  hideItems: boolean;
+  sizeType?: ScreenSize;
 }
 
 enum logoStyles {
@@ -166,65 +233,64 @@ const Burger = () => {
   );
 };
 
-const CustomHeader: React.FC<CustomHeaderProps> = ({ title, navigation }) => {
+const CustomHeader: React.FC<CustomHeaderProps> = ({ title, navigation, hideItems, sizeType }) => {
   const { user } = useAuth();
   const { theme } = useTheme();
-  const { size, sizeType } = useWindowSize();
-
-  const [hideItems, setHideItems] = useState<boolean>(false);
-
-  useEffect(() => {
-    size?.width < 900 ? setHideItems(true) : setHideItems(false)
-  }, [size.width])
 
   return (
-    <View style={[styles.headerContainer, { backgroundColor: theme.dark }, hideItems && {
-      paddingHorizontal: 5,
-      paddingVertical: 5
-    }]}>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <DrawerItem label={Burger} onPress={() => navigation.toggleDrawer()} />
-      </View>
+    <ImageBackground source={require('assets/headerBack.png')} resizeMode="cover" style={[styles.backgroundImage, { backgroundColor: theme.dark }]}>
+      <View style={[styles.headerContainer, hideItems && {
+        paddingHorizontal: 5,
+        paddingVertical: 5
+      }]}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <DrawerItem label={Burger} onPress={() => navigation.toggleDrawer()} />
+        </View>
 
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Image
-          style={styles[`${sizeType}Logo` as logoStyles]}
-          source={require('assets/logo.png')}
-        />
-      </View>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Image
+            style={styles[`${sizeType}Logo` as logoStyles]}
+            source={require('assets/logo.png')}
+          />
+        </View>
 
-      <View style={[styles.infoContainer, hideItems && { display: 'none' }]}>
-        <Text style={styles.boldText}>Реферальная ссылка</Text>
-        <Text style={{ color: '#fff' }}>https://PUaOVKv96YbJWEW/eZSYLEL</Text>
-      </View>
+        {!hideItems &&
+          <View style={styles.infoContainer}>
+            <Text style={styles.boldText}>Реферальная ссылка</Text>
+            <Text style={{ color: '#fff' }}>{refValue}</Text>
+          </View>}
 
-      {/* <View style={styles.infoContainer}>
+        {/* <View style={styles.infoContainer}>
         <Text style={styles.boldText}>Время</Text>
         <Text style={{ color: '#fff' }}>{getCurrentTime()}</Text>
       </View> */}
 
-      <View style={[styles.infoContainer, { marginRight: 10 }]}>
-        <Text style={hideItems ? styles.thinText : styles.boldText}>Стоимость компаний</Text>
-        <Text style={[{ color: '#fff' }, hideItems && { fontSize: 12 }]}>
-          10000$ <Text style={styles.greenText}>+850%</Text>
-        </Text>
-      </View>
+        <View style={[styles.infoContainer, { marginRight: 10 }]}>
+          <Text style={hideItems ? styles.thinText : styles.boldText}>Стоимость компаний</Text>
+          <Text style={[{ color: '#fff' }, hideItems && { fontSize: 12 }]}>
+            10000$ <Text style={styles.greenText}>+850%</Text>
+          </Text>
+        </View>
 
-      <View style={[styles.infoContainer, hideItems && { display: 'none' }]}>
-        <Text style={{ color: '#fff' }}>en rus</Text>
-      </View>
+        {!hideItems &&
+          <>
+            <View style={styles.infoContainer}>
+              <Text style={{ color: '#fff' }}>en rus</Text>
+            </View>
 
-      <View style={[styles.userWrapper, hideItems && { display: 'none' }]}>
-        <Text style={styles.valueText}>
-          {user?.username} {(user?.sername ? user?.sername[0] : '') + '.'}
-        </Text>
+            <View style={styles.userWrapper}>
+              <Text style={styles.valueText}>
+                {user?.username} {(user?.sername ? user?.sername[0] : '') + '.'}
+              </Text>
 
-        <Image
-          style={styles.profileImage}
-          source={require('assets/avatar.png')} // Путь к случайному круглому фото
-        />
+              <Image
+                style={styles.profileImage}
+                source={require('assets/avatar.png')} // Путь к случайному круглому фото
+              />
+            </View>
+          </>}
       </View>
-    </View>
+    </ImageBackground >
   );
 };
 
@@ -248,6 +314,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingVertical: 10,
+    height: 95,
   },
   infoContainer: {
     color: 'white',
@@ -293,6 +360,35 @@ const styles = StyleSheet.create({
     width: 200,
     height: 40,
     marginRight: 10
+  },
+  backgroundImage: {
+    flex: 1,
+    alignSelf: 'stretch',
+  },
+  sidebarBlock: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  reverseRow: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'row-reverse',
+    width: '100%'
+  },
+  sidebarInfo: {
+    fontWeight: '500',
+    fontSize: 18,
+    color: 'white'
+  },
+  menuItems: {
+    fontSize: 16,
+    color: 'white',
+    textTransform: 'uppercase',
+    letterSpacing: 0.2,
+    fontFamily: 'Urbanist, sans-serif',
+    wordWrap: 'break-word',
+    textWrap: 'wrap'
   }
 });
 

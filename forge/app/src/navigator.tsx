@@ -29,30 +29,37 @@ export function Navigator() {
           {
             name: 'Мой кошелек',
             component: WalletScreen,
+            iconSrc: require('assets/wallet-icon.png'),
           },
           {
             name: 'Личный кабинет',
             component: HomeScreen,
+            iconSrc: require('assets/profile-icon.png'),
           },
           {
             name: 'График роста',
             component: GrowthChartScreen,
+            iconSrc: require('assets/growth-icon.png'),
           },
           {
             name: 'Партнеры',
             component: PartnersScreen,
+            iconSrc: require('assets/partners-icon.png'),
           },
           {
             name: 'Документы',
             component: DocumentsScreen,
+            iconSrc: require('assets/documents-icon.png'),
           },
           {
             name: 'Новости',
             component: NewsScreen,
+            iconSrc: require('assets/news-icon.png'),
           },
           {
             name: 'Faq',
             component: FaqScreen,
+            iconSrc: require('assets/faq-icon.png'),
           },
         ]}
       />
