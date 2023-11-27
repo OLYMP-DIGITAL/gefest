@@ -9,13 +9,18 @@ import { NavigationStack } from 'core/types/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { Image, StyleSheet, Text, View, ImageBackground } from 'react-native';
-import { useWindowSize, useTheme, ScreenSize } from 'core/providers/theme.provider';
+import {
+  useWindowSize,
+  useTheme,
+  ScreenSize,
+} from 'core/providers/theme.provider';
 import { useAuth } from 'core/providers/auth.provider';
 import { PaymentScreen } from 'core/modules/payment/payment.screen';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { configAtom, fetchConfig } from 'core/features/config/config.feature';
 import { useCopyToClipboard } from 'usehooks-ts';
-import { ScrollView } from 'react-native-gesture-handler';
+import { useTranslation } from 'react-i18next';
+import { userAtom } from 'core/features/users/users.atoms';
 
 interface DrawerMenuItem {
   label: string;
@@ -28,13 +33,12 @@ interface DrawerScreen {
   iconSrc: any;
 }
 
-const refValue = 'https://PUaOVKv96YbJWEW/eZSYLEL';
-
 function CustomDrawerContent(props: any) {
+  const { user } = useAuth();
   const { state, smallScreen, ...rest } = props;
   const newState = { ...state };
+  const refValue = user?.id;
 
-  const { user } = useAuth();
   const [, setCopiedValue] = useCopyToClipboard();
 
   /**
@@ -45,15 +49,20 @@ function CustomDrawerContent(props: any) {
   // );
 
   return (
-    <ImageBackground source={require('assets/sidebarBack.png')} resizeMode='stretch' style={styles.backgroundImage}>
-      <View style={[styles.sidebarBlock, !smallScreen && { paddingVertical: 30 }]}>
-        <DrawerContentScrollView {...props} >
-
-          {smallScreen &&
+    <ImageBackground
+      source={require('assets/sidebarBack.png')}
+      resizeMode="stretch"
+      style={styles.backgroundImage}
+    >
+      <View
+        style={[styles.sidebarBlock, !smallScreen && { paddingVertical: 30 }]}
+      >
+        <DrawerContentScrollView {...props}>
+          {smallScreen && (
             <>
               <View style={[styles.sidebarBlock, { padding: 20 }]}>
                 <View style={styles.reverseRow}>
-                  <Text style={styles.sidebarInfo}>en   rus</Text>
+                  <Text style={styles.sidebarInfo}>en rus</Text>
                 </View>
 
                 <View style={[styles.sidebarBlock, { paddingTop: 10 }]}>
@@ -62,25 +71,28 @@ function CustomDrawerContent(props: any) {
                     source={require('assets/avatar.png')} // Путь к случайному круглому фото
                   />
                   <Text style={[styles.sidebarInfo, { paddingTop: 10 }]}>
-                    {user?.username} {(user?.sername ? user?.sername[0] : '') + '.'}
+                    {user?.username}{' '}
+                    {(user?.sername ? user?.sername[0] : '') + '.'}
                   </Text>
                 </View>
               </View>
-
 
               <DrawerItem
                 label="Реферальная ссылка"
                 onPress={() => {
                   setCopiedValue(refValue);
-                  console.log('Copied')
+                  console.log('Copied');
                 }}
                 labelStyle={styles.menuItems}
-                icon={() => <Image
-                  style={{ width: 20, height: 19, marginLeft: 10 }}
-                  source={require('assets/ref-icon.png')}
-                />}
+                icon={() => (
+                  <Image
+                    style={{ width: 20, height: 19, marginLeft: 10 }}
+                    source={require('assets/ref-icon.png')}
+                  />
+                )}
               />
-            </>}
+            </>
+          )}
 
           <DrawerItemList state={newState} {...rest} />
 
@@ -113,7 +125,7 @@ const screenOptions: any = {
   drawerInactiveTintColor: 'white',
   activeBackgroundColor: 'white',
   inactiveBackgroundColor: 'white',
-}
+};
 
 interface DrawerProps {
   screens: Array<DrawerScreen>;
@@ -126,20 +138,20 @@ export function AppNavigator({ screens }: DrawerProps) {
   const { theme } = useTheme();
   const { size, sizeType } = useWindowSize();
 
-  const [config, setConfig] = useRecoilState(configAtom);
   const [smallScreen, setSmallScreen] = useState<boolean>(true);
+  const setConfig = useSetRecoilState(configAtom);
 
   useEffect(() => {
     fetchConfig().then((conf) => {
       if (conf.data) {
-        setConfig(config);
+        setConfig(conf.data.attributes);
       }
     });
   }, []);
 
   useEffect(() => {
-    size?.width < 900 ? setSmallScreen(true) : setSmallScreen(false)
-  }, [size.width])
+    size?.width < 900 ? setSmallScreen(true) : setSmallScreen(false);
+  }, [size.width]);
 
   const options = useMemo(
     () => ({
@@ -164,7 +176,9 @@ export function AppNavigator({ screens }: DrawerProps) {
 
   return (
     <DrawerNavigatorInstance.Navigator
-      drawerContent={(props) => <CustomDrawerContent {...props} smallScreen={smallScreen || false} />}
+      drawerContent={(props) => (
+        <CustomDrawerContent {...props} smallScreen={smallScreen || false} />
+      )}
     >
       {screens.map(({ name, component: Component, iconSrc }) => (
         <DrawerNavigatorInstance.Screen
@@ -174,16 +188,23 @@ export function AppNavigator({ screens }: DrawerProps) {
             ...(options as any),
             ...(screenOptions as any),
             drawerLabelStyle: styles.menuItems,
-            drawerIcon: () => <Image
-              style={{ width: 20, height: 20, marginLeft: 10 }}
-              source={iconSrc}
-            />,
+            drawerIcon: () => (
+              <Image
+                style={{ width: 20, height: 20, marginLeft: 10 }}
+                source={iconSrc}
+              />
+            ),
             /**
              * Отрисовка дополнительных элементов верхнего бара
              */
             header: ({ navigation }) => (
               <>
-                <CustomHeader navigation={navigation} title={name} hideItems={smallScreen} sizeType={sizeType} />
+                <CustomHeader
+                  navigation={navigation}
+                  title={name}
+                  hideItems={smallScreen}
+                  sizeType={sizeType}
+                />
               </>
             ),
           }}
@@ -204,7 +225,12 @@ export function AppNavigator({ screens }: DrawerProps) {
            */
           header: ({ navigation }) => (
             <>
-              <CustomHeader navigation={navigation} title={'Payment'} hideItems={smallScreen} sizeType={sizeType} />
+              <CustomHeader
+                navigation={navigation}
+                title={'Payment'}
+                hideItems={smallScreen}
+                sizeType={sizeType}
+              />
             </>
           ),
         }}
@@ -222,7 +248,7 @@ interface CustomHeaderProps {
 enum logoStyles {
   smallLogo = 'smallLogo',
   mediumLogo = 'mediumLogo',
-  largeLogo = 'largeLogo'
+  largeLogo = 'largeLogo',
 }
 
 const Burger = () => {
@@ -234,18 +260,37 @@ const Burger = () => {
   );
 };
 
-const CustomHeader: React.FC<CustomHeaderProps> = ({ title, navigation, hideItems, sizeType }) => {
-  const { user } = useAuth();
+const CustomHeader: React.FC<CustomHeaderProps> = ({
+  title,
+  navigation,
+  hideItems,
+  sizeType,
+}) => {
+  const { t } = useTranslation();
   const { theme } = useTheme();
+  const config = useRecoilValue(configAtom);
+  const user = useRecoilValue(userAtom);
 
   return (
-    <ImageBackground source={require('assets/headerBack.png')} resizeMode="cover" style={[styles.backgroundImage, { backgroundColor: theme.dark }]}>
-      <View style={[styles.headerContainer, hideItems && {
-        paddingHorizontal: 5,
-        paddingVertical: 5
-      }]}>
+    <ImageBackground
+      source={require('assets/headerBack.png')}
+      resizeMode="cover"
+      style={[styles.backgroundImage, { backgroundColor: theme.dark }]}
+    >
+      <View
+        style={[
+          styles.headerContainer,
+          hideItems && {
+            paddingHorizontal: 5,
+            paddingVertical: 5,
+          },
+        ]}
+      >
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <DrawerItem label={Burger} onPress={() => navigation.toggleDrawer()} />
+          <DrawerItem
+            label={Burger}
+            onPress={() => navigation.toggleDrawer()}
+          />
         </View>
 
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -255,11 +300,12 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({ title, navigation, hideItem
           />
         </View>
 
-        {!hideItems &&
+        {!hideItems && (
           <View style={styles.infoContainer}>
-            <Text style={styles.boldText}>Реферальная ссылка</Text>
-            <Text style={{ color: '#fff' }}>{refValue}</Text>
-          </View>}
+            <Text style={styles.boldText}>{t('referalLink')}</Text>
+            <Text style={{ color: '#fff' }}>{user?.id}</Text>
+          </View>
+        )}
 
         {/* <View style={styles.infoContainer}>
         <Text style={styles.boldText}>Время</Text>
@@ -267,13 +313,15 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({ title, navigation, hideItem
       </View> */}
 
         <View style={[styles.infoContainer, { marginRight: 10 }]}>
-          <Text style={hideItems ? styles.thinText : styles.boldText}>Стоимость компаний</Text>
+          <Text style={hideItems ? styles.thinText : styles.boldText}>
+            {t('companyCost')}
+          </Text>
           <Text style={[{ color: '#fff' }, hideItems && { fontSize: 12 }]}>
-            10000$ <Text style={styles.greenText}>+850%</Text>
+            {config?.companyValue} <Text style={styles.greenText}>+850%</Text>
           </Text>
         </View>
 
-        {!hideItems &&
+        {!hideItems && (
           <>
             <View style={styles.infoContainer}>
               <Text style={{ color: '#fff' }}>en rus</Text>
@@ -284,21 +332,23 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({ title, navigation, hideItem
                 {user?.username} {(user?.sername ? user?.sername[0] : '') + '.'}
               </Text>
 
-              <Image
+              {/* <Image
                 style={styles.profileImage}
                 source={require('assets/avatar.png')} // Путь к случайному круглому фото
-              />
+              /> */}
             </View>
-          </>}
+          </>
+        )}
       </View>
-    </ImageBackground >
+    </ImageBackground>
   );
 };
 
 function getCurrentTime() {
   const now = new Date();
-  const formattedDate = `${now.getDate()}.${now.getMonth() + 1
-    }.${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}`;
+  const formattedDate = `${now.getDate()}.${
+    now.getMonth() + 1
+  }.${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}`;
   return formattedDate;
 }
 
@@ -314,8 +364,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
-    paddingVertical: 10,
-    height: 95,
   },
   infoContainer: {
     color: 'white',
@@ -330,7 +378,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: '200',
     fontSize: 12,
-    textTransform: 'uppercase'
+    textTransform: 'uppercase',
   },
   greenText: {
     color: 'green',
@@ -350,17 +398,17 @@ const styles = StyleSheet.create({
     width: 140,
     height: 28,
     marginRight: 10,
-    marginLeft: -30
+    marginLeft: -30,
   },
   mediumLogo: {
     width: 180,
     height: 36,
-    marginRight: 10
+    marginRight: 10,
   },
   largeLogo: {
     width: 200,
     height: 40,
-    marginRight: 10
+    marginRight: 10,
   },
   backgroundImage: {
     flex: 1,
@@ -369,18 +417,18 @@ const styles = StyleSheet.create({
   sidebarBlock: {
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   reverseRow: {
     flex: 1,
     display: 'flex',
     flexDirection: 'row-reverse',
-    width: '100%'
+    width: '100%',
   },
   sidebarInfo: {
     fontWeight: '500',
     fontSize: 18,
-    color: 'white'
+    color: 'white',
   },
   menuItems: {
     fontSize: 16,
@@ -389,8 +437,8 @@ const styles = StyleSheet.create({
     letterSpacing: 0.2,
     fontFamily: 'Urbanist, sans-serif',
     wordWrap: 'break-word',
-    textWrap: 'wrap'
-  }
+    textWrap: 'wrap',
+  },
 });
 
 // export default CustomHeader;

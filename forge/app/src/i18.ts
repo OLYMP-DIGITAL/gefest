@@ -5,6 +5,16 @@ import env from 'core/services/env';
 const resources = {
   en: {
     translation: {
+      referalLink: 'Referal ID',
+      companyCost: 'Company cost',
+
+      cabinet: 'Personal Cabinet',
+      grpahGrow: 'Growth Chart',
+      partners: 'Partners',
+      documents: 'Documents',
+      news: 'News',
+      faq: 'FAQ',
+
       user: {
         email: 'Email',
         sername: 'Sername',
@@ -74,6 +84,16 @@ const resources = {
 
   ru: {
     translation: {
+      referalLink: 'Реферальный ID',
+      companyCost: 'Стоимость компании',
+
+      cabinet: 'Личный кабинет',
+      grpahGrow: 'График роста',
+      partners: 'Партнёры',
+      documents: 'Документы',
+      news: 'Новости',
+      faq: 'FAQ',
+
       user: {
         email: 'Email',
         sername: 'Фамилия',

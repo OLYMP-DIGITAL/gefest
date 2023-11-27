@@ -34,7 +34,6 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const fetchLoggedInUser = async () => {
     try {
       const response = await fetchMe();
-      console.log('Goted response!', response);
 
       if (response && response.id) {
         setUser(response);

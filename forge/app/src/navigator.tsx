@@ -13,8 +13,10 @@ import { useAuth } from 'core/providers/auth.provider';
 import { userAtom } from 'core/features/users/users.atoms';
 import { useRecoilValue } from 'recoil';
 import { Loader } from 'core/components/loader';
+import { useTranslation } from 'react-i18next';
 
 export function Navigator() {
+  const { t } = useTranslation();
   const { isLoading } = useAuth();
   const user = useRecoilValue(userAtom);
 
@@ -27,37 +29,37 @@ export function Navigator() {
       <AppNavigator
         screens={[
           {
-            name: 'Мой кошелек',
+            name: t('wallet.title'),
             component: WalletScreen,
             iconSrc: require('assets/wallet-icon.png'),
           },
           {
-            name: 'Личный кабинет',
+            name: t('cabinet'),
             component: HomeScreen,
             iconSrc: require('assets/profile-icon.png'),
           },
           {
-            name: 'График роста',
+            name: t('grpahGrow'),
             component: GrowthChartScreen,
             iconSrc: require('assets/growth-icon.png'),
           },
           {
-            name: 'Партнеры',
+            name: t('partners'),
             component: PartnersScreen,
             iconSrc: require('assets/partners-icon.png'),
           },
           {
-            name: 'Документы',
+            name: t('documents'),
             component: DocumentsScreen,
             iconSrc: require('assets/documents-icon.png'),
           },
           {
-            name: 'Новости',
+            name: t('news'),
             component: NewsScreen,
             iconSrc: require('assets/news-icon.png'),
           },
           {
-            name: 'Faq',
+            name: t('faq'),
             component: FaqScreen,
             iconSrc: require('assets/faq-icon.png'),
           },
