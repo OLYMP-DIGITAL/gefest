@@ -46,7 +46,8 @@ function SignInScreen() {
   const onSubmit = useCallback((values: SignInUser) => {
     signIn({
       password: values.password,
-      identifier: values.email,
+      // trim to fix #11
+      identifier: values.email.trim(),
     })
       .then((response) => {
         if (response.error) {
