@@ -435,7 +435,6 @@ const styles = StyleSheet.create({
     color: 'white',
     textTransform: 'uppercase',
     letterSpacing: 0.2,
-    fontFamily: 'Urbanist, sans-serif',
     wordWrap: 'break-word',
     textWrap: 'wrap',
   },

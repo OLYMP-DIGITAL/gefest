@@ -1,7 +1,7 @@
 import * as yup from 'yup'; // Библиотека для валидации
 import { Formik } from 'formik';
 import { H3Text } from 'core/components/text/h3.text';
-import { Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { BodyXlRegular } from 'core/components/text/body-xl-regular.text';
 import { useTranslation } from 'react-i18next';
 
@@ -17,6 +17,7 @@ import { useToast } from 'react-native-toast-notifications';
 import { ErrorResponse } from 'core/types/requests';
 
 interface SignUpUser {
+  name: string;
   email: string;
   sername: string;
   username: string;
@@ -49,6 +50,9 @@ export function SignUpScreen({
         username: yup
           .string()
           .required(`${t('user.username')} ${t('messages.isRequired')}`),
+        name: yup
+          .string()
+          .required(`${t('user.name')} ${t('messages.isRequired')}`),
         sername: yup
           .string()
           .required(`${t('user.sername')} ${t('messages.isRequired')}`),
@@ -105,8 +109,12 @@ export function SignUpScreen({
       }}
     >
       <H3Text text={t('signUp.title')} />
-      <View style={{ marginVertical: 10 }}>
-        <BodyXlRegular text={t('signUp.setNameMessage')} />
+
+      <View style={styles.message}>
+        <BodyXlRegular
+          styles={{ textAlign: 'center' }}
+          text={t('signUp.setNameMessage')}
+        />
       </View>
 
       <Formik
@@ -120,6 +128,7 @@ export function SignUpScreen({
           sername: '',
           patronymic: '',
           email: '',
+          name: '',
           password: '',
         }}
         validationSchema={validationSchema}
@@ -136,6 +145,18 @@ export function SignUpScreen({
               />
               {errors.username && (
                 <Text style={{ color: 'red' }}>{errors.username}</Text>
+              )}
+            </View>
+
+            <View style={{ marginVertical: 10, marginTop: 20 }}>
+              <Input
+                placeholder={t('user.name')}
+                onChangeText={handleChange('name')}
+                onBlur={handleBlur('name')}
+                value={values.name}
+              />
+              {errors.name && (
+                <Text style={{ color: 'red' }}>{errors.name}</Text>
               )}
             </View>
 
@@ -203,5 +224,13 @@ export function SignUpScreen({
 }
 
 SignUpScreen.route = 'SignUp';
+
+const styles = StyleSheet.create({
+  message: {
+    width: 300,
+    textAlign: 'center',
+    marginTop: 20,
+  },
+});
 
 export default SignUpScreen;

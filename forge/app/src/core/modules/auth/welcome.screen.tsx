@@ -62,7 +62,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 36,
     textAlign: 'center',
-    fontFamily: 'Urbanist',
   },
 
   buttonsWrapper: {

@@ -7,7 +7,7 @@ import { signIn } from 'core/features/users/users.api';
 import { Input } from 'core/components/input';
 import RoundedButton from 'core/components/rounded-button';
 import { useToast } from 'react-native-toast-notifications';
-import { atom, useRecoilState, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { tokenAtom, userAtom } from 'core/features/users/users.atoms';
 import { ResponseErrorName } from 'core/types/requests';
 import { ConfirmButton } from './components/confirm-button';
@@ -34,7 +34,6 @@ function SignInScreen() {
       yup.object().shape({
         email: yup
           .string()
-          .email('Invalid email')
           .required(`${t('user.email')} ${t('messages.isRequired')}`),
         password: yup
           .string()
@@ -97,7 +96,7 @@ function SignInScreen() {
           <View style={{ width: '70%' }}>
             <View style={{ marginVertical: 10 }}>
               <Input
-                placeholder={t('user.email')}
+                placeholder={t('user.emailOrLogin')}
                 onChangeText={handleChange('email')}
                 onBlur={handleBlur('email')}
                 value={values.email}

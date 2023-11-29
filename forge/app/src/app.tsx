@@ -15,7 +15,7 @@ function App() {
       <AuthProvider>
         <ThemeProvider>
           <NavigationContainer>
-            <ToastProvider placement="top">
+            <ToastProvider placement="bottom">
               <Navigator />
             </ToastProvider>
           </NavigationContainer>

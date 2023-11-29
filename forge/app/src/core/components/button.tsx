@@ -28,7 +28,6 @@ export const Button = ({ title, onPress }: Props) => {
           borderColor: theme.greyscale200,
         },
         buttonText: {
-          fontFamily: 'Urbanist',
           fontSize: 16,
           fontStyle: 'normal',
           fontWeight: '600',
