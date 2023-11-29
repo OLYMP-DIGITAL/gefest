@@ -43,7 +43,6 @@ export const RoundedButton = ({
         },
         buttonText: {
           textAlign: 'center',
-          fontFamily: 'Urbanist',
           fontSize: 16,
           fontStyle: 'normal',
           fontWeight: '600',

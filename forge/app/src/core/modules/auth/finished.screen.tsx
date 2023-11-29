@@ -42,10 +42,6 @@ export const FinishedScreen = ({
   const { theme } = useTheme();
   const [socials, setSocials] = useState<Social[]>([]);
 
-  console.log('[FinishedScreen] user:', {
-    navState: navigation.getState(),
-  });
-
   useEffect(() => {
     try {
       api.get<SocialsResponse>('api/socials?populate=*').then((response) => {
@@ -80,6 +76,12 @@ export const FinishedScreen = ({
           width: 115,
           height: 115,
         },
+
+        message: {
+          width: 300,
+          textAlign: 'center',
+          marginTop: 20,
+        },
       }),
     [theme]
   );
@@ -88,7 +90,12 @@ export const FinishedScreen = ({
     <View style={styles.wrapper}>
       <H3Text text={t('finished.title')} />
 
-      <BodyXlRegular text={t('finished.continue')} />
+      <View style={styles.message}>
+        <BodyXlRegular
+          styles={{ textAlign: 'center' }}
+          text={t('finished.continue')}
+        />
+      </View>
 
       <View style={styles.toHomeWrapper}>
         <RoundedButton

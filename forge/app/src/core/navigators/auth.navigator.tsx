@@ -28,6 +28,10 @@ interface NavigatorItem {
 
 const screens: Array<NavigatorItem> = [
   {
+    name: FinishedScreen.route,
+    component: FinishedScreen,
+  },
+  {
     name: 'Welcome',
     component: WelcomeScreen,
   },
@@ -38,10 +42,6 @@ const screens: Array<NavigatorItem> = [
   {
     name: SignUpScreen.route,
     component: SignUpScreen,
-  },
-  {
-    name: FinishedScreen.route,
-    component: FinishedScreen,
   },
 ];
 

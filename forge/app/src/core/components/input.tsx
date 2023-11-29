@@ -15,7 +15,6 @@ export const Input = ({ ...rest }: Props) => {
           color: theme.greyscale900,
           fontSize: 14,
           fontStyle: 'normal',
-          fontFamily: 'Urbanist',
           fontWeight: '400',
           borderWidth: 0,
           borderRadius: 12,

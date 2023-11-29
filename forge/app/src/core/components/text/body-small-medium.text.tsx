@@ -13,7 +13,6 @@ export const BodySmallMediumText = ({ text }: Props) => {
     () =>
       StyleSheet.create({
         body: {
-          fontFamily: 'Urbanist',
           fontSize: 12,
           fontWeight: '500',
           fontStyle: 'normal',

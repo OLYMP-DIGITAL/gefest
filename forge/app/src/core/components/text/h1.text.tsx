@@ -13,7 +13,6 @@ export const H1Text = ({ text }: Props) => {
     () =>
       StyleSheet.create({
         body: {
-          fontFamily: 'Urbanist',
           fontSize: 48,
           fontWeight: '700',
           fontStyle: 'normal',

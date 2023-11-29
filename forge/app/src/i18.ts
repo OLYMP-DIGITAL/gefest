@@ -18,9 +18,11 @@ const resources = {
       user: {
         email: 'Email',
         sername: 'Sername',
-        username: 'Name',
+        name: 'Password',
+        username: 'Login',
         password: 'Password',
         patronymic: 'Patronymic',
+        emailOrLogin: 'Email or login',
       },
 
       units: {
@@ -97,9 +99,11 @@ const resources = {
       user: {
         email: 'Email',
         sername: 'Фамилия',
-        username: 'Имя',
+        name: 'Имя',
+        username: 'Логин',
         password: 'Пароль',
         patronymic: 'Отчество',
+        emailOrLogin: 'Email или логин',
       },
 
       units: {
@@ -144,12 +148,13 @@ const resources = {
         timerText: 'Отправить код повторно можно будет через',
         resendEmail: 'Отправить подтверждение на почту',
         checkEmail:
-          'Проверьте почту, на неё должна прийти инструкция для подтверждения адреса электронной почты',
+          'Проверьте почту, на неё должна прийти инструкция для подтверждения адреса электронной почты. Пожалуйста, обратите внимание на то, что письмо может попасть в спам',
       },
       finished: {
         title: 'Регистрация завершена',
         toHome: 'На главную',
-        continue: 'На Вашу почту отправлено письмо с подтверждением',
+        continue:
+          'На Вашу почту отправлено письмо с подтверждением. Пожалуйста, обратите внимание на то, что письмо может попасть в спам',
         toSignIn: 'Войти',
         subscribe: 'Подпишись на наши соцсети',
         beFirst: 'Будешь первый в курсе всех событий',

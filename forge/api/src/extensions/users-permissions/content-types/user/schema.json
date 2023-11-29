@@ -12,13 +12,6 @@
     "draftAndPublish": false
   },
   "attributes": {
-    "username": {
-      "type": "string",
-      "minLength": 3,
-      "unique": true,
-      "configurable": false,
-      "required": true
-    },
     "email": {
       "type": "email",
       "minLength": 6,
@@ -65,11 +58,22 @@
       "inversedBy": "users",
       "configurable": false
     },
+    "username": {
+      "type": "string",
+      "minLength": 3,
+      "unique": false,
+      "required": true
+    },
     "sername": {
       "type": "string"
     },
     "patronymic": {
       "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "required": true,
+      "maxLength": 50
     }
   }
 }
