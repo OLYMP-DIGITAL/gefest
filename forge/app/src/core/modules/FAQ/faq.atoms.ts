@@ -1,7 +1,7 @@
-import { FaqAtomKey, faqResponse, faqs } from './faq.types';
+import { FaqAtomKey, faq } from './faq.types';
 import { atom } from 'recoil';
 
-export const faqAtom = atom<faqs>({
+export const faqAtom = atom<faq[] | null>({
   key: FaqAtomKey,
-  default: [],
+  default: null,
 });

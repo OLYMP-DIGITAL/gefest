@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Accordion from 'react-native-collapsible/Accordion';
-import { faqs } from './faq.types';
+import { faq } from './faq.types';
 import { BodyXlRegular } from 'core/components/text/body-xl-regular.text';
 import { useRecoilState } from 'recoil';
 import { faqAtom } from './faq.atoms';
 import { fetchFaqs } from './faq.api';
 import { H4Text } from 'core/components/text/h4.text';
+import { sectionsMock } from './faq.mock';
 
 export const FaqScreen = () => {
   const [activeSections, setActiveSections] = useState<number[]>([]);
@@ -18,8 +26,13 @@ export const FaqScreen = () => {
     try {
       const response = await fetchFaqs();
 
-      if (response) {
-        setFaqs(response);
+      if (response && response.data && response.data.length !== 0) {
+        let cleanedData: faq[] = response.data.map((value) => ({
+          id: value.id,
+          title: value.attributes.title,
+          description: value.attributes.description,
+        }));
+        setFaqs(cleanedData);
       } else {
         console.error('No FAQ data', response);
       }
@@ -34,38 +47,10 @@ export const FaqScreen = () => {
     fetchFaqList();
   }, []);
 
-  const sections: faqs = [
-    {
-      title: 'Что такое доля?'.toUpperCase(),
-      description:
-        "React Native lets you create truly native apps and doesn't compromise your users' experiences. It provides a core set of platform agnostic native components",
-    },
-    {
-      title: 'Когда происходит выкуп доли?'.toUpperCase(),
-      description:
-        "React Native lets you create truly native apps and doesn't compromise your users' experiences. It provides a core set of platform agnostic native components",
-    },
-    {
-      title: 'Как отслеживать цены?'.toUpperCase(),
-      description:
-        "React Native lets you create truly native apps and doesn't compromise your users' experiences. It provides a core set of platform agnostic native components",
-    },
-    {
-      title: 'Как заработать?'.toUpperCase(),
-      description:
-        "React Native lets you create truly native apps and doesn't compromise your users' experiences. It provides a core set of platform agnostic native components",
-    },
-    {
-      title: 'Как купить акции?'.toUpperCase(),
-      description:
-        "React Native lets you create truly native apps and doesn't compromise your users' experiences. It provides a core set of platform agnostic native components",
-    },
-  ];
-
-  function renderHeader(section: any, _: any, isActive: any) {
+  function renderHeader(section: faq, id: number, isActive: boolean) {
     return (
       <View style={styles.accordHeader}>
-        <H4Text text={section.title} />
+        <Text style={styles.accordTitle}>{section.title.toUpperCase()}</Text>
         <Icon
           name={isActive ? 'chevron-up' : 'chevron-down'}
           size={20}
@@ -75,38 +60,53 @@ export const FaqScreen = () => {
     );
   }
 
-  function renderContent(section: any, _: any, isActive: any) {
+  function renderContent(section: faq, id: number, isActive: boolean) {
     return (
       <View style={styles.accordBody}>
-        <BodyXlRegular text={section.description} />
+        <Text style={styles.accordContent}>{section.description}</Text>
       </View>
     );
   }
   return (
-    <ScrollView
-      contentInsetAdjustmentBehavior="automatic"
-      style={styles.container}
-    >
-      <Accordion
-        align="bottom"
-        sections={sections}
-        activeSections={activeSections}
-        renderHeader={renderHeader}
-        renderContent={renderContent}
-        onChange={(sections) => setActiveSections(sections)}
-        sectionContainerStyle={styles.accordContainer}
-        expandMultiple
-      />
-    </ScrollView>
+    <>
+      {isLoading ? (
+        <ActivityIndicator size="large" color="#fc440f" style={styles.loader} />
+      ) : (
+        <ScrollView
+          contentInsetAdjustmentBehavior="automatic"
+          style={styles.container}
+        >
+          <Accordion
+            align="bottom"
+            sections={faqs || sectionsMock}
+            activeSections={activeSections}
+            renderHeader={renderHeader}
+            renderContent={renderContent}
+            onChange={(sections) => setActiveSections(sections)}
+            sectionContainerStyle={styles.accordContainer}
+            expandMultiple
+          />
+        </ScrollView>
+      )}
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    maxWidth: '100%',
     display: 'flex',
     alignSelf: 'center',
     backgroundColor: '#fff',
+    ...Platform.select({
+      ios: {
+        width: '100%',
+      },
+      android: {
+        width: '100%',
+      },
+    }),
   },
   accordContainer: {
     paddingBottom: 4,
@@ -120,18 +120,24 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   accordTitle: {
+    fontSize: 24,
+    fontWeight: '700',
+    fontStyle: 'normal',
     fontFamily: 'Urbanist-Regular, Arial, sans-serif',
+  },
+  accordContent: {
     fontSize: 20,
+    fontWeight: '200',
+    fontFamily: 'Urbanist-Regular, Arial, sans-serif', 
   },
   accordBody: {
-    fontFamily: 'Montserrat-Bold',
     padding: 12,
-  },
-  textSmall: {
-    fontSize: 16,
   },
   seperator: {
     height: 12,
+  },
+  loader: {
+    padding: 15,
   },
 });
 
