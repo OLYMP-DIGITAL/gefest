@@ -30,7 +30,7 @@ export const FaqScreen = () => {
           title: value.attributes.title,
           description: value.attributes.description,
         }));
-        //setFaqs(cleanedData);
+        setFaqs(cleanedData);
       } else {
         console.error('No FAQ data', response);
       }
