@@ -44,7 +44,7 @@ export const FinishedScreen = ({
 
   useEffect(() => {
     try {
-      api.get<SocialsResponse>('api/socials?populate=*').then((response) => {
+      api.get<SocialsResponse>('socials?populate=*').then((response) => {
         setSocials(response.data);
       });
     } catch (e) {
