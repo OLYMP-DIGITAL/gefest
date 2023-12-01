@@ -1,7 +1,7 @@
 import { AppNavigator } from 'core/navigators/app.navigator';
 import { AuthNavigator } from 'core/navigators/auth.navigator';
 
-import FaqScreen from 'core/modules/FaqScreen';
+import { FaqScreen } from 'core/modules/FAQ';
 import NewsScreen from 'core/modules/NewsScreen';
 import HomeScreen from './home/home.screen';
 import WalletScreen from 'core/modules/wallet/wallet.screen';
