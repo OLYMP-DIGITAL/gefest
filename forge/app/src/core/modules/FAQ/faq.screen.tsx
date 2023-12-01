@@ -108,11 +108,20 @@ const styles = StyleSheet.create({
   },
   accordContainer: {
     paddingBottom: 4,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 2.22,
+
+    elevation: 3,
   },
   accordHeader: {
     marginTop: 10,
     marginHorizontal: 5,
-    padding: 12, 
+    padding: 12,
     backgroundColor: '#fff',
     color: '#eee',
     flex: 1,
@@ -128,14 +137,10 @@ const styles = StyleSheet.create({
   accordContent: {
     fontSize: 20,
     fontWeight: '200',
-    fontFamily: 'Urbanist-Regular, Arial, sans-serif', 
+    fontFamily: 'Urbanist-Regular, Arial, sans-serif',
   },
   accordBody: {
     padding: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: 'black',
-    borderBottomStartRadius: 7,
-    borderBottomEndRadius: 7,
   },
   seperator: {
     height: 12,
