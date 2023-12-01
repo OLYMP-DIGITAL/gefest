@@ -10,11 +10,9 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Accordion from 'react-native-collapsible/Accordion';
 import { faq } from './faq.types';
-import { BodyXlRegular } from 'core/components/text/body-xl-regular.text';
 import { useRecoilState } from 'recoil';
 import { faqAtom } from './faq.atoms';
 import { fetchFaqs } from './faq.api';
-import { H4Text } from 'core/components/text/h4.text';
 import { sectionsMock } from './faq.mock';
 
 export const FaqScreen = () => {
@@ -112,7 +110,9 @@ const styles = StyleSheet.create({
     paddingBottom: 4,
   },
   accordHeader: {
-    padding: 12,
+    marginTop: 10,
+    marginHorizontal: 5,
+    padding: 12, 
     backgroundColor: '#fff',
     color: '#eee',
     flex: 1,
@@ -132,6 +132,10 @@ const styles = StyleSheet.create({
   },
   accordBody: {
     padding: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: 'black',
+    borderBottomStartRadius: 7,
+    borderBottomEndRadius: 7,
   },
   seperator: {
     height: 12,
