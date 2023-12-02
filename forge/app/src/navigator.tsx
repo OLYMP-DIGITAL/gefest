@@ -6,7 +6,7 @@ import NewsScreen from 'core/modules/NewsScreen';
 import HomeScreen from './home/home.screen';
 import WalletScreen from 'core/modules/wallet/wallet.screen';
 import PartnersScreen from 'core/modules/partners/partners.screen';
-import DocumentsScreen from 'core/modules/DocumentsScreen';
+import { DocumentsScreen } from 'core/modules/documents';
 import GrowthChartScreen from 'core/modules/GrowthChartScreen';
 
 import { useAuth } from 'core/providers/auth.provider';
@@ -49,7 +49,7 @@ export function Navigator() {
             iconSrc: require('assets/partners-icon.png'),
           },
           {
-            name: t('documents'),
+            name: t('documents.title'),
             component: DocumentsScreen,
             iconSrc: require('assets/documents-icon.png'),
           },

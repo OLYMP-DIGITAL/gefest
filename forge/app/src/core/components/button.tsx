@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 
 interface Props {
-  title?: string;
+  title?: string | JSX.Element;
   onPress?: (event: GestureResponderEvent) => void;
 }
 
