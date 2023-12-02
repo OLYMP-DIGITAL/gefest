@@ -11,7 +11,19 @@ const resources = {
       cabinet: 'Personal Cabinet',
       grpahGrow: 'Growth Chart',
       partners: 'Partners',
-      documents: 'Documents',
+
+      documents: { 
+        title: 'Documents',
+        instructions: 'Intructions',
+        agreement: 'User agreement',
+        legalInfo: 'Legal information',
+        legalRegulation: 'Legal regulation',
+        conditions: 'Conditions',
+        confidentiality: 'Confidentiality',
+        trust: 'Confidence building',
+        risk: 'Risk warning',
+      },
+
       news: 'News',
       faq: 'FAQ',
 
@@ -92,7 +104,19 @@ const resources = {
       cabinet: 'Личный кабинет',
       grpahGrow: 'График роста',
       partners: 'Партнёры',
-      documents: 'Документы',
+
+      documents: { 
+        title: 'Документы',
+        instructions: 'Инструкции',
+        agreement: 'Пользовательское соглашение',
+        legalInfo: 'Юридическая информация о компании',
+        legalRegulation: 'Правовое регулирование',
+        conditions: 'Условия',
+        confidentiality: 'Конфиденциальность',
+        trust: 'Укрепление доверия',
+        risk: 'Предупреждение о рисках',
+      },
+
       news: 'Новости',
       faq: 'FAQ',
 
