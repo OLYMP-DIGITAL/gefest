@@ -54,13 +54,18 @@ export const PartnersScreen = ({
 
   return (
     <ScrollView>
+      <style>
+        @import
+        url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
+      </style>
       <View style={{ padding: 20, alignItems: 'center' }}>
         <Text
           style={{
             fontSize: 40,
             fontWeight: 'bold',
             paddingBottom: 20,
-            color: '#403f3f'
+            color: '#403f3f',
+            fontFamily: `'Montserrat', sans-serif`,
           }}
         >
           {t('partners')}
@@ -109,7 +114,9 @@ export const PartnersScreen = ({
                           if (!supported) {
                             console.log("Can't handle url: " + image.url);
                           } else {
-                            return Linking.openURL(`${env[envKyes.apiHost]}${image.url}`);
+                            return Linking.openURL(
+                              `${env[envKyes.apiHost]}${image.url}`
+                            );
                           }
                         })
                         .catch((err) =>
