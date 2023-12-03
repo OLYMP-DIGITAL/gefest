@@ -133,6 +133,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontStyle: 'normal',
     fontFamily: 'Urbanist-Regular, Arial, sans-serif',
+    color: '#403f3f',
   },
   accordContent: {
     fontSize: 20,
