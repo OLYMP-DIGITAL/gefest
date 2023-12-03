@@ -28,10 +28,6 @@ export const DocumentsScreen = () => {
       contentInsetAdjustmentBehavior="automatic"
       style={styles.container}
     >
-      <style>
-        @import
-        url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
-      </style>
       {Array.isArray(documents) &&
         documents.map((document, index) => (
           <View key={`document-${index}`} style={styles.btnContainer}>
@@ -86,7 +82,7 @@ const styles = StyleSheet.create({
   },
   link: {
     color: '#3f9978',
-    fontFamily: `'Montserrat', sans-serif`,
+    fontFamily: `'Montserrat-Regular', sans-serif`,
   },
 });
 
