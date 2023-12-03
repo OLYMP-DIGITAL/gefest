@@ -1,17 +1,10 @@
 import api from 'core/services/api';
-
-export interface News {
-  title: string;
-  description: string;
-  text: string;
-  date: string;
-  attributes?: any;
-}
+import { NewsInfo } from './news.types';
 
 export enum NewsRoutes {
   all = 'articles?populate=image',
 }
 
-export const fetchNews = (): Promise<News[]> => {
-  return api.get<News[]>(NewsRoutes.all);
+export const fetchNews = (): Promise<NewsInfo[]> => {
+  return api.get<NewsInfo[]>(NewsRoutes.all);
 };
