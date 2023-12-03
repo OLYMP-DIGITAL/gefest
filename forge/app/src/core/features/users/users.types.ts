@@ -5,15 +5,16 @@ export const TokenAtomKey = 'TokenKey';
 
 export interface User {
   id: number;
-  username: string;
+  name: string;
   email: string;
+  sername: string;
+  blocked: boolean;
+  username: string;
   provider: string;
   confirmed: boolean;
-  blocked: boolean;
-  sername: string;
-  patronymic: string;
   createdAt: string;
   updatedAt: string;
+  patronymic: string;
 }
 
 export type SignInResponse = ErrorResponse & SignInSuccessResponse;
