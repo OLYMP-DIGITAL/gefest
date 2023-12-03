@@ -67,6 +67,10 @@ export const FaqScreen = () => {
   }
   return (
     <>
+      <style>
+        @import
+        url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
+      </style>
       {isLoading ? (
         <ActivityIndicator size="large" color="#fc440f" style={styles.loader} />
       ) : (
@@ -132,13 +136,13 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '700',
     fontStyle: 'normal',
-    fontFamily: 'Urbanist-Regular, Arial, sans-serif',
+    fontFamily: `'Montserrat', sans-serif`,
     color: '#403f3f',
   },
   accordContent: {
     fontSize: 20,
     fontWeight: '200',
-    fontFamily: 'Urbanist-Regular, Arial, sans-serif',
+    fontFamily: `'Montserrat', sans-serif`,
   },
   accordBody: {
     padding: 12,
