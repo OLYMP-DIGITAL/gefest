@@ -1,10 +1,11 @@
 import RoundedButton from 'core/components/rounded-button';
 import { StackNavigation } from 'core/types/navigation';
 import React from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { News, fetchNews } from 'core/features/news/news.api';
+import { NewsCard } from './components/news-card.component';
 
 export const NewsScreen = () => {
   const navigation = useNavigation<StackNavigation>();
@@ -30,11 +31,23 @@ export const NewsScreen = () => {
   }, []);
 
   return (
-    <RoundedButton
-      small
-      title={'Новость'}
-      onPress={() => navigation.navigate('Article')}
-    />
+    <ScrollView>
+      <View style={{ padding: 20 }}>
+        {news && news.map((data, index) =>
+          <NewsCard key={`news-${index}`}
+            data={{
+              title: data.title,
+              description: data.description || undefined,
+              text: data.text,
+              date: data.date,
+              imageUrl: data.attributes?.image?.data
+                ? data.attributes.image.data.attributes.url
+                : undefined,
+            }}
+          />
+        )}
+      </View>
+    </ScrollView>
   );
 };
 

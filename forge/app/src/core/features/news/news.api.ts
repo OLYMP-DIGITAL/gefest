@@ -9,7 +9,7 @@ export interface News {
 }
 
 export enum NewsRoutes {
-  all = 'articles',
+  all = 'articles?populate=image',
 }
 
 export const fetchNews = (): Promise<News[]> => {
