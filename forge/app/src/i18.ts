@@ -17,7 +17,7 @@ const resources = {
 
       user: {
         email: 'Email',
-        sername: 'Sername',
+        sername: 'Surname',
         name: 'Password',
         username: 'Login',
         password: 'Password',
@@ -136,13 +136,13 @@ const resources = {
       welcome: {
         title: 'Добро пожаловать в Scandinavian Financial Capital',
         signIn: 'Войти',
-        signUp: 'Зарегестрироваться',
+        signUp: 'Зарегистрироваться',
         registered: 'Уже есть аккаунт?',
         emailContinue: 'Продолжить с email',
       },
       signUp: {
         title: 'Регистрация',
-        setNameMessage: 'Укажите ФИО именно так, как написанно в паспорте',
+        setNameMessage: 'Укажите ФИО именно так, как написано в паспорте',
       },
       signIn: {
         timerText: 'Отправить код повторно можно будет через',

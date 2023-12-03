@@ -16,6 +16,10 @@ function App() {
         <ThemeProvider>
           <NavigationContainer>
             <ToastProvider placement="bottom">
+              <style>
+                @import
+                url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
+              </style>
               <Navigator />
             </ToastProvider>
           </NavigationContainer>
