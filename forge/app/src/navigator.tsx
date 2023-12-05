@@ -14,6 +14,7 @@ import { userAtom } from 'core/features/users/users.atoms';
 import { useRecoilValue } from 'recoil';
 import { Loader } from 'core/components/loader';
 import { useTranslation } from 'react-i18next';
+import { ScreenNames } from 'core/types/navigation';
 
 export function Navigator() {
   const { t } = useTranslation();

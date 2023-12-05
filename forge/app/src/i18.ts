@@ -97,6 +97,7 @@ const resources = {
       },
       info: {
         details: 'Details',
+        back: 'Back',
       },
     },
   },
@@ -198,6 +199,7 @@ const resources = {
       },
       info: {
         details: 'Подробнее',
+        back: 'Назад',
       },
     },
   },
