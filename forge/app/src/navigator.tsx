@@ -2,7 +2,7 @@ import { AppNavigator } from 'core/navigators/app.navigator';
 import { AuthNavigator } from 'core/navigators/auth.navigator';
 
 import { FaqScreen } from 'core/modules/FAQ';
-import NewsScreen from 'core/modules/NewsScreen';
+import { NewsScreen } from 'core/modules/news';
 import HomeScreen from './home/home.screen';
 import WalletScreen from 'core/modules/wallet/wallet.screen';
 import PartnersScreen from 'core/modules/partners/partners.screen';
@@ -14,6 +14,7 @@ import { userAtom } from 'core/features/users/users.atoms';
 import { useRecoilValue } from 'recoil';
 import { Loader } from 'core/components/loader';
 import { useTranslation } from 'react-i18next';
+import { ScreenNames } from 'core/types/navigation';
 
 export function Navigator() {
   const { t } = useTranslation();

@@ -120,7 +120,7 @@ export const PartnersScreen = ({
                         );
                     }
                   }}
-                  style={{ flex: 1 }}
+                // style={{ flex: 1 }}
                 >
                   <View key={`image-${image.name}`} style={{ margin: 10 }}>
                     <Image

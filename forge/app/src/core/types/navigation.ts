@@ -1,5 +1,4 @@
 import { NavigationProp } from '@react-navigation/native';
-import { User } from 'core/features/users/users.types';
 
 export type ScreenNames = [
   'Home',
@@ -8,7 +7,9 @@ export type ScreenNames = [
   'SignIn',
   'SignUp',
   'Welcome',
-  'Finished'
+  'Finished',
+  'Article',
+  'News'
 ]; // type these manually
 export type RootStackParamList = Record<ScreenNames[number], undefined>;
 export type StackNavigation = NavigationProp<RootStackParamList>;
@@ -25,4 +26,8 @@ export type NavigationStack = {
   SignUp: undefined;
   Welcome: undefined;
   Finished: undefined;
+
+  // News details
+  Article: undefined;
+  News: undefined;
 };
