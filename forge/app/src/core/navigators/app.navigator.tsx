@@ -21,6 +21,7 @@ import { configAtom, fetchConfig } from 'core/features/config/config.feature';
 import { useCopyToClipboard } from 'usehooks-ts';
 import { useTranslation } from 'react-i18next';
 import { userAtom } from 'core/features/users/users.atoms';
+import ArticleScreen from 'core/modules/ArticleScreen';
 
 interface DrawerMenuItem {
   label: string;
@@ -80,7 +81,7 @@ function CustomDrawerContent(props: any) {
               <DrawerItem
                 label="Реферальная ссылка"
                 onPress={() => {
-                  setCopiedValue(refValue);
+                  setCopiedValue(`${refValue}`);
                   console.log('Copied');
                 }}
                 labelStyle={styles.menuItems}
@@ -235,6 +236,27 @@ export function AppNavigator({ screens }: DrawerProps) {
           ),
         }}
       />
+
+      <DrawerNavigatorInstance.Screen
+        name="Article"
+        component={ArticleScreen}
+        options={{
+          ...(options as any),
+          drawerItemStyle: { display: 'none' },
+          ...(screenOptions as any),
+          drawerLabelStyle: styles.menuItems,
+          header: ({ navigation }) => (
+            <>
+              <CustomHeader
+                navigation={navigation}
+                title={'Article'}
+                hideItems={smallScreen}
+                sizeType={sizeType}
+              />
+            </>
+          ),
+        }}
+      />
     </DrawerNavigatorInstance.Navigator>
   );
 }
@@ -346,9 +368,8 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({
 
 function getCurrentTime() {
   const now = new Date();
-  const formattedDate = `${now.getDate()}.${
-    now.getMonth() + 1
-  }.${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}`;
+  const formattedDate = `${now.getDate()}.${now.getMonth() + 1
+    }.${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}`;
   return formattedDate;
 }
 

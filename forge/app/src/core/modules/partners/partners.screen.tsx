@@ -54,10 +54,6 @@ export const PartnersScreen = ({
 
   return (
     <ScrollView>
-      <style>
-        @import
-        url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
-      </style>
       <View style={{ padding: 20, alignItems: 'center' }}>
         <Text
           style={{
@@ -65,7 +61,7 @@ export const PartnersScreen = ({
             fontWeight: 'bold',
             paddingBottom: 20,
             color: '#403f3f',
-            fontFamily: `'Montserrat', sans-serif`,
+            fontFamily: `'Montserrat-Regular', sans-serif`,
           }}
         >
           {t('partners')}
@@ -124,7 +120,7 @@ export const PartnersScreen = ({
                         );
                     }
                   }}
-                  style={{ flex: 1 }}
+                // style={{ flex: 1 }}
                 >
                   <View key={`image-${image.name}`} style={{ margin: 10 }}>
                     <Image

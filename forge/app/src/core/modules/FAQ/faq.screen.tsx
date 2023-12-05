@@ -132,13 +132,13 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '700',
     fontStyle: 'normal',
-    fontFamily: `'Montserrat', sans-serif`,
+    fontFamily: `'Montserrat-Regular', sans-serif`,
     color: '#403f3f',
   },
   accordContent: {
     fontSize: 20,
     fontWeight: '200',
-    fontFamily: `'Montserrat', sans-serif`,
+    fontFamily: `'Montserrat-Regular', sans-serif`,
   },
   accordBody: {
     padding: 12,
