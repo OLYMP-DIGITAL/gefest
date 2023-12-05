@@ -3,13 +3,21 @@ import { ErrorResponse } from 'core/types/requests';
 export const UserAtomKey = 'UserAtomKey';
 export const TokenAtomKey = 'TokenKey';
 
+export interface UserPayload {
+  name: string;
+  email: string;
+  sername: string;
+  patronymic: string;
+}
+
 export interface User {
   id: number;
   name: string;
   email: string;
   sername: string;
-  blocked: boolean;
   username: string;
+
+  blocked: boolean;
   provider: string;
   confirmed: boolean;
   createdAt: string;

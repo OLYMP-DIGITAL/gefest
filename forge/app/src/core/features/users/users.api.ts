@@ -15,9 +15,9 @@ export const signIn = (values: SignInPayload): Promise<SignInResponse> => {
   return api.post<SignInResponse>(UserRoutes.signIn, values);
 };
 
-export const update = (values: User): Promise<User> => {
+export const update = (user: User): Promise<User> => {
   return api.put<User>(
-    UserRoutes.update.replace(/:id/g, String(values.id)),
-    values
+    UserRoutes.update.replace(/:id/g, String(user.id)),
+    user
   );
 };

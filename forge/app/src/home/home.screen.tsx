@@ -10,13 +10,9 @@ import { useCallback, useMemo } from 'react';
 import * as yup from 'yup';
 import { useRecoilValue } from 'recoil';
 import { userAtom } from 'core/features/users/users.atoms';
-import { User } from 'core/features/users/users.types';
-import api from 'core/services/api';
 import { update } from 'core/features/users/users.api';
-
-interface CabinetUser extends User {
-  // ...
-}
+import PhoneInput from 'react-native-phone-input';
+import { UserPayload } from 'core/features/users/users.types';
 
 // import Button from 'core/components/button';
 
@@ -27,9 +23,6 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
   const validationSchema = useMemo(
     () =>
       yup.object().shape({
-        username: yup
-          .string()
-          .required(`${t('user.username')} ${t('messages.isRequired')}`),
         name: yup
           .string()
           .required(`${t('user.name')} ${t('messages.isRequired')}`),
@@ -48,12 +41,9 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
   );
 
   const onSubmit = useCallback(
-    (values: CabinetUser) => {
+    (values: UserPayload) => {
       if (user) {
-        update({
-          id: user.id,
-          ...values,
-        }).then((response) => {
+        update(values, user.id).then((response) => {
           console.log('Rsponse', response);
         });
       }
@@ -73,7 +63,6 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
       <Formik
         initialValues={{
           name: user?.name || '',
-          username: user?.username || '',
           sername: user?.sername || '',
           patronymic: user?.patronymic || '',
           email: user?.email || '',
@@ -84,17 +73,7 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
       >
         {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
           <View style={{ width: '70%' }}>
-            <View style={{ marginVertical: 10, marginTop: 20 }}>
-              <Input
-                placeholder={t('user.username')}
-                onChangeText={handleChange('username')}
-                onBlur={handleBlur('username')}
-                value={values.username}
-              />
-              {errors.username && (
-                <Text style={{ color: 'red' }}>{errors.username}</Text>
-              )}
-            </View>
+            <PhoneInput />
 
             <View style={{ marginVertical: 10, marginTop: 20 }}>
               <Input
