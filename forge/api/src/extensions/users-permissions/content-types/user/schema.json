@@ -74,6 +74,37 @@
       "type": "string",
       "required": true,
       "maxLength": 50
+    },
+    "phone": {
+      "type": "string",
+      "maxLength": 20
+    },
+    "passportFace": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "passportRegistration": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "passportConfirmed": {
+      "type": "boolean",
+      "default": false
+    },
+    "faceWithPassport": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false
     }
   }
 }

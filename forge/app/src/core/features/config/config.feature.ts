@@ -2,6 +2,7 @@ import api from 'core/services/api';
 import { atom } from 'recoil';
 
 export interface Config {
+  sharePrice: number;
   companyValue: number;
   payloadRedirect: string;
 }

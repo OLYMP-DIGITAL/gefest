@@ -19,10 +19,21 @@ const resources = {
         email: 'Email',
         sername: 'Surname',
         name: 'Password',
+        phone: 'Phone',
         username: 'Login',
         password: 'Password',
         patronymic: 'Patronymic',
         emailOrLogin: 'Email or login',
+      },
+
+      cabinetPage: {
+        personal: 'Personal data',
+        passport: 'Passport data',
+        passportFacePage: 'Face page',
+        faceWithPassport: 'Face photo with passport',
+        passportRegistrationPage: 'Registration page',
+        waitCheck: 'Wait check',
+        passportConfirmed: 'Passport is confirmed',
       },
 
       units: {
@@ -41,13 +52,14 @@ const resources = {
         goHome: 'Go home',
         topUp: 'Account top-up',
         totalBalance: 'Total balance',
+        currentSharePrice: 'Current share price',
       },
 
       messages: {
         isRequired: 'is required field',
         invalidEmail: 'invalid email',
         requestFailed: 'Request is failed. Please, try later',
-        requestSuccess: 'Request completed successfully',
+        requestSuccess: 'Thank you. Request completed successfully',
       },
 
       welcome: {
@@ -118,10 +130,23 @@ const resources = {
         email: 'Email',
         sername: 'Фамилия',
         name: 'Имя',
+        phone: 'Телефон',
         username: 'Логин',
         password: 'Пароль',
         patronymic: 'Отчество',
         emailOrLogin: 'Email или логин',
+      },
+
+      cabinetPage: {
+        personal: 'Персональные данные',
+        passport: 'Паспортные данные',
+        passportFacePage: 'Главная страница',
+        passportRegistrationPage: 'Страница с регистрацией',
+        passportConfirmed:
+          'Паспортные данные подтверждены. Если хотите обновить данные - обратитесь в службу поддержки',
+        faceWithPassport: 'Фото с паспортом',
+        waitCheck:
+          'Изображение загружено и ожидает проверки. Если хотите изменить изображение, обратитесь в службу поддержки',
       },
 
       units: {
@@ -141,6 +166,7 @@ const resources = {
         goHome: 'Вернуться домой',
         topUp: 'Пополнение счёта',
         totalBalance: 'Общий баланс',
+        currentSharePrice: 'Текущая стоимость доли',
       },
 
       messages: {
@@ -148,7 +174,7 @@ const resources = {
         invalidEmail: 'неправильный email',
         requestFailed:
           'Произошла ошбка во время запроса. Пожалйста, повторите позже',
-        requestSuccess: 'Запрос выполнен успешно',
+        requestSuccess: 'Спасибо. Запрос выполнен успешно',
       },
 
       welcome: {
