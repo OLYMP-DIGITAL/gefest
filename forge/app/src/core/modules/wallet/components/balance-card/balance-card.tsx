@@ -1,11 +1,13 @@
 import { useNavigation } from '@react-navigation/native';
 import RoundedButton from 'core/components/rounded-button';
+import { configAtom } from 'core/features/config/config.feature';
 import { Transaction } from 'core/features/transactions/transactions.types';
 import { useTheme } from 'core/providers/theme.provider';
 import { StackNavigation } from 'core/types/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, StyleSheet, Text, View } from 'react-native';
+import { useRecoilValue } from 'recoil';
 
 interface Props {
   transactions: Transaction[];
@@ -16,6 +18,7 @@ export const BalanceCard = ({ transactions }: Props) => {
   const { theme } = useTheme();
   const [balance, setBalance] = useState<number>(0);
   const navigation = useNavigation<StackNavigation>();
+  const config = useRecoilValue(configAtom);
 
   useEffect(() => {
     if (transactions.length) {
@@ -65,6 +68,11 @@ export const BalanceCard = ({ transactions }: Props) => {
           display: 'flex',
         },
 
+        sharePrice: {
+          display: 'flex',
+          marginTop: 15,
+        },
+
         amount: {
           fontSize: 24,
         },
@@ -84,6 +92,13 @@ export const BalanceCard = ({ transactions }: Props) => {
           <Text>{t('payment.totalBalance')}</Text>
           <Text style={styles.amount}>₽{balance}</Text>
         </View>
+      </View>
+
+      <View style={styles.sharePrice}>
+        <Text>{t('payment.currentSharePrice')}</Text>
+        {config && (
+          <Text style={styles.amount}>${config.sharePrice / 100}</Text>
+        )}
       </View>
 
       <View style={styles.actions}>

@@ -29,10 +29,13 @@ class Api {
   }
 
   post<T>(route: string, data: any = {}): Promise<T> {
-    const raw = JSON.stringify(data);
+    const raw = data instanceof FormData ? data : JSON.stringify(data);
     const headers = new Headers();
 
-    headers.append('Content-Type', 'application/json');
+    if (!(data instanceof FormData)) {
+      headers.append('Content-Type', 'application/json');
+    }
+
     headers.append('accept', '*/*');
     headers.append('Authorization', `${BEARER} ${this.token}`);
 

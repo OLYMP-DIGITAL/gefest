@@ -5,20 +5,61 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 import RoundedButton from 'core/components/rounded-button';
 import { Input } from 'core/components/input';
 import { Formik } from 'formik';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 
 import * as yup from 'yup';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { userAtom } from 'core/features/users/users.atoms';
-import { update } from 'core/features/users/users.api';
-import PhoneInput from 'react-native-phone-input';
+import { fetchMe, update } from 'core/features/users/users.api';
 import { UserPayload } from 'core/features/users/users.types';
+import { useToast } from 'react-native-toast-notifications';
+import { H3Text } from 'core/components/text/h3.text';
+import { H1Text } from 'core/components/text/h1.text';
+import { H4Text } from 'core/components/text/h4.text';
+import api from 'core/services/api';
 
 // import Button from 'core/components/button';
 
+const WaitCheck = () => {
+  const { t } = useTranslation();
+
+  return (
+    <View style={{ marginVertical: 10 }}>
+      <Text style={{ fontSize: 17 }}>{t('cabinetPage.waitCheck')}</Text>
+    </View>
+  );
+};
+
+const Confirmed = () => {
+  const { t } = useTranslation();
+
+  return (
+    <View style={{ marginVertical: 10 }}>
+      <Text style={{ fontSize: 17, color: 'green' }}>
+        {t('cabinetPage.passportConfirmed')}
+      </Text>
+    </View>
+  );
+};
+
 export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
   const { t } = useTranslation();
-  const user = useRecoilValue(userAtom);
+  const toast = useToast();
+  const [user, setUser] = useRecoilState(userAtom);
+
+  const refetchMe = async () => {
+    try {
+      const response = await fetchMe();
+
+      if (response && response.id) {
+        setUser(response);
+      } else {
+        console.error('There is no logged in data on response', response);
+      }
+    } catch (e) {
+      console.error('Error on fetch logged in user', e);
+    }
+  };
 
   const validationSchema = useMemo(
     () =>
@@ -45,8 +86,52 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
       if (user) {
         update(values, user.id).then((response) => {
           console.log('Rsponse', response);
+
+          if ((response as any).error) {
+            toast.show((response as any).error.message, {
+              type: 'danger',
+            });
+          } else {
+            toast.show(t('messages.requestSuccess'), {
+              type: 'success',
+            });
+          }
         });
       }
+    },
+    [user]
+  );
+
+  const passportFaceRef = useRef<HTMLInputElement | null>(null);
+  const faceWithPassportRef = useRef<HTMLInputElement | null>(null);
+  const passportRegistrationRef = useRef<HTMLInputElement | null>(null);
+
+  const uploadImage = useCallback(
+    (ref: any, field: string) => {
+      const file = (ref.current as any)?.files[0];
+
+      if (!file) {
+        console.error('Файл не выбран');
+        return;
+      }
+
+      var formdata = new FormData();
+      formdata.append('ref', 'plugin::users-permissions.user');
+      formdata.append('refId', `${user?.id}`);
+      formdata.append('files', file);
+      formdata.append('field', field);
+
+      api
+        .post('upload', formdata)
+        .then((result) => {
+          console.log('Passport result upload', result);
+          toast.show(t('messages.requestSuccess'), {
+            type: 'success',
+          });
+
+          refetchMe();
+        })
+        .catch((error) => console.log('error', error));
     },
     [user]
   );
@@ -66,6 +151,7 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
           sername: user?.sername || '',
           patronymic: user?.patronymic || '',
           email: user?.email || '',
+          phone: user?.phone || '',
           // password: '',
         }}
         validationSchema={validationSchema}
@@ -73,7 +159,11 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
       >
         {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
           <View style={{ width: '70%' }}>
-            <PhoneInput />
+            <H1Text text={t('cabinet')} />
+
+            <View style={{ marginVertical: 10 }}>
+              <H3Text text={t('cabinetPage.personal')} />
+            </View>
 
             <View style={{ marginVertical: 10, marginTop: 20 }}>
               <Input
@@ -122,6 +212,71 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
                 <Text style={{ color: 'red' }}>{errors.email}</Text>
               )}
             </View>
+
+            <View style={{ marginVertical: 10, marginTop: 20 }}>
+              <Input
+                placeholder={t('user.phone')}
+                onChangeText={handleChange('phone')}
+                onBlur={handleBlur('phone')}
+                value={values.phone}
+              />
+
+              {errors.phone && (
+                <Text style={{ color: 'red' }}>{errors.phone}</Text>
+              )}
+            </View>
+
+            <View style={{ marginVertical: 10 }}>
+              <H3Text text={t('cabinetPage.passport')} />
+            </View>
+
+            {(user?.passportConfirmed && <Confirmed />) || (
+              <>
+                <View style={{ marginVertical: 10, marginTop: 20 }}>
+                  <H4Text text={t('cabinetPage.passportFacePage')} />
+
+                  {(!user?.passportConfirmed && !user?.passportFace && (
+                    <input
+                      ref={passportFaceRef}
+                      type="file"
+                      onChange={() =>
+                        uploadImage(passportFaceRef, 'passportFace')
+                      }
+                    />
+                  )) || <WaitCheck />}
+                </View>
+                <View style={{ marginVertical: 10, marginTop: 20 }}>
+                  <H4Text text={t('cabinetPage.passportRegistrationPage')} />
+
+                  {(!user?.passportConfirmed && !user?.passportRegistration && (
+                    <input
+                      ref={passportRegistrationRef}
+                      type="file"
+                      onChange={() =>
+                        uploadImage(
+                          passportRegistrationRef,
+                          'passportRegistration'
+                        )
+                      }
+                    />
+                  )) || <WaitCheck />}
+                </View>
+
+                <View style={{ marginVertical: 10, marginTop: 20 }}>
+                  <H4Text text={t('cabinetPage.faceWithPassport')} />
+
+                  {(!user?.passportConfirmed && !user?.faceWithPassport && (
+                    <input
+                      ref={faceWithPassportRef}
+                      type="file"
+                      onChange={() =>
+                        uploadImage(faceWithPassportRef, 'faceWithPassport')
+                      }
+                    />
+                  )) || <WaitCheck />}
+                </View>
+              </>
+            )}
 
             <View style={{ marginVertical: 20 }}>
               <RoundedButton
