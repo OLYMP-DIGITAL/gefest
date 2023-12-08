@@ -136,6 +136,7 @@ interface DrawerProps {
 const DrawerNavigatorInstance = createDrawerNavigator();
 
 export function AppNavigator({ screens }: DrawerProps) {
+  const { t } = useTranslation();
   const { theme } = useTheme();
   const { size, sizeType } = useWindowSize();
 
@@ -238,7 +239,7 @@ export function AppNavigator({ screens }: DrawerProps) {
       />
 
       <DrawerNavigatorInstance.Screen
-        name="Article"
+        name={t('article') as string}
         component={ArticleScreen}
         options={{
           ...(options as any),
@@ -249,7 +250,7 @@ export function AppNavigator({ screens }: DrawerProps) {
             <>
               <CustomHeader
                 navigation={navigation}
-                title={'Article'}
+                title={t('article') as string}
                 hideItems={smallScreen}
                 sizeType={sizeType}
               />
