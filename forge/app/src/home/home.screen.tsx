@@ -226,7 +226,7 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
               )}
             </View>
 
-            <View style={{ marginVertical: 20 }}>
+            <View style={{ marginVertical: 20, width: 200 }}>
               <RoundedButton
                 title={t('buttons.save')}
                 onPress={handleSubmit as () => void}
