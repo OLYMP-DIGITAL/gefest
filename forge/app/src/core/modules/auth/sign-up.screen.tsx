@@ -99,12 +99,12 @@ export function SignUpScreen({
     >
       <H3Text text={t('signUp.title')} />
 
-      <View style={styles.message}>
+      {/* <View style={styles.message}>
         <BodyXlRegular
           styles={{ textAlign: 'center' }}
           text={t('signUp.setNameMessage')}
         />
-      </View>
+      </View> */}
 
       <Formik
         initialValues={{
