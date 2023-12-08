@@ -70,7 +70,7 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
           .required(`${t('user.name')} ${t('messages.isRequired')}`),
         lastname: yup
           .string()
-          .required(`${t('user.sername')} ${t('messages.isRequired')}`),
+          .required(`${t('user.lastname')} ${t('messages.isRequired')}`),
         middlename: yup
           .string()
           .required(`${t('user.middlename')} ${t('messages.isRequired')}`),
@@ -170,11 +170,12 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
               <View style={{ marginVertical: 10, marginTop: 20 }}>
                 <Input
                   placeholder={t('user.name')}
+                  editable={!user?.passportConfirmed}
                   onChangeText={handleChange('name')}
                   onBlur={handleBlur('name')}
                   value={values.name}
                 />
-                {errors.name && (
+                {!user?.passportConfirmed && errors.name && (
                   <Text style={{ color: 'red' }}>{errors.name}</Text>
                 )}
               </View>
@@ -182,11 +183,12 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
               <View style={{ marginVertical: 10 }}>
                 <Input
                   placeholder={t('user.lastname')}
+                  editable={!user?.passportConfirmed}
                   onChangeText={handleChange('lastname')}
                   onBlur={handleBlur('lastname')}
                   value={values.lastname}
                 />
-                {errors.lastname && (
+                {!user?.passportConfirmed && errors.lastname && (
                   <Text style={{ color: 'red' }}>{errors.lastname}</Text>
                 )}
               </View>
@@ -194,11 +196,12 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
               <View style={{ marginVertical: 10 }}>
                 <Input
                   placeholder={t('user.middlename')}
+                  editable={!user?.passportConfirmed}
                   onChangeText={handleChange('middlename')}
                   onBlur={handleBlur('middlename')}
                   value={values.middlename}
                 />
-                {errors.middlename && (
+                {!user?.passportConfirmed && errors.middlename && (
                   <Text style={{ color: 'red' }}>{errors.middlename}</Text>
                 )}
               </View>
@@ -206,11 +209,12 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
               <View style={{ marginVertical: 10 }}>
                 <Input
                   placeholder={t('user.email')}
+                  editable={!user?.passportConfirmed}
                   onChangeText={handleChange('email')}
                   onBlur={handleBlur('email')}
                   value={values.email}
                 />
-                {errors.email && (
+                {!user?.passportConfirmed && errors.email && (
                   <Text style={{ color: 'red' }}>{errors.email}</Text>
                 )}
               </View>
@@ -218,23 +222,26 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
               <View style={{ marginVertical: 10, marginTop: 20 }}>
                 <Input
                   placeholder={t('user.phone')}
+                  editable={!user?.passportConfirmed}
                   onChangeText={handleChange('phone')}
                   onBlur={handleBlur('phone')}
                   value={values.phone}
                 />
 
-                {errors.phone && (
+                {!user?.passportConfirmed && errors.phone && (
                   <Text style={{ color: 'red' }}>{errors.phone}</Text>
                 )}
               </View>
 
-              <View style={{ marginVertical: 20, width: 200 }}>
-                <RoundedButton
-                  title={t('buttons.save')}
-                  onPress={handleSubmit as () => void}
-                  disabled={Object.keys(errors).length > 0}
-                />
-              </View>
+              {!user?.passportConfirmed && (
+                <View style={{ marginVertical: 20, width: 200 }}>
+                  <RoundedButton
+                    title={t('buttons.save')}
+                    onPress={handleSubmit as () => void}
+                    disabled={Object.keys(errors).length > 0}
+                  />
+                </View>
+              )}
 
               <View style={{ marginVertical: 10 }}>
                 <H3Text text={t('cabinetPage.passport')} />
