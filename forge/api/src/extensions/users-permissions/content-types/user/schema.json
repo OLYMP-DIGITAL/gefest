@@ -108,9 +108,8 @@
       ]
     },
     "referal": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "plugin::users-permissions.user"
+      "required": false,
+      "type": "integer"
     }
   }
 }
