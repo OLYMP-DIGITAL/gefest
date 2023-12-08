@@ -44,6 +44,7 @@ const resources = {
       buttons: {
         submit: 'Submit',
         save: 'Save',
+        continue: 'Continue',
       },
 
       payment: {
@@ -160,6 +161,7 @@ const resources = {
       buttons: {
         save: 'Сохранить',
         submit: 'Отправить',
+        continue: 'Продолжить',
       },
 
       payment: {
