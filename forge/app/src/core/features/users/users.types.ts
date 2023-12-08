@@ -10,8 +10,8 @@ interface Image {
 export interface UserPayload {
   name: string;
   email: string;
-  sername: string;
-  patronymic: string;
+  lastname: string;
+  middlename: string;
 }
 
 export interface User {
@@ -19,7 +19,7 @@ export interface User {
   name: string;
   phone: string;
   email: string;
-  sername: string;
+  lastname: string;
   username: string;
 
   passportFace: null | Image;
@@ -32,7 +32,7 @@ export interface User {
   confirmed: boolean;
   createdAt: string;
   updatedAt: string;
-  patronymic: string;
+  middlename: string;
 }
 
 export type SignInResponse = ErrorResponse & SignInSuccessResponse;

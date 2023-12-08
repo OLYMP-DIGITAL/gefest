@@ -73,7 +73,7 @@ function CustomDrawerContent(props: any) {
                   />
                   <Text style={[styles.sidebarInfo, { paddingTop: 10 }]}>
                     {user?.username}{' '}
-                    {(user?.sername ? user?.sername[0] : '') + '.'}
+                    {(user?.lastname ? user?.lastname[0] : '') + '.'}
                   </Text>
                 </View>
               </View>
@@ -351,7 +351,8 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({
 
             <View style={styles.userWrapper}>
               <Text style={styles.valueText}>
-                {user?.username} {(user?.sername ? user?.sername[0] : '') + '.'}
+                {user?.username}{' '}
+                {(user?.lastname ? user?.lastname[0] : '') + '.'}
               </Text>
 
               {/* <Image
@@ -368,8 +369,9 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({
 
 function getCurrentTime() {
   const now = new Date();
-  const formattedDate = `${now.getDate()}.${now.getMonth() + 1
-    }.${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}`;
+  const formattedDate = `${now.getDate()}.${
+    now.getMonth() + 1
+  }.${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}`;
   return formattedDate;
 }
 

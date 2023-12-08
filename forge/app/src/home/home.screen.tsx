@@ -67,12 +67,12 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
         name: yup
           .string()
           .required(`${t('user.name')} ${t('messages.isRequired')}`),
-        sername: yup
+        lastname: yup
           .string()
           .required(`${t('user.sername')} ${t('messages.isRequired')}`),
-        patronymic: yup
+        middlename: yup
           .string()
-          .required(`${t('user.patronymic')} ${t('messages.isRequired')}`),
+          .required(`${t('user.middlename')} ${t('messages.isRequired')}`),
         email: yup
           .string()
           .email('Invalid email')
@@ -148,8 +148,8 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
       <Formik
         initialValues={{
           name: user?.name || '',
-          sername: user?.sername || '',
-          patronymic: user?.patronymic || '',
+          lastname: user?.lastname || '',
+          middlename: user?.middlename || '',
           email: user?.email || '',
           phone: user?.phone || '',
           // password: '',
@@ -179,25 +179,25 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
 
             <View style={{ marginVertical: 10 }}>
               <Input
-                placeholder={t('user.sername')}
-                onChangeText={handleChange('sername')}
-                onBlur={handleBlur('sername')}
-                value={values.sername}
+                placeholder={t('user.lastname')}
+                onChangeText={handleChange('lastname')}
+                onBlur={handleBlur('lastname')}
+                value={values.lastname}
               />
-              {errors.sername && (
-                <Text style={{ color: 'red' }}>{errors.sername}</Text>
+              {errors.lastname && (
+                <Text style={{ color: 'red' }}>{errors.lastname}</Text>
               )}
             </View>
 
             <View style={{ marginVertical: 10 }}>
               <Input
-                placeholder={t('user.patronymic')}
-                onChangeText={handleChange('patronymic')}
-                onBlur={handleBlur('patronymic')}
-                value={values.patronymic}
+                placeholder={t('user.middlename')}
+                onChangeText={handleChange('middlename')}
+                onBlur={handleBlur('middlename')}
+                value={values.middlename}
               />
-              {errors.patronymic && (
-                <Text style={{ color: 'red' }}>{errors.patronymic}</Text>
+              {errors.middlename && (
+                <Text style={{ color: 'red' }}>{errors.middlename}</Text>
               )}
             </View>
 

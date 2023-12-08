@@ -64,15 +64,15 @@
       "unique": false,
       "required": true
     },
-    "sername": {
+    "lastname": {
       "type": "string"
     },
-    "patronymic": {
+    "middlename": {
       "type": "string"
     },
     "name": {
       "type": "string",
-      "required": true,
+      "required": false,
       "maxLength": 50
     },
     "phone": {
@@ -100,11 +100,17 @@
       "default": false
     },
     "faceWithPassport": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
+    },
+    "referal": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
     }
   }
 }

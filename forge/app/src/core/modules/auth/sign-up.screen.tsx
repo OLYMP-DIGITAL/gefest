@@ -15,14 +15,13 @@ import { saveToken } from 'core/services/token';
 import { User } from 'core/features/users/users.types';
 import { useToast } from 'react-native-toast-notifications';
 import { ErrorResponse } from 'core/types/requests';
+import { TextInput } from 'react-native-gesture-handler';
 
 interface SignUpUser {
-  name: string;
   email: string;
-  sername: string;
+  referal: string;
   username: string;
   password: string;
-  patronymic: string;
 }
 
 type RegistrationResponse = RegistrationSuccessResponse & ErrorResponse;
@@ -47,18 +46,8 @@ export function SignUpScreen({
   const validationSchema = useMemo(
     () =>
       yup.object().shape({
-        username: yup
-          .string()
-          .required(`${t('user.username')} ${t('messages.isRequired')}`),
-        name: yup
-          .string()
-          .required(`${t('user.name')} ${t('messages.isRequired')}`),
-        sername: yup
-          .string()
-          .required(`${t('user.sername')} ${t('messages.isRequired')}`),
-        patronymic: yup
-          .string()
-          .required(`${t('user.patronymic')} ${t('messages.isRequired')}`),
+        referal: yup.string(),
+        username: yup.string(),
         email: yup
           .string()
           .email('Invalid email')
@@ -119,16 +108,9 @@ export function SignUpScreen({
 
       <Formik
         initialValues={{
-          // username: 'Pavel',
-          // sername: 'Tretyakov',
-          // patronymic: 'Vyacheslavovich',
-          // email: 'paveltretyakov.ru@gmail.com',
-          // password: '123456',
-          username: '',
-          sername: '',
-          patronymic: '',
           email: '',
-          name: '',
+          referal: '',
+          username: '',
           password: '',
         }}
         validationSchema={validationSchema}
@@ -136,59 +118,17 @@ export function SignUpScreen({
       >
         {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
           <View style={{ width: '70%' }}>
-            <View style={{ marginVertical: 10, marginTop: 20 }}>
-              <Input
-                placeholder={t('user.username')}
-                onChangeText={handleChange('username')}
-                onBlur={handleBlur('username')}
-                value={values.username}
-              />
-              {errors.username && (
-                <Text style={{ color: 'red' }}>{errors.username}</Text>
-              )}
-            </View>
-
-            <View style={{ marginVertical: 10, marginTop: 20 }}>
-              <Input
-                placeholder={t('user.name')}
-                onChangeText={handleChange('name')}
-                onBlur={handleBlur('name')}
-                value={values.name}
-              />
-              {errors.name && (
-                <Text style={{ color: 'red' }}>{errors.name}</Text>
-              )}
-            </View>
-
-            <View style={{ marginVertical: 10 }}>
-              <Input
-                placeholder={t('user.sername')}
-                onChangeText={handleChange('sername')}
-                onBlur={handleBlur('sername')}
-                value={values.sername}
-              />
-              {errors.sername && (
-                <Text style={{ color: 'red' }}>{errors.sername}</Text>
-              )}
-            </View>
-
-            <View style={{ marginVertical: 10 }}>
-              <Input
-                placeholder={t('user.patronymic')}
-                onChangeText={handleChange('patronymic')}
-                onBlur={handleBlur('patronymic')}
-                value={values.patronymic}
-              />
-              {errors.patronymic && (
-                <Text style={{ color: 'red' }}>{errors.patronymic}</Text>
-              )}
-            </View>
-
             <View style={{ marginVertical: 10 }}>
               <Input
                 placeholder={t('user.email')}
-                onChangeText={handleChange('email')}
-                onBlur={handleBlur('email')}
+                onChangeText={(text) => {
+                  handleChange('email')(text);
+                  handleChange('username')(text);
+                }}
+                onBlur={(text) => {
+                  handleBlur('email')(text);
+                  handleBlur('username')(text);
+                }}
                 value={values.email}
               />
               {errors.email && (
@@ -206,6 +146,18 @@ export function SignUpScreen({
               />
               {errors.password && (
                 <Text style={{ color: 'red' }}>{errors.password}</Text>
+              )}
+            </View>
+
+            <View style={{ marginVertical: 10 }}>
+              <Input
+                placeholder={t('referalLink')}
+                onChangeText={handleChange('referal')}
+                onBlur={handleBlur('referal')}
+                value={values.referal}
+              />
+              {errors.referal && (
+                <Text style={{ color: 'red' }}>{errors.referal}</Text>
               )}
             </View>
 
