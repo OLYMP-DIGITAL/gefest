@@ -70,7 +70,7 @@ export const NewsCard = ({ data, details }: Props) => {
         imageWrapper: {
             ...(sizeType !== ScreenSize.small ? {
                 width: 300,
-                height: '100%',
+                height: 'auto',
             } : {
                 width: '100%',
                 height: 200,
@@ -146,7 +146,7 @@ export const NewsCard = ({ data, details }: Props) => {
                             <Text style={style.normalText}>{convertDateToString(data.date)}</Text>
                         </View>
                         {!details &&
-                            <TouchableOpacity onPress={() => { setArticle(data); navigation.navigate('Article') }}>
+                            <TouchableOpacity onPress={() => { setArticle(data); navigation.navigate(t('article') as any) }}>
                                 <View style={style.detailsRow}>
                                     <Text style={{ ...style.normalText, color: '#6842FF', marginRight: 5 }}>
                                         {t('info.details')}

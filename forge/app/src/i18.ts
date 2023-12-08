@@ -14,6 +14,7 @@ const resources = {
       documents: 'Documents',
       news: 'News',
       faq: 'FAQ',
+      article: 'News',
 
       user: {
         email: 'Email',
@@ -45,6 +46,7 @@ const resources = {
       },
 
       payment: {
+        title: 'Payment',
         deposit: 'Deposit amount',
         goToPay: 'Go to pay page',
         replenish: 'Replenish the balance',
@@ -125,6 +127,7 @@ const resources = {
       documents: 'Документы',
       news: 'Новости',
       faq: 'FAQ',
+      article: 'Новость',
 
       user: {
         email: 'Email',
@@ -158,6 +161,7 @@ const resources = {
       },
 
       payment: {
+        title: 'Оплата',
         deposit: 'Сумма пополнения',
         goToPay: 'Перейти к форме оплаты',
         replenish: 'Пополнение баланса',
