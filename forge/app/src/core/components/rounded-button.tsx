@@ -27,8 +27,7 @@ export const RoundedButton = ({
       StyleSheet.create({
         button: {
           paddingHorizontal: small ? 16 : 32,
-          paddingVertical: small ? 9 : 18,
-          borderRadius: 100,
+          paddingVertical: small ? 9 : 13,
           backgroundColor: (() => {
             if (disabled) {
               return theme.greyscale200;
@@ -45,8 +44,9 @@ export const RoundedButton = ({
           textAlign: 'center',
           fontSize: 16,
           fontStyle: 'normal',
-          fontWeight: '600',
           lineHeight: 22,
+          textTransform: 'uppercase',
+          fontFamily: `'Montserrat-Regular', sans-serif`,
           letterSpacing: 0.2,
           color: (() => {
             if (disabled) {
