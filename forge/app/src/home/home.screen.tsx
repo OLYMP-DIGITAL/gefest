@@ -226,6 +226,14 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
               )}
             </View>
 
+            <View style={{ marginVertical: 20 }}>
+              <RoundedButton
+                title={t('buttons.save')}
+                onPress={handleSubmit as () => void}
+                disabled={Object.keys(errors).length > 0}
+              />
+            </View>
+
             <View style={{ marginVertical: 10 }}>
               <H3Text text={t('cabinetPage.passport')} />
             </View>
@@ -277,14 +285,6 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
                 </View>
               </>
             )}
-
-            <View style={{ marginVertical: 20 }}>
-              <RoundedButton
-                title={t('buttons.submit')}
-                onPress={handleSubmit as () => void}
-                disabled={Object.keys(errors).length > 0}
-              />
-            </View>
           </View>
         )}
       </Formik>
