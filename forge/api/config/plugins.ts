@@ -25,7 +25,7 @@ module.exports = ({ env }) => ({
   'users-permissions': {
     config: {
       register: {
-        allowedFields: ['name', 'sername', 'patronymic'],
+        allowedFields: ['referal'],
       },
     },
   },

@@ -17,12 +17,12 @@ const resources = {
 
       user: {
         email: 'Email',
-        sername: 'Surname',
+        lastname: 'Lastname',
         name: 'Password',
         phone: 'Phone',
         username: 'Login',
         password: 'Password',
-        patronymic: 'Patronymic',
+        middlename: 'Middlename',
         emailOrLogin: 'Email or login',
       },
 
@@ -128,12 +128,12 @@ const resources = {
 
       user: {
         email: 'Email',
-        sername: 'Фамилия',
+        lastname: 'Фамилия',
         name: 'Имя',
         phone: 'Телефон',
         username: 'Логин',
         password: 'Пароль',
-        patronymic: 'Отчество',
+        middlename: 'Отчество',
         emailOrLogin: 'Email или логин',
       },
 

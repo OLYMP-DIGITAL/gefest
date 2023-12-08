@@ -30,14 +30,14 @@ export function Navigator() {
       <AppNavigator
         screens={[
           {
-            name: t('cabinet'),
-            component: HomeScreen,
-            iconSrc: require('assets/profile-icon.png'),
-          },
-          {
             name: t('wallet.title'),
             component: WalletScreen,
             iconSrc: require('assets/wallet-icon.png'),
+          },
+          {
+            name: t('cabinet'),
+            component: HomeScreen,
+            iconSrc: require('assets/profile-icon.png'),
           },
           {
             name: t('grpahGrow'),
