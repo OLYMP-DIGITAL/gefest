@@ -64,6 +64,7 @@ const resources = {
         invalidEmail: 'invalid email',
         requestFailed: 'Request is failed. Please, try later',
         requestSuccess: 'Thank you. Request completed successfully',
+        referalCopied: 'Referal ID is copied',
       },
 
       welcome: {
@@ -183,6 +184,7 @@ const resources = {
         requestFailed:
           'Произошла ошбка во время запроса. Пожалйста, повторите позже',
         requestSuccess: 'Спасибо. Запрос выполнен успешно',
+        referalCopied: 'Реферальный идентификатор скопирован',
       },
 
       welcome: {

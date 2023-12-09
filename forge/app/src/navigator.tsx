@@ -1,20 +1,21 @@
-import { AppNavigator } from 'core/navigators/app.navigator';
+import { AppNavigator } from 'core/navigators/app-navigator/app.navigator';
 import { AuthNavigator } from 'core/navigators/auth.navigator';
 
-import { FaqScreen } from 'core/modules/FAQ';
-import { NewsScreen } from 'core/modules/news';
-import HomeScreen from './home/home.screen';
-import WalletScreen from 'core/modules/wallet/wallet.screen';
-import PartnersScreen from 'core/modules/partners/partners.screen';
 import DocumentsScreen from 'core/modules/DocumentsScreen';
+import { FaqScreen } from 'core/modules/FAQ';
 import GrowthChartScreen from 'core/modules/GrowthChartScreen';
+import { NewsScreen } from 'core/modules/news';
+import PartnersScreen from 'core/modules/partners/partners.screen';
+import WalletScreen from 'core/modules/wallet/wallet.screen';
+import HomeScreen from './home/home.screen';
 
-import { useAuth } from 'core/providers/auth.provider';
-import { userAtom } from 'core/features/users/users.atoms';
-import { useRecoilValue } from 'recoil';
 import { Loader } from 'core/components/loader';
+import { userAtom } from 'core/features/users/users.atoms';
+import { useAuth } from 'core/providers/auth.provider';
 import { useTranslation } from 'react-i18next';
-import { ScreenNames } from 'core/types/navigation';
+import { useRecoilValue } from 'recoil';
+import { PaymentScreen } from 'core/modules/payment/payment.screen';
+import ArticleScreen from 'core/modules/ArticleScreen';
 
 export function Navigator() {
   const { t } = useTranslation();
@@ -63,6 +64,16 @@ export function Navigator() {
             name: t('faq'),
             component: FaqScreen,
             iconSrc: require('assets/faq-icon.png'),
+          },
+          {
+            name: 'Payment',
+            component: PaymentScreen,
+            hidden: true,
+          },
+          {
+            name: 'Article',
+            component: ArticleScreen,
+            hidden: true,
           },
         ]}
       />

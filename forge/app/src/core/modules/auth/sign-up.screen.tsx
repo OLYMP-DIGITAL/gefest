@@ -2,7 +2,6 @@ import * as yup from 'yup'; // Библиотека для валидации
 import { Formik } from 'formik';
 import { H3Text } from 'core/components/text/h3.text';
 import { StyleSheet, Text, View } from 'react-native';
-import { BodyXlRegular } from 'core/components/text/body-xl-regular.text';
 import { useTranslation } from 'react-i18next';
 
 import { Input } from 'core/components/input';
@@ -15,7 +14,6 @@ import { saveToken } from 'core/services/token';
 import { User } from 'core/features/users/users.types';
 import { useToast } from 'react-native-toast-notifications';
 import { ErrorResponse } from 'core/types/requests';
-import { TextInput } from 'react-native-gesture-handler';
 
 interface SignUpUser {
   email: string;
@@ -63,9 +61,6 @@ export function SignUpScreen({
     api
       .post<RegistrationResponse>('auth/local/register', values)
       .then((response) => {
-        // Handle success.
-        console.log('[SignUpScreen] signup.response:', response);
-
         if (response.error) {
           return toast.show(response.error.message, {
             type: 'danger',
@@ -73,15 +68,8 @@ export function SignUpScreen({
         }
 
         navigation.navigate('Finished');
-
-        // Если не понадобиться подтверждение почты
-        // if (response.jwt) {
-        //   saveToken(response.jwt);
-        //   navigation.navigate('Finished');
-        // }
       })
       .catch((error) => {
-        // Handle error.
         console.log('An error occurred:', error);
         toast.show(t('messages.requestFailed'));
       });
@@ -98,13 +86,6 @@ export function SignUpScreen({
       }}
     >
       <H3Text text={t('signUp.title')} />
-
-      {/* <View style={styles.message}>
-        <BodyXlRegular
-          styles={{ textAlign: 'center' }}
-          text={t('signUp.setNameMessage')}
-        />
-      </View> */}
 
       <Formik
         initialValues={{

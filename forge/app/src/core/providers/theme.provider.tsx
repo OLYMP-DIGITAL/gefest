@@ -1,4 +1,3 @@
-import { useEffectOnce } from 'usehooks-ts';
 import { darkTheme, lightTheme } from '../style/themes';
 import { createContext, useContext, useState, useEffect } from 'react';
 import { Dimensions } from 'react-native';
@@ -16,12 +15,14 @@ const ThemeContext = createContext<ThemeContextType>({
 });
 
 interface WindowSizeType {
-  height: number,
-  width: number
+  height: number;
+  width: number;
 }
 
 export enum ScreenSize {
-  small = 'small', medium = 'medium', large = 'large'
+  small = 'small',
+  medium = 'medium',
+  large = 'large',
 }
 
 const windowDimensions = Dimensions.get('window');
@@ -53,28 +54,37 @@ export const useTheme = () => {
 };
 
 export const useWindowSize = () => {
-  const [size, setSize] = useState<WindowSizeType>({ height: windowDimensions.height, width: windowDimensions.width });
+  const [size, setSize] = useState<WindowSizeType>({
+    height: windowDimensions.height,
+    width: windowDimensions.width,
+  });
   const [sizeType, setSizeType] = useState<ScreenSize>();
+  const [smallSize, setSmallSize] = useState<boolean>();
 
   useEffect(() => {
-    const subscription = Dimensions.addEventListener(
-      'change',
-      ({ window }) => {
-        setSize({ height: window.height, width: window.width });
-      },
-    );
+    const subscription = Dimensions.addEventListener('change', ({ window }) => {
+      setSize({ height: window.height, width: window.width });
+    });
     return () => subscription?.remove();
   }, []);
 
   useEffect(() => {
     if (size?.width >= 1000) {
-      setSizeType(ScreenSize.large)
+      setSizeType(ScreenSize.large);
     } else if (size?.width < 1000 && size?.width > 600) {
-      setSizeType(ScreenSize.medium)
+      setSizeType(ScreenSize.medium);
     } else {
-      setSizeType(ScreenSize.small)
+      setSizeType(ScreenSize.small);
     }
-  }, [size])
+  }, [size]);
 
-  return { size, sizeType }
-} 
+  useEffect(() => {
+    if (sizeType === ScreenSize.small) {
+      setSmallSize(true);
+    } else {
+      setSmallSize(false);
+    }
+  }, [sizeType]);
+
+  return { size, sizeType, smallSize };
+};
