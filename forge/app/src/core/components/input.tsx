@@ -2,7 +2,7 @@ import { useTheme } from 'core/providers/theme.provider';
 import { useMemo } from 'react';
 import { StyleSheet, Text, TextInput, TextInputProps } from 'react-native';
 
-interface Props extends TextInputProps {}
+interface Props extends TextInputProps { }
 
 export const Input = ({ ...rest }: Props) => {
   const { theme } = useTheme();
@@ -31,8 +31,9 @@ export const Input = ({ ...rest }: Props) => {
     <TextInput
       {...rest}
       style={{ ...styles.body }}
-      // onChangeText={handleInputChange}
-      // value={text}
+      placeholderTextColor={theme.greyscale500}
+    // onChangeText={handleInputChange}
+    // value={text}
     />
   );
 };
