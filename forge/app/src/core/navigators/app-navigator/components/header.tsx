@@ -1,4 +1,5 @@
 import { DrawerItem } from '@react-navigation/drawer';
+import { LangSwitcher } from 'core/components/lang-switcher';
 import { configAtom } from 'core/features/config/config.feature';
 import { userAtom } from 'core/features/users/users.atoms';
 import { useTheme, useWindowSize } from 'core/providers/theme.provider';
@@ -83,7 +84,7 @@ export const Header: React.FC<Props> = ({ title, navigation }) => {
         {!smallSize && (
           <>
             <View style={styles.infoContainer}>
-              <Text style={{ color: '#fff' }}>en rus</Text>
+              <LangSwitcher />
             </View>
 
             <View style={styles.userWrapper}>

@@ -3,6 +3,7 @@ import {
   DrawerItem,
   DrawerItemList,
 } from '@react-navigation/drawer';
+import { LangSwitcher } from 'core/components/lang-switcher';
 import { languageAtom } from 'core/features/language/language.atoms';
 import { LangsEnum } from 'core/features/language/language.types';
 import { useAuth } from 'core/providers/auth.provider';
@@ -14,7 +15,7 @@ import { useRecoilState } from 'recoil';
 import { useCopyToClipboard } from 'usehooks-ts';
 
 export function Drawer(props: any) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { user } = useAuth();
   const { state, ...rest } = props;
 
@@ -41,8 +42,7 @@ export function Drawer(props: any) {
             <>
               <View style={[styles.sidebarBlock, { padding: 20 }]}>
                 <View style={styles.reverseRow}>
-                  <Text style={styles.sidebarInfo} onPress={() => setLang(LangsEnum.en)}>en</Text>
-                  <Text style={styles.sidebarInfo} onPress={() => setLang(LangsEnum.ru)}>rus</Text>
+                  <LangSwitcher />
                 </View>
 
                 <View style={[styles.sidebarBlock, { paddingTop: 10 }]}>
