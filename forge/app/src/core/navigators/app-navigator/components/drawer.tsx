@@ -3,15 +3,18 @@ import {
   DrawerItem,
   DrawerItemList,
 } from '@react-navigation/drawer';
+import { languageAtom } from 'core/features/language/language.atoms';
+import { LangsEnum } from 'core/features/language/language.types';
 import { useAuth } from 'core/providers/auth.provider';
 import { useWindowSize } from 'core/providers/theme.provider';
 import { useTranslation } from 'react-i18next';
 import { Image, ImageBackground, StyleSheet, Text, View } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
+import { useRecoilState } from 'recoil';
 import { useCopyToClipboard } from 'usehooks-ts';
 
 export function Drawer(props: any) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { user } = useAuth();
   const { state, ...rest } = props;
 
@@ -21,6 +24,8 @@ export function Drawer(props: any) {
 
   const { smallSize } = useWindowSize();
   const [, setCopiedValue] = useCopyToClipboard();
+
+  const [lang, setLang] = useRecoilState(languageAtom);
 
   return (
     <ImageBackground
@@ -36,7 +41,8 @@ export function Drawer(props: any) {
             <>
               <View style={[styles.sidebarBlock, { padding: 20 }]}>
                 <View style={styles.reverseRow}>
-                  <Text style={styles.sidebarInfo}>en rus</Text>
+                  <Text style={styles.sidebarInfo} onPress={() => setLang(LangsEnum.en)}>en</Text>
+                  <Text style={styles.sidebarInfo} onPress={() => setLang(LangsEnum.ru)}>rus</Text>
                 </View>
 
                 <View style={[styles.sidebarBlock, { paddingTop: 10 }]}>
