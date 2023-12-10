@@ -24,7 +24,7 @@ export const PartnersScreen = ({
   const [partners, setPartners] = useState([]);
   const [images, setImages] = useState<ImageData[]>([]);
 
-  useEffect(() => {
+  const fetchPartners = async () => {
     try {
       api.get('partners?populate=image').then((result: any) => {
         setPartners(result.data || []);
@@ -32,6 +32,10 @@ export const PartnersScreen = ({
     } catch (e) {
       console.log('Error on downloading partners', e);
     }
+  };
+
+  useEffect(() => {
+    fetchPartners();
   }, []);
 
   useEffect(() => {

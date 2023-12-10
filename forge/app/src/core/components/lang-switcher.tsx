@@ -1,10 +1,9 @@
-import { languageAtom } from "core/features/language/language.atoms";
 import { LangsEnum } from "core/features/language/language.types";
+import { useLanguage } from "core/providers/language.provider";
 import { StyleSheet, Text, View } from "react-native"
-import { useRecoilState } from "recoil";
 
 export const LangSwitcher = () => {
-    const [lang, setLang] = useRecoilState(languageAtom);
+    const { lang, setLang } = useLanguage();
 
     return (
         <View style={styles.wrapper}>

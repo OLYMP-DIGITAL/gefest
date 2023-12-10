@@ -11,12 +11,12 @@ enum LangsEnum {
 
 interface Lang {
     lang: LangsEnum;
-    changeLang: (lang: LangsEnum) => void;
+    setLang: (lang: LangsEnum) => void;
 }
 
 export const LangContext = createContext<Lang>({
     lang: LangsEnum.en,
-    changeLang() {
+    setLang() {
         //
     }
 });
@@ -42,12 +42,8 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
         }
     }, [lang]);
 
-    const changeLang = (lang: LangsEnum) => {
-        i18n.changeLanguage(lang as string)
-    };
-
     return (
-        <LangContext.Provider value={{ lang, changeLang }}>
+        <LangContext.Provider value={{ lang, setLang }}>
             {children}
         </LangContext.Provider>
     );
