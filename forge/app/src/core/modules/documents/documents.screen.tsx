@@ -1,4 +1,5 @@
 import Button from 'core/components/button';
+import i18next from 'i18next';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -12,6 +13,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 export const DocumentsScreen = () => {
   const { t } = useTranslation();
+  console.log(i18next.language);
   const documents = [
     t('documents.instructions'),
     t('documents.agreement'),
