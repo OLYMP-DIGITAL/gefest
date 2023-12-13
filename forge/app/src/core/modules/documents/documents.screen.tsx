@@ -1,6 +1,6 @@
 import Button from 'core/components/button';
 import i18next from 'i18next';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   View,
@@ -10,11 +10,21 @@ import {
   Platform,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useRecoilValue } from 'recoil';
+import { documentsAtom } from './documents.atom';
+import { fetchDocuments } from './documents.api';
 
 export const DocumentsScreen = () => {
   const { t } = useTranslation();
+  const documents = useRecoilValue(documentsAtom);
+
   console.log(i18next.language);
-  const documents = [
+
+  useEffect(() => {
+      fetchDocuments();
+    },
+    []);
+  /*   const documents = [
     t('documents.instructions'),
     t('documents.agreement'),
     t('documents.legalInfo'),
@@ -24,7 +34,7 @@ export const DocumentsScreen = () => {
     t('documents.trust'),
     t('documents.risk'),
   ];
-
+ */
   return (
     <ScrollView
       contentInsetAdjustmentBehavior="automatic"
@@ -46,7 +56,8 @@ export const DocumentsScreen = () => {
                   }}
                   style={styles.link}
                 >
-                  {document.toUpperCase()}
+                  {i18next.language === 'ru' && document.ru.toUpperCase()}
+                  {i18next.language === 'eng' && document.eng.toUpperCase()}
                 </TouchableOpacity>
               }
             />
