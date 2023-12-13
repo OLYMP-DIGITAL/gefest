@@ -209,7 +209,7 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
               <View style={{ marginVertical: 10 }}>
                 <Input
                   placeholder={t('user.email')}
-                  editable={!user?.passportConfirmed}
+                  editable={false}
                   onChangeText={handleChange('email')}
                   onBlur={handleBlur('email')}
                   value={values.email}
