@@ -4,13 +4,15 @@ import { useEffect, useState, useCallback } from 'react';
 import { fetchNews } from 'core/features/news/news.api';
 import { NewsCard } from './components/news-card.component';
 import { NewsInfo } from 'core/features/news/news.types';
+import { useLanguage } from 'core/providers/language.provider';
 
 export const NewsScreen = () => {
+  const { lang } = useLanguage();
   const [news, setNews] = useState<NewsInfo[]>();
 
   const getNews = async () => {
     try {
-      const response: any = await fetchNews();
+      const response: any = await fetchNews(lang);
 
       if (response && response.data) {
         setNews(response.data)
@@ -35,6 +37,7 @@ export const NewsScreen = () => {
       cards.push(
         <NewsCard key={`news-${index}`}
           data={{
+            lang: lang,
             title: value.title,
             description: value.description || undefined,
             text: value.text,

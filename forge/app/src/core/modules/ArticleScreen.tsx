@@ -7,16 +7,24 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigation } from 'core/types/navigation';
 import { useTranslation } from 'react-i18next';
+import { useLanguage } from 'core/providers/language.provider';
 
 const ArticleScreen = () => {
     const navigation = useNavigation<StackNavigation>();
     const { t } = useTranslation();
+    const { lang } = useLanguage();
 
     const [article, setArticle] = useRecoilState(articleAtom);
 
     useEffect(() => {
         return () => setArticle(null)
     }, []);
+
+    useEffect(() => {
+        if (article && article.lang !== lang) {
+            navigation.navigate(t('news') as any)
+        }
+    }, [lang]);
 
     const style = useMemo(() => StyleSheet.create({
         wrapper: {
