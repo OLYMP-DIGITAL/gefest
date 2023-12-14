@@ -116,6 +116,15 @@ const resources = {
         details: 'Details',
         back: 'Back',
       },
+
+      lifePay: {
+        card: {
+          pay: 'Pay',
+          title: 'Pay shares',
+          amount: 'Amount',
+          desc: "To purchase shares, enter the desired quantity and press the 'Pay' button.",
+        },
+      },
     },
   },
 
@@ -236,6 +245,15 @@ const resources = {
       info: {
         details: 'Подробнее',
         back: 'Назад',
+      },
+
+      lifePay: {
+        card: {
+          pay: 'Купить',
+          title: 'Приобретение долей',
+          amount: 'Количество',
+          desc: 'Чтобы приобрести доли, введие желаемое количество и нажмите кнопку "купить"',
+        },
       },
     },
   },
