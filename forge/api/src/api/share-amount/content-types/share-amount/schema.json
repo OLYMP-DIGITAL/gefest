@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "shares_amount",
+  "info": {
+    "singularName": "share-amount",
+    "pluralName": "shares-amount",
+    "displayName": "Стоимость долей"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "amount": {
+      "type": "integer",
+      "default": 1,
+      "required": true,
+      "max": 5000000,
+      "min": 1,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "news": {
+      "type": "richtext",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    }
+  }
+}

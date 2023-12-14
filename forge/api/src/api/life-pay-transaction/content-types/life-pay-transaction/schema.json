@@ -1,0 +1,43 @@
+{
+  "kind": "collectionType",
+  "collectionName": "life_pay_transactions",
+  "info": {
+    "singularName": "life-pay-transaction",
+    "pluralName": "life-pay-transactions",
+    "displayName": "Life Pay транзакции"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "shareAmount": {
+      "type": "integer",
+      "default": 0,
+      "required": true
+    },
+    "shareCount": {
+      "type": "integer",
+      "default": 0,
+      "required": true
+    },
+    "dollarRate": {
+      "type": "integer"
+    },
+    "transactionId": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "transactionLink": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    }
+  }
+}

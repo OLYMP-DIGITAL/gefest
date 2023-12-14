@@ -1,16 +1,15 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { BalanceCard } from './components/balance-card/balance-card';
-import { TransactionsTable } from './components/transactions-table/transactions-table';
-import { Transaction } from 'core/features/transactions/transactions.types';
-import { fetchUserTransactions } from 'core/features/transactions/transactions.api';
-import { useInterval } from 'usehooks-ts';
-import { StepText } from './components/step-text';
 import { H1Text } from 'core/components/text/h1.text';
-import { useTranslation } from 'react-i18next';
-import { ScrollView } from 'react-native-gesture-handler';
-import { LifePayCard } from './components/lfe-pay-card/life-pay-card.component';
+import { fetchUserTransactions } from 'core/features/transactions/transactions.api';
+import { Transaction } from 'core/features/transactions/transactions.types';
 import { useTheme } from 'core/providers/theme.provider';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import { useInterval } from 'usehooks-ts';
+import { LifePayCard } from './components/lfe-pay-card/life-pay-card.component';
+import { StepText } from './components/step-text';
+import { TransactionsTable } from './components/transactions-table/transactions-table';
 
 const WalletScreen = () => {
   const styles = useStyles();

@@ -1,5 +1,8 @@
 import { Input } from 'core/components/input';
+import { useLifePayAuth } from 'core/features/life-pay/use-life-pay-auth.hook';
+import { useShareAmount } from 'core/features/share-amount/user-share-amount.hook';
 import { useTheme } from 'core/providers/theme.provider';
+import { Formik } from 'formik';
 import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -10,49 +13,125 @@ import {
   View,
 } from 'react-native';
 
+import * as yup from 'yup';
+
+const MIN_AMOUNT = 1;
+const MAX_AMOUNT = 50;
+
+interface PayForm {
+  sharesCount: number;
+}
+
 export const LifePayCard = () => {
-  const styles = useStyles();
+  useLifePayAuth();
+
   const { t } = useTranslation();
 
-  const onPress = useCallback(() => {
+  const styles = useStyles();
+  const shareAmount = useShareAmount();
+
+  const onPress = useCallback((values: PayForm) => {
     // ...
+    console.log('Pay value', values);
   }, []);
 
+  const validationSchema = useMemo(
+    () =>
+      yup.object().shape({
+        sharesCount: yup
+          .number()
+          .min(MIN_AMOUNT, `${t('messages.minValue')} ${MIN_AMOUNT}`)
+          .max(MAX_AMOUNT, `${t('messages.maxValue')} ${MAX_AMOUNT}`)
+          .required(`${t('messages.isRequired')}`)
+          .nullable(),
+      }),
+    []
+  );
+
+  const calcAmountOfShares = (count: number): number => {
+    return count && shareAmount
+      ? ((Number((shareAmount * Number(count)) / 100).toFixed(2) ||
+          0) as number)
+      : 0;
+  };
+
   return (
-    <View
-      style={[
-        styles.wrapper,
-        Platform.OS === 'android'
-          ? { elevation: 5 }
-          : {
-              shadowColor: 'rgba(0, 0, 0, 0.2)',
-              shadowOffset: { width: 0, height: 3 },
-              shadowOpacity: 1,
-              shadowRadius: 5,
-            },
-      ]}
+    <Formik
+      initialValues={{
+        sharesCount: 0,
+      }}
+      onSubmit={onPress}
+      validationSchema={validationSchema}
     >
-      <View style={styles.titleWrapper}>
-        <Text style={styles.title}>{t('lifePay.card.title')}</Text>
-      </View>
-
-      <View style={styles.contentWrapper}>
-        <Text>{t('lifePay.card.desc')}</Text>
-
-        <View style={styles.inputWrapper}>
-          <Input placeholder={t('lifePay.card.amount')} />
-        </View>
-      </View>
-
-      <View style={styles.actionsWrapper}>
-        <TouchableOpacity
-          style={styles.materialButton}
-          onPress={onPress || undefined}
+      {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
+        <View
+          style={[
+            styles.wrapper,
+            Platform.OS === 'android'
+              ? { elevation: 5 }
+              : {
+                  shadowColor: 'rgba(0, 0, 0, 0.2)',
+                  shadowOffset: { width: 0, height: 3 },
+                  shadowOpacity: 1,
+                  shadowRadius: 5,
+                },
+          ]}
         >
-          <Text style={styles.materialButtonText}>{t('lifePay.card.pay')}</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+          <View style={styles.titleWrapper}>
+            <Text style={styles.title}>{t('lifePay.card.title')}</Text>
+          </View>
+
+          <View style={styles.contentWrapper}>
+            <Text>{t('lifePay.card.desc')}</Text>
+            <Text style={styles.currentAmount}>
+              {t('lifePay.card.currentAmount')}: $
+              {(shareAmount && Number(shareAmount / 100).toFixed(2)) || '0'}
+            </Text>
+
+            <Text style={styles.currentAmount}>
+              {t('lifePay.card.amountOfSharedCounts')}: $
+              {calcAmountOfShares(values.sharesCount)}
+            </Text>
+
+            <View style={styles.inputWrapper}>
+              <Input
+                placeholder={t('lifePay.card.amount')}
+                onChangeText={handleChange('sharesCount')}
+                onBlur={handleBlur('sharesCount')}
+                value={`${values.sharesCount || ''}`}
+                keyboardType="numeric"
+              />
+              {errors.sharesCount && (
+                <Text style={{ color: '#F75555', fontSize: 14 }}>
+                  {errors.sharesCount}
+                </Text>
+              )}
+            </View>
+          </View>
+
+          <View style={styles.actionsWrapper}>
+            <TouchableOpacity
+              style={[
+                styles.materialButton,
+                Object.keys(errors).length > 0 && styles.disabledMaterialButton,
+              ]}
+              onPress={handleSubmit as () => void}
+              disabled={Object.keys(errors).length > 0}
+            >
+              <Text
+                style={[
+                  styles.materialButtonText,
+                  Object.keys(errors).length > 0 &&
+                    styles.disabledMaterialButtonText,
+                ]}
+              >
+                {t('lifePay.card.pay')}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
+    </Formik>
   );
 };
 
@@ -63,7 +142,12 @@ const useStyles = () => {
     () =>
       StyleSheet.create({
         wrapper: {
+          maxWidth: 350,
           backgroundColor: '#fff',
+        },
+
+        currentAmount: {
+          marginVertical: 15,
         },
 
         titleWrapper: {
@@ -92,11 +176,19 @@ const useStyles = () => {
           // ...
         },
 
+        disabledMaterialButton: {
+          // ...
+        },
+
         materialButtonText: {
           color: '#000000de',
           fontSize: 14,
           fontWeight: '600',
           textTransform: 'uppercase',
+        },
+
+        disabledMaterialButtonText: {
+          color: '#00000042',
         },
 
         inputWrapper: {

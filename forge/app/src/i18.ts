@@ -65,6 +65,9 @@ const resources = {
         requestFailed: 'Request is failed. Please, try later',
         requestSuccess: 'Thank you. Request completed successfully',
         referalCopied: 'Referal ID is copied',
+        minValue: 'Min value is',
+        maxValue: 'Max value is',
+        isNumber: 'Value must be a number',
       },
 
       welcome: {
@@ -123,6 +126,8 @@ const resources = {
           title: 'Pay shares',
           amount: 'Amount',
           desc: "To purchase shares, enter the desired quantity and press the 'Pay' button.",
+          currentAmount: 'Current share amount',
+          amountOfSharedCounts: 'Amount of selected shares',
         },
       },
     },
@@ -194,6 +199,9 @@ const resources = {
           'Произошла ошбка во время запроса. Пожалйста, повторите позже',
         requestSuccess: 'Спасибо. Запрос выполнен успешно',
         referalCopied: 'Реферальный идентификатор скопирован',
+        minValue: 'Минимальное значение',
+        maxValue: 'Максимальное значение',
+        isNumber: 'Значение может быть только числом',
       },
 
       welcome: {
@@ -250,9 +258,11 @@ const resources = {
       lifePay: {
         card: {
           pay: 'Купить',
+          desc: 'Чтобы приобрести доли, введие желаемое количество и нажмите кнопку "купить"',
           title: 'Приобретение долей',
           amount: 'Количество',
-          desc: 'Чтобы приобрести доли, введие желаемое количество и нажмите кнопку "купить"',
+          currentAmount: 'Текущая стоимость доли',
+          amountOfSharedCounts: 'Выборано долей на сумму',
         },
       },
     },

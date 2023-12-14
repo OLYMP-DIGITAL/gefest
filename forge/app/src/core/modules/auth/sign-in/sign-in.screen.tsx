@@ -1,18 +1,18 @@
-import * as yup from 'yup';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { useTranslation } from 'react-i18next';
-import { Formik } from 'formik';
-import { signIn } from 'core/features/users/users.api';
 import { Input } from 'core/components/input';
 import RoundedButton from 'core/components/rounded-button';
-import { useToast } from 'react-native-toast-notifications';
-import { useSetRecoilState } from 'recoil';
+import { signIn } from 'core/features/users/users.api';
 import { tokenAtom, userAtom } from 'core/features/users/users.atoms';
-import { ResponseErrorName } from 'core/types/requests';
-import { ConfirmButton } from './components/confirm-button';
-import Icon from 'react-native-vector-icons/Feather';
 import { useTheme } from 'core/providers/theme.provider';
+import { ResponseErrorName } from 'core/types/requests';
+import { Formik } from 'formik';
+import { useCallback, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { StyleSheet, Text, View } from 'react-native';
+import { useToast } from 'react-native-toast-notifications';
+import Icon from 'react-native-vector-icons/Feather';
+import { useSetRecoilState } from 'recoil';
+import * as yup from 'yup';
+import { ConfirmButton } from './components/confirm-button';
 
 interface SignInUser {
   email: string;
@@ -86,22 +86,25 @@ function SignInScreen() {
       });
   }, []);
 
-  const styles = useMemo(() =>
-    StyleSheet.create({
-      passwordContainer: {
-        flexDirection: 'row',
-      },
-      passwordInput: {
-        flex: 1,
-        paddingRight: 50,
-      },
-      icon: {
-        position: 'absolute',
-        right: 18,
-        top: 20,
-        backgroundColor: theme.greyscale50
-      }
-    }), [theme]);
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        passwordContainer: {
+          flexDirection: 'row',
+        },
+        passwordInput: {
+          flex: 1,
+          paddingRight: 50,
+        },
+        icon: {
+          position: 'absolute',
+          right: 18,
+          top: 20,
+          backgroundColor: theme.greyscale50,
+        },
+      }),
+    [theme]
+  );
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -140,10 +143,15 @@ function SignInScreen() {
                   value={values.password}
                   style={styles.passwordInput}
                 />
-                <Icon name={hidePassword ? 'eye-off' : 'eye'}
-                  size={20} style={styles.icon}
-                  color={!values.password ? theme.greyscale500 : theme.primaryText}
-                  onPress={() => setHidePassword(!hidePassword)} />
+                <Icon
+                  name={hidePassword ? 'eye-off' : 'eye'}
+                  size={20}
+                  style={styles.icon}
+                  color={
+                    !values.password ? theme.greyscale500 : theme.primaryText
+                  }
+                  onPress={() => setHidePassword(!hidePassword)}
+                />
               </View>
               {errors.password && (
                 <Text style={{ color: 'red' }}>{errors.password}</Text>
@@ -160,10 +168,9 @@ function SignInScreen() {
 
             {showResendEmail && <ConfirmButton email={values.email} />}
           </View>
-        )
-        }
-      </Formik >
-    </View >
+        )}
+      </Formik>
+    </View>
   );
 }
 
