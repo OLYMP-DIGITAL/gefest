@@ -7,6 +7,7 @@ import i18n from './i18';
 import AuthProvider from 'core/providers/auth.provider';
 import { RecoilRoot } from 'recoil';
 import { ToastProvider } from 'react-native-toast-notifications';
+import { LanguageProvider } from 'core/providers/language.provider';
 const initI18n = i18n;
 
 function App() {
@@ -14,11 +15,13 @@ function App() {
     <RecoilRoot>
       <AuthProvider>
         <ThemeProvider>
-          <NavigationContainer>
-            <ToastProvider placement="bottom">
-              <Navigator />
-            </ToastProvider>
-          </NavigationContainer>
+          <LanguageProvider>
+            <NavigationContainer>
+              <ToastProvider placement="bottom">
+                <Navigator />
+              </ToastProvider>
+            </NavigationContainer>
+          </LanguageProvider>
         </ThemeProvider>
       </AuthProvider>
     </RecoilRoot>
