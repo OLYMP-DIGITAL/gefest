@@ -3,17 +3,36 @@ import { ErrorResponse } from 'core/types/requests';
 export const UserAtomKey = 'UserAtomKey';
 export const TokenAtomKey = 'TokenKey';
 
+interface Image {
+  id: number;
+}
+
+export interface UserPayload {
+  name: string;
+  email: string;
+  lastname: string;
+  middlename: string;
+}
+
 export interface User {
   id: number;
-  username: string;
+  name: string;
+  phone: string;
   email: string;
+  lastname: string;
+  username: string;
+
+  passportFace: null | Image;
+  passportConfirmed: boolean;
+  faceWithPassport: null | Image;
+  passportRegistration: null | Image;
+
+  blocked: boolean;
   provider: string;
   confirmed: boolean;
-  blocked: boolean;
-  sername: string;
-  patronymic: string;
   createdAt: string;
   updatedAt: string;
+  middlename: string;
 }
 
 export type SignInResponse = ErrorResponse & SignInSuccessResponse;

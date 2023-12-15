@@ -2,12 +2,11 @@ import * as yup from 'yup'; // Библиотека для валидации
 import { Formik } from 'formik';
 import { H3Text } from 'core/components/text/h3.text';
 import { StyleSheet, Text, View } from 'react-native';
-import { BodyXlRegular } from 'core/components/text/body-xl-regular.text';
 import { useTranslation } from 'react-i18next';
 
 import { Input } from 'core/components/input';
 import RoundedButton from 'core/components/rounded-button';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import api from 'core/services/api';
 import { NavigationProp } from '@react-navigation/native';
 import { NavigationStack } from 'core/types/navigation';
@@ -15,14 +14,14 @@ import { saveToken } from 'core/services/token';
 import { User } from 'core/features/users/users.types';
 import { useToast } from 'react-native-toast-notifications';
 import { ErrorResponse } from 'core/types/requests';
+import Icon from 'react-native-vector-icons/Feather';
+import { useTheme } from 'core/providers/theme.provider';
 
 interface SignUpUser {
-  name: string;
   email: string;
-  sername: string;
+  referal: string;
   username: string;
   password: string;
-  patronymic: string;
 }
 
 type RegistrationResponse = RegistrationSuccessResponse & ErrorResponse;
@@ -39,6 +38,9 @@ export function SignUpScreen({
 }) {
   const toast = useToast();
   const { t } = useTranslation();
+  const { theme } = useTheme();
+
+  const [hidePassword, setHidePassword] = useState<boolean>(true);
 
   useEffect(() => {
     saveToken('');
@@ -47,18 +49,8 @@ export function SignUpScreen({
   const validationSchema = useMemo(
     () =>
       yup.object().shape({
-        username: yup
-          .string()
-          .required(`${t('user.username')} ${t('messages.isRequired')}`),
-        name: yup
-          .string()
-          .required(`${t('user.name')} ${t('messages.isRequired')}`),
-        sername: yup
-          .string()
-          .required(`${t('user.sername')} ${t('messages.isRequired')}`),
-        patronymic: yup
-          .string()
-          .required(`${t('user.patronymic')} ${t('messages.isRequired')}`),
+        referal: yup.string(),
+        username: yup.string(),
         email: yup
           .string()
           .email('Invalid email')
@@ -74,9 +66,6 @@ export function SignUpScreen({
     api
       .post<RegistrationResponse>('auth/local/register', values)
       .then((response) => {
-        // Handle success.
-        console.log('[SignUpScreen] signup.response:', response);
-
         if (response.error) {
           return toast.show(response.error.message, {
             type: 'danger',
@@ -84,19 +73,29 @@ export function SignUpScreen({
         }
 
         navigation.navigate('Finished');
-
-        // Если не понадобиться подтверждение почты
-        // if (response.jwt) {
-        //   saveToken(response.jwt);
-        //   navigation.navigate('Finished');
-        // }
       })
       .catch((error) => {
-        // Handle error.
         console.log('An error occurred:', error);
         toast.show(t('messages.requestFailed'));
       });
   }, []);
+
+  const styles = useMemo(() =>
+    StyleSheet.create({
+      passwordContainer: {
+        flexDirection: 'row',
+      },
+      passwordInput: {
+        flex: 1,
+        paddingRight: 50,
+      },
+      icon: {
+        position: 'absolute',
+        right: 18,
+        top: 20,
+        backgroundColor: theme.greyscale50
+      }
+    }), [theme]);
 
   return (
     <View
@@ -110,25 +109,11 @@ export function SignUpScreen({
     >
       <H3Text text={t('signUp.title')} />
 
-      <View style={styles.message}>
-        <BodyXlRegular
-          styles={{ textAlign: 'center' }}
-          text={t('signUp.setNameMessage')}
-        />
-      </View>
-
       <Formik
         initialValues={{
-          // username: 'Pavel',
-          // sername: 'Tretyakov',
-          // patronymic: 'Vyacheslavovich',
-          // email: 'paveltretyakov.ru@gmail.com',
-          // password: '123456',
-          username: '',
-          sername: '',
-          patronymic: '',
           email: '',
-          name: '',
+          referal: '',
+          username: '',
           password: '',
         }}
         validationSchema={validationSchema}
@@ -136,59 +121,17 @@ export function SignUpScreen({
       >
         {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
           <View style={{ width: '70%' }}>
-            <View style={{ marginVertical: 10, marginTop: 20 }}>
-              <Input
-                placeholder={t('user.username')}
-                onChangeText={handleChange('username')}
-                onBlur={handleBlur('username')}
-                value={values.username}
-              />
-              {errors.username && (
-                <Text style={{ color: 'red' }}>{errors.username}</Text>
-              )}
-            </View>
-
-            <View style={{ marginVertical: 10, marginTop: 20 }}>
-              <Input
-                placeholder={t('user.name')}
-                onChangeText={handleChange('name')}
-                onBlur={handleBlur('name')}
-                value={values.name}
-              />
-              {errors.name && (
-                <Text style={{ color: 'red' }}>{errors.name}</Text>
-              )}
-            </View>
-
-            <View style={{ marginVertical: 10 }}>
-              <Input
-                placeholder={t('user.sername')}
-                onChangeText={handleChange('sername')}
-                onBlur={handleBlur('sername')}
-                value={values.sername}
-              />
-              {errors.sername && (
-                <Text style={{ color: 'red' }}>{errors.sername}</Text>
-              )}
-            </View>
-
-            <View style={{ marginVertical: 10 }}>
-              <Input
-                placeholder={t('user.patronymic')}
-                onChangeText={handleChange('patronymic')}
-                onBlur={handleBlur('patronymic')}
-                value={values.patronymic}
-              />
-              {errors.patronymic && (
-                <Text style={{ color: 'red' }}>{errors.patronymic}</Text>
-              )}
-            </View>
-
             <View style={{ marginVertical: 10 }}>
               <Input
                 placeholder={t('user.email')}
-                onChangeText={handleChange('email')}
-                onBlur={handleBlur('email')}
+                onChangeText={(text) => {
+                  handleChange('email')(text);
+                  handleChange('username')(text);
+                }}
+                onBlur={(text) => {
+                  handleBlur('email')(text);
+                  handleBlur('username')(text);
+                }}
                 value={values.email}
               />
               {errors.email && (
@@ -197,15 +140,33 @@ export function SignUpScreen({
             </View>
 
             <View style={{ marginVertical: 10 }}>
-              <Input
-                secureTextEntry
-                placeholder={t('user.password')}
-                onChangeText={handleChange('password')}
-                onBlur={handleBlur('password')}
-                value={values.password}
-              />
+              <View style={styles.passwordContainer}>
+                <Input
+                  secureTextEntry={hidePassword}
+                  placeholder={t('user.password')}
+                  onChangeText={handleChange('password')}
+                  onBlur={handleBlur('password')}
+                  value={values.password}
+                />
+                <Icon name={hidePassword ? 'eye-off' : 'eye'}
+                  size={20} style={styles.icon}
+                  color={!values.password ? theme.greyscale500 : theme.primaryText}
+                  onPress={() => setHidePassword(!hidePassword)} />
+              </View>
               {errors.password && (
                 <Text style={{ color: 'red' }}>{errors.password}</Text>
+              )}
+            </View>
+
+            <View style={{ marginVertical: 10 }}>
+              <Input
+                placeholder={t('referalLink')}
+                onChangeText={handleChange('referal')}
+                onBlur={handleBlur('referal')}
+                value={values.referal}
+              />
+              {errors.referal && (
+                <Text style={{ color: 'red' }}>{errors.referal}</Text>
               )}
             </View>
 

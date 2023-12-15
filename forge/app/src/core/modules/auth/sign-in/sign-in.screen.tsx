@@ -1,6 +1,6 @@
 import * as yup from 'yup';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Text, View } from 'react-native';
+import { useCallback, useMemo, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Formik } from 'formik';
 import { signIn } from 'core/features/users/users.api';
@@ -11,6 +11,8 @@ import { useSetRecoilState } from 'recoil';
 import { tokenAtom, userAtom } from 'core/features/users/users.atoms';
 import { ResponseErrorName } from 'core/types/requests';
 import { ConfirmButton } from './components/confirm-button';
+import Icon from 'react-native-vector-icons/Feather';
+import { useTheme } from 'core/providers/theme.provider';
 
 interface SignInUser {
   email: string;
@@ -25,7 +27,11 @@ interface SignInUser {
 function SignInScreen() {
   const toast = useToast();
   const { t } = useTranslation();
+  const { theme } = useTheme();
+
   const [showResendEmail, setShowResendEmail] = useState<boolean>(false);
+  const [hidePassword, setHidePassword] = useState<boolean>(true);
+
   const setUser = useSetRecoilState(userAtom);
   const setToken = useSetRecoilState(tokenAtom);
 
@@ -80,6 +86,23 @@ function SignInScreen() {
       });
   }, []);
 
+  const styles = useMemo(() =>
+    StyleSheet.create({
+      passwordContainer: {
+        flexDirection: 'row',
+      },
+      passwordInput: {
+        flex: 1,
+        paddingRight: 50,
+      },
+      icon: {
+        position: 'absolute',
+        right: 18,
+        top: 20,
+        backgroundColor: theme.greyscale50
+      }
+    }), [theme]);
+
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Formik
@@ -108,13 +131,20 @@ function SignInScreen() {
             </View>
 
             <View style={{ marginVertical: 10 }}>
-              <Input
-                secureTextEntry
-                placeholder={t('user.password')}
-                onChangeText={handleChange('password')}
-                onBlur={handleBlur('password')}
-                value={values.password}
-              />
+              <View style={styles.passwordContainer}>
+                <Input
+                  secureTextEntry={hidePassword}
+                  placeholder={t('user.password')}
+                  onChangeText={handleChange('password')}
+                  onBlur={handleBlur('password')}
+                  value={values.password}
+                  style={styles.passwordInput}
+                />
+                <Icon name={hidePassword ? 'eye-off' : 'eye'}
+                  size={20} style={styles.icon}
+                  color={!values.password ? theme.greyscale500 : theme.primaryText}
+                  onPress={() => setHidePassword(!hidePassword)} />
+              </View>
               {errors.password && (
                 <Text style={{ color: 'red' }}>{errors.password}</Text>
               )}
@@ -122,7 +152,7 @@ function SignInScreen() {
 
             <View style={{ marginVertical: 20 }}>
               <RoundedButton
-                title={t('buttons.submit')}
+                title={t('buttons.continue')}
                 onPress={handleSubmit as () => void}
                 disabled={Object.keys(errors).length > 0}
               />
@@ -130,9 +160,10 @@ function SignInScreen() {
 
             {showResendEmail && <ConfirmButton email={values.email} />}
           </View>
-        )}
-      </Formik>
-    </View>
+        )
+        }
+      </Formik >
+    </View >
   );
 }
 

@@ -26,15 +26,27 @@ const resources = {
 
       news: 'News',
       faq: 'FAQ',
+      article: 'News',
 
       user: {
         email: 'Email',
-        sername: 'Sername',
+        lastname: 'Lastname',
         name: 'Password',
+        phone: 'Phone',
         username: 'Login',
         password: 'Password',
-        patronymic: 'Patronymic',
+        middlename: 'Middlename',
         emailOrLogin: 'Email or login',
+      },
+
+      cabinetPage: {
+        personal: 'Personal data',
+        passport: 'Passport data',
+        passportFacePage: 'Face page',
+        faceWithPassport: 'Face photo with passport',
+        passportRegistrationPage: 'Registration page',
+        waitCheck: 'Wait check',
+        passportConfirmed: 'Passport is confirmed',
       },
 
       units: {
@@ -43,9 +55,12 @@ const resources = {
 
       buttons: {
         submit: 'Submit',
+        save: 'Save',
+        continue: 'Continue',
       },
 
       payment: {
+        title: 'Payment',
         deposit: 'Deposit amount',
         goToPay: 'Go to pay page',
         replenish: 'Replenish the balance',
@@ -53,13 +68,15 @@ const resources = {
         goHome: 'Go home',
         topUp: 'Account top-up',
         totalBalance: 'Total balance',
+        currentSharePrice: 'Current share price',
       },
 
       messages: {
         isRequired: 'is required field',
         invalidEmail: 'invalid email',
         requestFailed: 'Request is failed. Please, try later',
-        requestSuccess: 'Request completed successfully',
+        requestSuccess: 'Thank you. Request completed successfully',
+        referalCopied: 'Referal ID is copied',
       },
 
       welcome: {
@@ -93,6 +110,24 @@ const resources = {
         stepLabel: 'Initial Investment Offering',
         desc: 'Unique conditions in connection with the beginning of the formation of the initial capital of a targeted investment project.',
       },
+      month: {
+        '01': 'january',
+        '02': 'february',
+        '03': 'march',
+        '04': 'april',
+        '05': 'may',
+        '06': 'june',
+        '07': 'july',
+        '08': 'august',
+        '09': 'september',
+        '10': 'october',
+        '11': 'november',
+        '12': 'december',
+      },
+      info: {
+        details: 'Details',
+        back: 'Back',
+      },
     },
   },
 
@@ -119,15 +154,29 @@ const resources = {
 
       news: 'Новости',
       faq: 'FAQ',
+      article: 'Новость',
 
       user: {
         email: 'Email',
-        sername: 'Фамилия',
+        lastname: 'Фамилия',
         name: 'Имя',
+        phone: 'Телефон',
         username: 'Логин',
         password: 'Пароль',
-        patronymic: 'Отчество',
+        middlename: 'Отчество',
         emailOrLogin: 'Email или логин',
+      },
+
+      cabinetPage: {
+        personal: 'Персональные данные',
+        passport: 'Паспортные данные',
+        passportFacePage: 'Главная страница',
+        passportRegistrationPage: 'Страница с регистрацией',
+        passportConfirmed:
+          'Паспортные данные подтверждены. Если хотите обновить данные - обратитесь в службу поддержки',
+        faceWithPassport: 'Фото с паспортом',
+        waitCheck:
+          'Изображение загружено и ожидает проверки. Если хотите изменить изображение, обратитесь в службу поддержки',
       },
 
       units: {
@@ -135,10 +184,13 @@ const resources = {
       },
 
       buttons: {
+        save: 'Сохранить',
         submit: 'Отправить',
+        continue: 'Продолжить',
       },
 
       payment: {
+        title: 'Оплата',
         deposit: 'Сумма пополнения',
         goToPay: 'Перейти к форме оплаты',
         replenish: 'Пополнение баланса',
@@ -147,6 +199,7 @@ const resources = {
         goHome: 'Вернуться домой',
         topUp: 'Пополнение счёта',
         totalBalance: 'Общий баланс',
+        currentSharePrice: 'Текущая стоимость доли',
       },
 
       messages: {
@@ -154,19 +207,20 @@ const resources = {
         invalidEmail: 'неправильный email',
         requestFailed:
           'Произошла ошбка во время запроса. Пожалйста, повторите позже',
-        requestSuccess: 'Запрос выполнен успешно',
+        requestSuccess: 'Спасибо. Запрос выполнен успешно',
+        referalCopied: 'Реферальный идентификатор скопирован',
       },
 
       welcome: {
         title: 'Добро пожаловать в Scandinavian Financial Capital',
         signIn: 'Войти',
-        signUp: 'Зарегестрироваться',
+        signUp: 'Зарегистрироваться',
         registered: 'Уже есть аккаунт?',
         emailContinue: 'Продолжить с email',
       },
       signUp: {
         title: 'Регистрация',
-        setNameMessage: 'Укажите ФИО именно так, как написанно в паспорте',
+        setNameMessage: 'Укажите ФИО именно так, как написано в паспорте',
       },
       signIn: {
         timerText: 'Отправить код повторно можно будет через',
@@ -188,6 +242,24 @@ const resources = {
         step: '1 этап инвестиций',
         stepLabel: 'Initial Investment Offering',
         desc: 'Уникальные условия в связи с началом формирования первоначального капитала адресного инвестиционного проекта.',
+      },
+      month: {
+        '01': 'января',
+        '02': 'февраля',
+        '03': 'марта',
+        '04': 'апреля',
+        '05': 'мая',
+        '06': 'июня',
+        '07': 'июля',
+        '08': 'августа',
+        '09': 'сентября',
+        '10': 'октября',
+        '11': 'ноября',
+        '12': 'декабря',
+      },
+      info: {
+        details: 'Подробнее',
+        back: 'Назад',
       },
     },
   },

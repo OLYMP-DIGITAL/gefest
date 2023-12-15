@@ -29,6 +29,40 @@ class Api {
   }
 
   post<T>(route: string, data: any = {}): Promise<T> {
+    const raw = data instanceof FormData ? data : JSON.stringify(data);
+    const headers = new Headers();
+
+    if (!(data instanceof FormData)) {
+      headers.append('Content-Type', 'application/json');
+    }
+
+    headers.append('accept', '*/*');
+    headers.append('Authorization', `${BEARER} ${this.token}`);
+
+    const requestOptions = {
+      body: raw,
+      method: 'POST',
+      headers: headers,
+      redirect: 'follow',
+    };
+
+    return fetch(`${env[envKyes.apiHost]}/api/${route}`, requestOptions as any)
+      .then((response) => {
+        console.log(response);
+        return response.json();
+      })
+      .then((data) => {
+        // Обработка данных защищенного ресурса
+        console.log('Response data!', data);
+        return data as T;
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        return {} as T;
+      });
+  }
+
+  put<T>(route: string, data: any = {}): Promise<T> {
     const raw = JSON.stringify(data);
     const headers = new Headers();
 
@@ -38,7 +72,7 @@ class Api {
 
     const requestOptions = {
       body: raw,
-      method: 'POST',
+      method: 'PUT',
       headers: headers,
       redirect: 'follow',
     };

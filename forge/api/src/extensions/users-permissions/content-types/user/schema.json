@@ -64,16 +64,52 @@
       "unique": false,
       "required": true
     },
-    "sername": {
+    "lastname": {
       "type": "string"
     },
-    "patronymic": {
+    "middlename": {
       "type": "string"
     },
     "name": {
       "type": "string",
-      "required": true,
+      "required": false,
       "maxLength": 50
+    },
+    "phone": {
+      "type": "string",
+      "maxLength": 20
+    },
+    "passportFace": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "passportRegistration": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "passportConfirmed": {
+      "type": "boolean",
+      "default": false
+    },
+    "faceWithPassport": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "referal": {
+      "required": false,
+      "type": "integer"
     }
   }
 }
