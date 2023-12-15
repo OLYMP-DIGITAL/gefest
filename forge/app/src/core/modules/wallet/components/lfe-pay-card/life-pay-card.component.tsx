@@ -1,5 +1,9 @@
 import { Input } from 'core/components/input';
-import { useLifePayAuth } from 'core/features/life-pay/use-life-pay-auth.hook';
+import {
+  MakeTransactionPayload,
+  MakeTransactionResponse,
+  makeTransaction,
+} from 'core/features/life-pay/life-pay.api';
 import { useShareAmount } from 'core/features/share-amount/user-share-amount.hook';
 import { useTheme } from 'core/providers/theme.provider';
 import { Formik } from 'formik';
@@ -23,16 +27,19 @@ interface PayForm {
 }
 
 export const LifePayCard = () => {
-  useLifePayAuth();
+  // useLifePayAuth();
 
   const { t } = useTranslation();
 
   const styles = useStyles();
   const shareAmount = useShareAmount();
 
-  const onPress = useCallback((values: PayForm) => {
-    // ...
-    console.log('Pay value', values);
+  const onSubmit = useCallback((values: PayForm) => {
+    makeTransaction({
+      count: Number(values.sharesCount),
+    }).then((response: MakeTransactionResponse) => {
+      console.log('Submit response', response);
+    });
   }, []);
 
   const validationSchema = useMemo(
@@ -60,7 +67,7 @@ export const LifePayCard = () => {
       initialValues={{
         sharesCount: 0,
       }}
-      onSubmit={onPress}
+      onSubmit={onSubmit}
       validationSchema={validationSchema}
     >
       {({ handleChange, handleBlur, handleSubmit, values, errors }) => (

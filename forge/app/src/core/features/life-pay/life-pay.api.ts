@@ -4,6 +4,7 @@ import { LIFE_PAY_API_KEY, LIFE_PAY_SERVICE_ID } from './life-pay.atom';
 export enum LifePayRoutes {
   auth = 'https://api-ecom.life-pay.ru/v1/auth',
   createInvoice = 'https://api-ecom.life-pay.ru/v1/invoices',
+  makeTransaction = 'life-pay-transaction',
 }
 
 //  ==================== AUTH ==================================================
@@ -60,4 +61,21 @@ export const createLifePayInvoice = (): Promise<LifePayAuthReponse> => {
     api_key: LIFE_PAY_API_KEY,
     service_id: LIFE_PAY_SERVICE_ID,
   } as LifePayAuthPayload);
+};
+
+// ============================== Transaction ==================================
+export interface MakeTransactionPayload {
+  count: number;
+}
+export interface MakeTransactionResponse {
+  link: string;
+}
+
+export const makeTransaction = (
+  payload: MakeTransactionPayload
+): Promise<MakeTransactionResponse> => {
+  return api.post<MakeTransactionResponse>(
+    LifePayRoutes.makeTransaction,
+    payload
+  );
 };
