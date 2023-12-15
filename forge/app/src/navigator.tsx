@@ -1,6 +1,9 @@
 import { AppNavigator } from 'core/navigators/app-navigator/app.navigator';
 import { AuthNavigator } from 'core/navigators/auth.navigator';
-
+import NewsScreen from 'core/modules/NewsScreen';
+import HomeScreen from './home/home.screen';
+import WalletScreen from 'core/modules/wallet/wallet.screen';
+import PartnersScreen from 'core/modules/partners/partners.screen';
 import DocumentsScreen from 'core/modules/DocumentsScreen';
 import { FaqScreen } from 'core/modules/FAQ';
 import GrowthChartScreen from 'core/modules/GrowthChartScreen';
@@ -51,7 +54,7 @@ export function Navigator() {
             iconSrc: require('assets/partners-icon.png'),
           },
           {
-            name: t('documents'),
+            name: t('documents.title'),
             component: DocumentsScreen,
             iconSrc: require('assets/documents-icon.png'),
           },
