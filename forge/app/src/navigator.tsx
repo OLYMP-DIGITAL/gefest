@@ -24,7 +24,34 @@ export function Navigator() {
   const { isLoading } = useAuth();
   const user = useRecoilValue(userAtom);
 
+  const [restoredState, setRestoredState] = useState();
 
+  useEffect(() => {
+    const restoreState = async () => {
+      try {
+        const savedStateString = await AsyncStorage.getItem('navigationState');
+        if (savedStateString) {
+          const savedState = JSON.parse(savedStateString);
+          setRestoredState(savedState);
+        }
+      } catch (error) {
+        console.error('Error restoring navigation state:', error);
+      }
+    };
+
+    restoreState();
+  }, []);
+
+  const persistNavigationState = async (state: NavigationState | undefined) => {
+    if (state) {
+      try {
+        const serializedState = JSON.stringify(state);
+        await AsyncStorage.setItem('navigationState', serializedState);
+      } catch (error) {
+        console.error('Error persisting navigation state:', error);
+      }
+    }
+  };
 
   if (isLoading) {
     return <Loader />;
@@ -32,6 +59,10 @@ export function Navigator() {
 
   return (
     (user && (
+      <NavigationContainer
+        initialState={restoredState}
+        onStateChange={(state) => persistNavigationState(state)}
+      >
         <AppNavigator
           screens={[
             {
@@ -81,6 +112,7 @@ export function Navigator() {
             },
           ]}
         />
+      </NavigationContainer>
     )) || <AuthNavigator />
   );
 }

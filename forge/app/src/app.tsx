@@ -13,48 +13,14 @@ import { useEffect, useState } from 'react';
 const initI18n = i18n;
 
 function App() {
-  const [restoredState, setRestoredState] = useState();
-
-  useEffect(() => {
-    const restoreState = async () => {
-      try {
-        const savedStateString = await AsyncStorage.getItem('navigationState');
-        if (savedStateString) {
-          const savedState = JSON.parse(savedStateString);
-          setRestoredState(savedState);
-        }
-      } catch (error) {
-        console.error('Error restoring navigation state:', error);
-      }
-    };
-
-    restoreState();
-  }, []);
-
-  const persistNavigationState = async (state: NavigationState | undefined) => {
-    if (state) {
-      try {
-        const serializedState = JSON.stringify(state);
-        await AsyncStorage.setItem('navigationState', serializedState);
-      } catch (error) {
-        console.error('Error persisting navigation state:', error);
-      }
-    }
-  };
-  
   return (
     <RecoilRoot>
       <AuthProvider>
         <ThemeProvider>
           <LanguageProvider>
-            <NavigationContainer
-              initialState={restoredState}
-              onStateChange={(state) => persistNavigationState(state)}
-            >
               <ToastProvider placement="bottom">
                 <Navigator />
               </ToastProvider>
-            </NavigationContainer>
           </LanguageProvider>
         </ThemeProvider>
       </AuthProvider>
