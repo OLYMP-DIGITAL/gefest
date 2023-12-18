@@ -58,61 +58,67 @@ export function Navigator() {
   }
 
   return (
-    (user && (
-      <NavigationContainer
-        initialState={restoredState}
-        onStateChange={(state) => persistNavigationState(state)}
-      >
-        <AppNavigator
-          screens={[
-            {
-              name: t('wallet.title'),
-              component: WalletScreen,
-              iconSrc: require('assets/wallet-icon.png'),
-            },
-            {
-              name: t('cabinet'),
-              component: HomeScreen,
-              iconSrc: require('assets/profile-icon.png'),
-            },
-            {
-              name: t('grpahGrow'),
-              component: GrowthChartScreen,
-              iconSrc: require('assets/growth-icon.png'),
-            },
-            {
-              name: t('partners'),
-              component: PartnersScreen,
-              iconSrc: require('assets/partners-icon.png'),
-            },
-            {
-              name: t('documents.title'),
-              component: DocumentsScreen,
-              iconSrc: require('assets/documents-icon.png'),
-            },
-            {
-              name: t('news'),
-              component: NewsScreen,
-              iconSrc: require('assets/news-icon.png'),
-            },
-            {
-              name: t('faq'),
-              component: FaqScreen,
-              iconSrc: require('assets/faq-icon.png'),
-            },
-            {
-              name: 'Payment',
-              component: PaymentScreen,
-              hidden: true,
-            },
-            {
-              name: 'Article',
-              component: ArticleScreen,
-              hidden: true,
-            },
-          ]}
-        />
-      </NavigationContainer>
-    )) || <AuthNavigator />
+    <NavigationContainer
+      initialState={restoredState}
+      onStateChange={(state) => persistNavigationState(state)}
+    >
+      {(() => {
+        if (user) {
+          return (
+            <AppNavigator
+              screens={[
+                {
+                  name: t('wallet.title'),
+                  component: WalletScreen,
+                  iconSrc: require('assets/wallet-icon.png'),
+                },
+                {
+                  name: t('cabinet'),
+                  component: HomeScreen,
+                  iconSrc: require('assets/profile-icon.png'),
+                },
+                {
+                  name: t('grpahGrow'),
+                  component: GrowthChartScreen,
+                  iconSrc: require('assets/growth-icon.png'),
+                },
+                {
+                  name: t('partners'),
+                  component: PartnersScreen,
+                  iconSrc: require('assets/partners-icon.png'),
+                },
+                {
+                  name: t('documents.title'),
+                  component: DocumentsScreen,
+                  iconSrc: require('assets/documents-icon.png'),
+                },
+                {
+                  name: t('news'),
+                  component: NewsScreen,
+                  iconSrc: require('assets/news-icon.png'),
+                },
+                {
+                  name: t('faq'),
+                  component: FaqScreen,
+                  iconSrc: require('assets/faq-icon.png'),
+                },
+                {
+                  name: 'Payment',
+                  component: PaymentScreen,
+                  hidden: true,
+                },
+                {
+                  name: 'Article',
+                  component: ArticleScreen,
+                  hidden: true,
+                },
+              ]}
+            />
+          );
+        } else {
+          return <AuthNavigator />;
+        }
+      })()}
+    </NavigationContainer>
   );
 }
