@@ -1,4 +1,4 @@
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, NavigationState } from '@react-navigation/native';
 
 import { Navigator } from './navigator';
 import { ThemeProvider } from './core/providers/theme.provider';
@@ -8,6 +8,8 @@ import AuthProvider from 'core/providers/auth.provider';
 import { RecoilRoot } from 'recoil';
 import { ToastProvider } from 'react-native-toast-notifications';
 import { LanguageProvider } from 'core/providers/language.provider';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect, useState } from 'react';
 const initI18n = i18n;
 
 function App() {
@@ -16,11 +18,9 @@ function App() {
       <AuthProvider>
         <ThemeProvider>
           <LanguageProvider>
-            <NavigationContainer>
               <ToastProvider placement="bottom">
                 <Navigator />
               </ToastProvider>
-            </NavigationContainer>
           </LanguageProvider>
         </ThemeProvider>
       </AuthProvider>

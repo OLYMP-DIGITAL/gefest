@@ -22,8 +22,6 @@ export const DocumentsScreen = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [documents, setDocuments] = useRecoilState(documentsAtom);
 
-  console.log(i18next.language);
-
   const fetchDocumentList = async () => {
     try {
       const response = await fetchDocuments();
@@ -118,6 +116,9 @@ const styles = StyleSheet.create({
   link: {
     color: '#3f9978',
     fontFamily: `'Montserrat-Regular', sans-serif`,
+  },
+  loader: {
+    padding: 15,
   },
 });
 
