@@ -20,7 +20,7 @@ export interface GetShareAmountResponse extends ResponsePagination {
     {
       id: number;
       attributes: {
-        amount: number;
+        value: number;
         news: string;
         createdAt: string;
         updatedAt: string;

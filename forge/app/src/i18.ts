@@ -12,7 +12,7 @@ const resources = {
       grpahGrow: 'Growth Chart',
       partners: 'Partners',
 
-      documents: { 
+      documents: {
         title: 'Documents',
         instructions: 'Intructions',
         agreement: 'User agreement',
@@ -141,6 +141,9 @@ const resources = {
           currentAmount: 'Current share amount',
           amountOfSharedCounts: 'Amount of selected shares',
         },
+
+        createInvoiceError:
+          'Error creating transaction. Please try again later or contact customer support.',
       },
     },
   },
@@ -154,7 +157,7 @@ const resources = {
       grpahGrow: 'График роста',
       partners: 'Партнёры',
 
-      documents: { 
+      documents: {
         title: 'Документы',
         instructions: 'Инструкции',
         agreement: 'Пользовательское соглашение',
@@ -288,6 +291,9 @@ const resources = {
           currentAmount: 'Текущая стоимость доли',
           amountOfSharedCounts: 'Выборано долей на сумму',
         },
+
+        createInvoiceError:
+          'Ошибка создания транзакции. Пожалуйста, попробуйте позже или обратитесь в службу поддержки',
       },
     },
   },

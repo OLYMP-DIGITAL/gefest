@@ -1,5 +1,7 @@
 module.exports = ({ env }) => ({
   email: {
+    enabled: false,
+
     config: {
       provider: 'nodemailer',
       providerOptions: {
@@ -12,7 +14,6 @@ module.exports = ({ env }) => ({
           user: env('SMTP_USERNAME'),
           pass: env('SMTP_PASSWORD'),
         },
-
         // ... any custom nodemailer options
       },
       settings: {

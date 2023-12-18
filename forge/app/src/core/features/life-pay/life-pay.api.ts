@@ -69,6 +69,12 @@ export interface MakeTransactionPayload {
 }
 export interface MakeTransactionResponse {
   link: string;
+  error?: {
+    name: string;
+    status: number;
+    details: any;
+    message: string;
+  };
 }
 
 export const makeTransaction = (

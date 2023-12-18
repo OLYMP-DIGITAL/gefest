@@ -8,9 +8,7 @@ export const useShareAmount = () => {
 
   useEffect(() => {
     getShareAmount().then((response) => {
-      setShareAmount(
-        response.data[response.data.length - 1]?.attributes.amount
-      );
+      setShareAmount(response.data[response.data.length - 1]?.attributes.value);
     });
   }, []);
 

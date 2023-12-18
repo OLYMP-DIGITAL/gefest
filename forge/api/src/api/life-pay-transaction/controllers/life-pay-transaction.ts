@@ -35,19 +35,26 @@ export default {
       console.log('[LIFE PAY TRANSACTION] Получение стоимости доли...');
 
       // Текущая стоимость доли
-      const shareCost: ShareCost = await strapi
+      const shareValue: ShareCost = await strapi
         .query('api::share-amount.share-amount')
         .findOne({ orderBy: { createdAt: 'desc' } });
 
-      if (!shareCost && !shareCost.id) {
+      if (!shareValue || !shareValue.value) {
+        console.log(
+          '[LIFE PAY TRANSACTION] Неудалось получить стоимость доли',
+          shareValue
+        );
         throw new Error('Неудалось получить стоимость доли');
       }
 
-      console.log('[LIFE PAY TRANSACTION] Получена стоимость доли: ', rate);
+      console.log(
+        '[LIFE PAY TRANSACTION] Получена стоимость доли: ',
+        shareValue.value
+      );
 
       // =============== Сумма в рублях для создания тразакции =================
       // Цена долей в центах по последней цене акции (в центах)
-      const cents: number = shareCost.amount * count;
+      const cents: number = shareValue.value * count;
 
       // Перевод цены покупаемых долей в рубли
       const kopeck: number = (cents * rate) / 100;
@@ -100,7 +107,25 @@ export default {
         throw new Error(lifePayTransaction.message);
       }
 
-      // ==================== Формирование результата ==========================
+      // ==================== Сохранение данных транзакции в БД ================
+      const transactionModel: LifePayEntry = {
+        user,
+        orderId,
+        dollarRate: rate,
+        shareCount: count,
+        shareValue: shareValue.value,
+        transactionId: lifePayTransaction.id,
+        transactionLink: lifePayTransaction.form_link,
+      };
+
+      await strapi.entityService.create(
+        'api::life-pay-transaction.life-pay-transaction',
+        {
+          data: transactionModel,
+        }
+      );
+
+      // ==================== Формирование результата пользователю==============
       const result: LifePayCreateInvoiceResponse = {
         link: lifePayTransaction.form_link,
       };
@@ -201,9 +226,19 @@ function generateRandomString(length) {
 
   return result;
 }
+
+interface LifePayEntry {
+  user: any;
+  shareValue: number;
+  shareCount: number;
+  dollarRate: number;
+  orderId: string;
+  transactionId: string;
+  transactionLink: string;
+}
 interface ShareCost {
   id: number;
-  amount: number;
+  value: number;
   news: string;
   createdAt: string;
   updatedAt: string;
@@ -266,7 +301,11 @@ interface LifePayCreateInvoicePayload {
 }
 
 enum LifePayInvoiceStatus {
-  open = 'open',
+  open = 'open', // счет открыт
+  pending = 'pending', // началась оплата по ссылке, необходимо отобразить лоадер на форме
+  success = 'success', // счет успешно оплачен
+  blocked = 'blocked', // средства захолдированы, но еще не оплачены/возвращены (двухстадийная оплата)
+  error = 'error', // счет нельзя оплатить (истек)
 }
 
 interface LifePayCreateInvoice {

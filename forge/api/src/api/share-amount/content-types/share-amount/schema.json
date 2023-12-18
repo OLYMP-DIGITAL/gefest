@@ -4,7 +4,8 @@
   "info": {
     "singularName": "share-amount",
     "pluralName": "shares-amount",
-    "displayName": "Стоимость долей"
+    "displayName": "Стоимость долей",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -15,12 +16,9 @@
     }
   },
   "attributes": {
-    "amount": {
-      "type": "integer",
-      "default": 1,
+    "value": {
+      "type": "biginteger",
       "required": true,
-      "max": 5000000,
-      "min": 1,
       "pluginOptions": {
         "i18n": {
           "localized": true

@@ -10,12 +10,14 @@ import { Formik } from 'formik';
 import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
+  Linking,
   Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
+import { useToast } from 'react-native-toast-notifications';
 
 import * as yup from 'yup';
 
@@ -31,15 +33,41 @@ export const LifePayCard = () => {
 
   const { t } = useTranslation();
 
+  const toast = useToast();
   const styles = useStyles();
   const shareAmount = useShareAmount();
 
   const onSubmit = useCallback((values: PayForm) => {
     makeTransaction({
       count: Number(values.sharesCount),
-    }).then((response: MakeTransactionResponse) => {
-      console.log('Submit response', response);
-    });
+    })
+      .then((response: MakeTransactionResponse) => {
+        if (response.error) {
+          throw response.error;
+        }
+
+        console.log('Submit response', response);
+        const url = response.link;
+
+        if (url) {
+          Linking.openURL(url)
+            .then(() => console.log('Document opened'))
+            .catch((error) => console.error('Error opening document:', error));
+        }
+      })
+      .catch((error) => {
+        console.error('Ошибка при создании транзакции', error);
+
+        if (error.message) {
+          toast.show(error.message, {
+            type: 'warning',
+          });
+        } else {
+          toast.show(t('lifePay.createInvoiceError'), {
+            type: 'warning',
+          });
+        }
+      });
   }, []);
 
   const validationSchema = useMemo(
@@ -90,14 +118,19 @@ export const LifePayCard = () => {
 
           <View style={styles.contentWrapper}>
             <Text>{t('lifePay.card.desc')}</Text>
-            <Text style={styles.currentAmount}>
+
+            <Text style={styles.marginTop10}>
               {t('lifePay.card.currentAmount')}: $
-              {(shareAmount && Number(shareAmount / 100).toFixed(2)) || '0'}
+              <Text style={styles.strong}>
+                {(shareAmount && Number(shareAmount / 100).toFixed(2)) || '0'}
+              </Text>
             </Text>
 
-            <Text style={styles.currentAmount}>
+            <Text>
               {t('lifePay.card.amountOfSharedCounts')}: $
-              {calcAmountOfShares(values.sharesCount)}
+              <Text style={styles.strong}>
+                {calcAmountOfShares(values.sharesCount)}
+              </Text>
             </Text>
 
             <View style={styles.inputWrapper}>
@@ -114,6 +147,11 @@ export const LifePayCard = () => {
                 </Text>
               )}
             </View>
+
+            <Text>
+              По клику вы будете переадресованы на страницу с оплатой. Убедитесь
+              что у вас не блокируются вслывающие окна для сайта
+            </Text>
           </View>
 
           <View style={styles.actionsWrapper}>
@@ -148,12 +186,20 @@ const useStyles = () => {
   const styles = useMemo(
     () =>
       StyleSheet.create({
+        strong: {
+          fontWeight: '600',
+        },
+
+        marginTop10: {
+          marginTop: 10,
+        },
+
         wrapper: {
           maxWidth: 350,
           backgroundColor: '#fff',
         },
 
-        currentAmount: {
+        infoLine: {
           marginVertical: 15,
         },
 
