@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react';
 import { Image, StyleSheet } from 'react-native';
 import { useSetRecoilState } from 'recoil';
 
+const initialRoute = 'wallet';
 interface AppNavigatorScreen {
   name: string;
   component: ({ navigation }: DrawerScreenProps<NavigationStack>) => Element;
@@ -45,6 +46,9 @@ export function AppNavigator({ screens }: Props) {
 
   return (
     <DrawerNavigatorInstance.Navigator
+      initialRouteName={initialRoute}
+      // to make the drawer open permanently on web
+      // screenOptions={ Platform.OS === 'web' ? { drawerType:'permanent' } : {}}
       drawerContent={(props) => <Drawer {...props} />}
     >
       {screens.map(({ name, component: Component, iconSrc, hidden }) => (
