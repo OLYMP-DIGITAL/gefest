@@ -1,21 +1,20 @@
 import Button from 'core/components/button';
+import env, { envKyes } from 'core/services/env';
 import i18next from 'i18next';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  View,
-  Linking,
-  TouchableOpacity,
-  StyleSheet,
-  Platform,
   ActivityIndicator,
+  Linking,
+  Platform,
+  StyleSheet,
+  View,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useRecoilState } from 'recoil';
-import { documentsAtom } from './documents.atom';
 import { fetchDocuments } from './documents.api';
+import { documentsAtom } from './documents.atom';
 import { document } from './documents.types';
-import env, { envKyes } from 'core/services/env';
 
 export const DocumentsScreen = () => {
   const { t } = useTranslation();

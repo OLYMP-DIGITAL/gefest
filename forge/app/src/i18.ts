@@ -12,7 +12,7 @@ const resources = {
       grpahGrow: 'Growth Chart',
       partners: 'Partners',
 
-      documents: { 
+      documents: {
         title: 'Documents',
         instructions: 'Intructions',
         agreement: 'User agreement',
@@ -77,6 +77,9 @@ const resources = {
         requestFailed: 'Request is failed. Please, try later',
         requestSuccess: 'Thank you. Request completed successfully',
         referalCopied: 'Referal ID is copied',
+        minValue: 'Min value is',
+        maxValue: 'Max value is',
+        isNumber: 'Value must be a number',
       },
 
       welcome: {
@@ -128,6 +131,26 @@ const resources = {
         details: 'Details',
         back: 'Back',
       },
+
+      lifePay: {
+        card: {
+          pay: 'Pay',
+          title: 'Pay shares',
+          amount: 'Amount',
+          desc: "To purchase shares, enter the desired quantity and press the 'Pay' button.",
+          currentAmount: 'Current share amount',
+          amountOfSharedCounts: 'Amount of selected shares',
+        },
+
+        table: {
+          value: 'Value',
+          date: 'Date',
+          count: 'Shares count',
+        },
+
+        createInvoiceError:
+          'Error creating transaction. Please try again later or contact customer support.',
+      },
     },
   },
 
@@ -140,7 +163,7 @@ const resources = {
       grpahGrow: 'График роста',
       partners: 'Партнёры',
 
-      documents: { 
+      documents: {
         title: 'Документы',
         instructions: 'Инструкции',
         agreement: 'Пользовательское соглашение',
@@ -209,6 +232,9 @@ const resources = {
           'Произошла ошбка во время запроса. Пожалйста, повторите позже',
         requestSuccess: 'Спасибо. Запрос выполнен успешно',
         referalCopied: 'Реферальный идентификатор скопирован',
+        minValue: 'Минимальное значение',
+        maxValue: 'Максимальное значение',
+        isNumber: 'Значение может быть только числом',
       },
 
       welcome: {
@@ -260,6 +286,26 @@ const resources = {
       info: {
         details: 'Подробнее',
         back: 'Назад',
+      },
+
+      lifePay: {
+        card: {
+          pay: 'Купить',
+          desc: 'Чтобы приобрести доли, введие желаемое количество и нажмите кнопку "купить"',
+          title: 'Приобретение долей',
+          amount: 'Количество',
+          currentAmount: 'Текущая стоимость доли',
+          amountOfSharedCounts: 'Выборано долей на сумму',
+        },
+
+        table: {
+          value: 'Сумма',
+          date: 'Дата',
+          count: 'Количество долей',
+        },
+
+        createInvoiceError:
+          'Ошибка создания транзакции. Пожалуйста, попробуйте позже или обратитесь в службу поддержки',
       },
     },
   },
