@@ -16,9 +16,12 @@ import { documentsAtom } from './documents.atom';
 import { fetchDocuments } from './documents.api';
 import { document } from './documents.types';
 import env, { envKyes } from 'core/services/env';
+import { useLanguage } from 'core/providers/language.provider';
+import { LangsEnum } from 'core/features/language/language.types';
 
 export const DocumentsScreen = () => {
-  const { t } = useTranslation();
+  const { lang } = useLanguage();
+
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [documents, setDocuments] = useRecoilState(documentsAtom);
 
@@ -47,7 +50,7 @@ export const DocumentsScreen = () => {
 
   useEffect(() => {
     fetchDocumentList();
-  }, []);
+  }, [lang]);
 
   const handleDownload = (document: document) => {
     const url = `${env[envKyes.apiHost]}${document.link}`;
@@ -73,7 +76,7 @@ export const DocumentsScreen = () => {
               <View key={`document-${document.id}`} style={styles.btnContainer}>
                 <Button
                   title={
-                    i18next.language === 'ru'
+                    lang === LangsEnum.ru
                       ? document.ru.toUpperCase()
                       : document.eng.toUpperCase()
                   }

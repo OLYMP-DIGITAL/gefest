@@ -14,7 +14,7 @@ import { H4Text } from 'core/components/text/h4.text';
 import { convertDateToString } from 'core/helpers/date-string-converter';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigation } from 'core/types/navigation';
+import { NavigatorScreensEnum, StackNavigation } from 'core/types/navigation';
 
 interface Props {
   data: NewsData;
@@ -43,13 +43,13 @@ export const NewsCard = ({ data, details }: Props) => {
 
           ...(sizeType !== ScreenSize.small
             ? {
-                width: '90%',
-                maxWidth: '90%',
-              }
+              width: '90%',
+              maxWidth: '90%',
+            }
             : {
-                width: '90%',
-                maxWidth: 300,
-              }),
+              width: '90%',
+              maxWidth: 300,
+            }),
         },
         cardWrapper: {
           display: 'flex',
@@ -57,11 +57,11 @@ export const NewsCard = ({ data, details }: Props) => {
 
           ...(sizeType !== ScreenSize.small
             ? {
-                flexDirection: 'row',
-              }
+              flexDirection: 'row',
+            }
             : {
-                flexDirection: 'column',
-              }),
+              flexDirection: 'column',
+            }),
         },
         infoWrapper: {
           display: 'flex',
@@ -72,23 +72,23 @@ export const NewsCard = ({ data, details }: Props) => {
 
           ...(sizeType === ScreenSize.small || !data.imageUrl
             ? {
-                height: 'auto',
-              }
+              height: 'auto',
+            }
             : {
-                height: '100%',
-                paddingRight: 320,
-              }),
+              height: '100%',
+              paddingRight: 320,
+            }),
         },
         imageWrapper: {
           ...(sizeType !== ScreenSize.small
             ? {
-                width: 300,
-                height: 'auto',
-              }
+              width: 300,
+              height: 'auto',
+            }
             : {
-                width: '100%',
-                height: 200,
-              }),
+              width: '100%',
+              height: 200,
+            }),
         },
         textWrapper: {
           width: '100%',
@@ -138,7 +138,7 @@ export const NewsCard = ({ data, details }: Props) => {
           textAlign: 'left',
         },
       }),
-    [theme, sizeType]
+    [theme, sizeType, data.lang]
   );
 
   return (
@@ -172,7 +172,7 @@ export const NewsCard = ({ data, details }: Props) => {
               <TouchableOpacity
                 onPress={() => {
                   setArticle(data);
-                  navigation.navigate('Article');
+                  navigation.navigate(NavigatorScreensEnum.article as any);
                 }}
               >
                 <View style={style.detailsRow}>

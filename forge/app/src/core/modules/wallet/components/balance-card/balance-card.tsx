@@ -3,7 +3,7 @@ import RoundedButton from 'core/components/rounded-button';
 import { configAtom } from 'core/features/config/config.feature';
 import { Transaction } from 'core/features/transactions/transactions.types';
 import { useTheme } from 'core/providers/theme.provider';
-import { StackNavigation } from 'core/types/navigation';
+import { NavigatorScreensEnum, StackNavigation } from 'core/types/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, StyleSheet, Text, View } from 'react-native';
@@ -105,7 +105,7 @@ export const BalanceCard = ({ transactions }: Props) => {
         <RoundedButton
           small
           title={t('payment.topUp')}
-          onPress={() => navigation.navigate('Payment')}
+          onPress={() => navigation.navigate(NavigatorScreensEnum.payment as any)}
         />
       </View>
     </View>

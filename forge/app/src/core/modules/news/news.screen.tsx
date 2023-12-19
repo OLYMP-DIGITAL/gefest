@@ -26,7 +26,7 @@ export const NewsScreen = () => {
 
   useEffect(() => {
     getNews()
-  }, []);
+  }, [lang]);
 
   const createCard = useCallback(() => {
     let cards: JSX.Element[] = [];

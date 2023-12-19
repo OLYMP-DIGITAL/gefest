@@ -10,6 +10,7 @@ import { configAtom, fetchConfig } from 'core/features/config/config.feature';
 import { useEffect, useState } from 'react';
 import { Image, StyleSheet } from 'react-native';
 import { useSetRecoilState } from 'recoil';
+import { useTranslation } from 'react-i18next';
 
 const initialRoute = 'wallet';
 interface AppNavigatorScreen {
@@ -34,6 +35,8 @@ interface Props {
 const DrawerNavigatorInstance = createDrawerNavigator();
 
 export function AppNavigator({ screens }: Props) {
+  const { t } = useTranslation();
+
   const setConfig = useSetRecoilState(configAtom);
 
   useEffect(() => {
@@ -63,6 +66,7 @@ export function AppNavigator({ screens }: Props) {
               ...styles.menuItems,
               display: hidden ? 'none' : 'flex',
             },
+            title: t(`screens.${name as string}`),
 
             drawerIcon: () => (
               <Image style={styles.drawerIcon} source={iconSrc} />

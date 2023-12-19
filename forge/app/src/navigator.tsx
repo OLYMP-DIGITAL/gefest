@@ -11,16 +11,15 @@ import { NewsScreen } from 'core/modules/news';
 import { Loader } from 'core/components/loader';
 import { userAtom } from 'core/features/users/users.atoms';
 import { useAuth } from 'core/providers/auth.provider';
-import { useTranslation } from 'react-i18next';
 import { useRecoilValue } from 'recoil';
 import { PaymentScreen } from 'core/modules/payment/payment.screen';
 import ArticleScreen from 'core/modules/ArticleScreen';
 import { NavigationContainer, NavigationState } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { NavigatorScreensEnum } from 'core/types/navigation';
 
 export function Navigator() {
-  const { t } = useTranslation();
   const { isLoading } = useAuth();
   const user = useRecoilValue(userAtom);
 
@@ -68,47 +67,47 @@ export function Navigator() {
             <AppNavigator
               screens={[
                 {
-                  name: t('wallet.title'),
+                  name: NavigatorScreensEnum.wallet,
                   component: WalletScreen,
                   iconSrc: require('assets/wallet-icon.png'),
                 },
                 {
-                  name: t('cabinet'),
+                  name: NavigatorScreensEnum.cabinet,
                   component: HomeScreen,
                   iconSrc: require('assets/profile-icon.png'),
                 },
                 {
-                  name: t('grpahGrow'),
+                  name: NavigatorScreensEnum.grpahGrow,
                   component: GrowthChartScreen,
                   iconSrc: require('assets/growth-icon.png'),
                 },
                 {
-                  name: t('partners'),
+                  name: NavigatorScreensEnum.partners,
                   component: PartnersScreen,
                   iconSrc: require('assets/partners-icon.png'),
                 },
                 {
-                  name: t('documents.title'),
+                  name: NavigatorScreensEnum.documents,
                   component: DocumentsScreen,
                   iconSrc: require('assets/documents-icon.png'),
                 },
                 {
-                  name: t('news'),
+                  name: NavigatorScreensEnum.news,
                   component: NewsScreen,
                   iconSrc: require('assets/news-icon.png'),
                 },
                 {
-                  name: t('faq'),
+                  name: NavigatorScreensEnum.faq,
                   component: FaqScreen,
                   iconSrc: require('assets/faq-icon.png'),
                 },
                 {
-                  name: 'Payment',
+                  name: NavigatorScreensEnum.payment,
                   component: PaymentScreen,
                   hidden: true,
                 },
                 {
-                  name: 'Article',
+                  name: NavigatorScreensEnum.article,
                   component: ArticleScreen,
                   hidden: true,
                 },
