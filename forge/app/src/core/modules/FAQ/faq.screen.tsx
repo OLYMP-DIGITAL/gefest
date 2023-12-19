@@ -14,15 +14,18 @@ import { useRecoilState } from 'recoil';
 import { faqAtom } from './faq.atoms';
 import { fetchFaqs } from './faq.api';
 import { sectionsMock } from './faq.mock';
+import { useLanguage } from 'core/providers/language.provider';
 
 export const FaqScreen = () => {
+  const { lang } = useLanguage();
+
   const [activeSections, setActiveSections] = useState<number[]>([]);
   const [faqs, setFaqs] = useRecoilState(faqAtom);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const fetchFaqList = async () => {
     try {
-      const response = await fetchFaqs();
+      const response = await fetchFaqs(lang);
 
       if (response && response.data && response.data.length !== 0) {
         let cleanedData: faq[] = response.data.map((value) => ({
@@ -43,7 +46,7 @@ export const FaqScreen = () => {
 
   useEffect(() => {
     fetchFaqList();
-  }, []);
+  }, [lang]);
 
   function renderHeader(section: faq, id: number, isActive: boolean) {
     return (
