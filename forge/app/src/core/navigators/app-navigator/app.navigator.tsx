@@ -8,7 +8,7 @@ import { ScreenSize, useWindowSize } from 'core/providers/theme.provider';
 import { NavigationStack } from 'core/types/navigation';
 import { configAtom, fetchConfig } from 'core/features/config/config.feature';
 import { useEffect, useState } from 'react';
-import { Image, StyleSheet } from 'react-native';
+import { Image, Platform, StyleSheet } from 'react-native';
 import { useSetRecoilState } from 'recoil';
 import { useTranslation } from 'react-i18next';
 
@@ -51,7 +51,7 @@ export function AppNavigator({ screens }: Props) {
     <DrawerNavigatorInstance.Navigator
       initialRouteName={initialRoute}
       // to make the drawer open permanently on web
-      // screenOptions={ Platform.OS === 'web' ? { drawerType:'permanent' } : {}}
+      // screenOptions={Platform.OS === 'web' ? { drawerType: 'permanent' } : {}}
       drawerContent={(props) => <Drawer {...props} />}
     >
       {screens.map(({ name, component: Component, iconSrc, hidden }) => (

@@ -63,6 +63,23 @@
           "localized": false
         }
       }
+    },
+    "status": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "open",
+        "pending",
+        "success",
+        "blocked",
+        "error"
+      ],
+      "required": true,
+      "default": "open"
     }
   }
 }

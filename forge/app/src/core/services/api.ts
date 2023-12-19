@@ -46,7 +46,14 @@ class Api {
       redirect: 'follow',
     };
 
-    return fetch(`${env[envKyes.apiHost]}/api/${route}`, requestOptions as any)
+    return fetch(
+      `${
+        route.startsWith('http')
+          ? route
+          : `${env[envKyes.apiHost]}/api/${route}`
+      }`,
+      requestOptions as any
+    )
       .then((response) => {
         console.log(response);
         return response.json();
