@@ -13,6 +13,8 @@ import Icon from 'react-native-vector-icons/Feather';
 import { useSetRecoilState } from 'recoil';
 import * as yup from 'yup';
 import { ConfirmButton } from './components/confirm-button';
+import Button from 'core/components/button';
+import { UrlButton } from 'core/components/url-button';
 
 interface SignInUser {
   email: string;
@@ -170,6 +172,7 @@ function SignInScreen() {
           </View>
         )}
       </Formik>
+      <UrlButton>{'Support'}</UrlButton>
     </View>
   );
 }

@@ -26,6 +26,7 @@ export const RoundedButton = ({
     () =>
       StyleSheet.create({
         button: {
+          borderRadius: 50,
           paddingHorizontal: small ? 16 : 32,
           paddingVertical: small ? 9 : 13,
           backgroundColor: (() => {

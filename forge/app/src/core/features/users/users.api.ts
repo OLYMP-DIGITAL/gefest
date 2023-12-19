@@ -23,3 +23,7 @@ export const signIn = (values: SignInPayload): Promise<SignInResponse> => {
 export const update = (user: UserPayload, id: User['id']): Promise<User> => {
   return api.put<User>(UserRoutes.update.replace(/:id/g, String(id)), user);
 };
+
+export const fetchSupportEmail = (values: SignInPayload): Promise<SignInResponse> => {
+  return api.post<SignInResponse>(UserRoutes.signIn, values);
+};
