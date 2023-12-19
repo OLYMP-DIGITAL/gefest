@@ -14,6 +14,26 @@ const LIFE_PAY_SERVICE_ID = 89264;
 
 // export default factories.createCoreController('api::life-pay-transaction.life-pay-transaction');
 export default {
+  async user(ctx: Context) {
+    try {
+      console.log('CHECK USER', ctx.state.user);
+
+      const userTransactions = await strapi.entityService.findMany(
+        'api::life-pay-transaction.life-pay-transaction',
+        {
+          filters: {
+            status: 'success',
+          },
+        }
+      );
+
+      ctx.body = userTransactions;
+    } catch (error) {
+      console.error('[Произошла ошибка при создании транзакции] ', error);
+      return ctx.badRequest(error.message, error);
+    }
+  },
+
   async post(ctx: Context) {
     try {
       console.log('[LIFE PAY TRANSACTION] Поступил запрос на полу');
@@ -111,6 +131,7 @@ export default {
       const transactionModel: LifePayEntry = {
         user,
         orderId,
+        amount: cents,
         dollarRate: rate,
         shareCount: count,
         shareValue: shareValue.value,
@@ -229,6 +250,7 @@ function generateRandomString(length) {
 
 interface LifePayEntry {
   user: any;
+  amount: number;
   shareValue: number;
   shareCount: number;
   dollarRate: number;

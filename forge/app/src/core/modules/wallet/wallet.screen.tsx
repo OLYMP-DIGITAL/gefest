@@ -10,6 +10,7 @@ import { useInterval } from 'usehooks-ts';
 import { LifePayCard } from './components/lfe-pay-card/life-pay-card.component';
 import { StepText } from './components/step-text';
 import { TransactionsTable } from './components/transactions-table/transactions-table';
+import { UserActionsTable } from './components/user-actions-table/user-actions-table';
 
 const WalletScreen = () => {
   const styles = useStyles();
@@ -47,7 +48,8 @@ const WalletScreen = () => {
 
           <StepText />
 
-          <TransactionsTable transactions={transactions} />
+          {/* <TransactionsTable transactions={transactions} /> */}
+          <UserActionsTable />
         </View>
       </View>
     </ScrollView>

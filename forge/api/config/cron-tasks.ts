@@ -18,10 +18,10 @@ export default {
           filters: {
             $or: [
               {
-                state: 'open',
+                status: 'open',
               },
               {
-                state: 'pending',
+                status: 'pending',
               },
             ],
           },
@@ -29,26 +29,69 @@ export default {
       );
 
       try {
-        await lifePay.auth();
-
-        const lpJwt = lifePay.jwt;
-        // const lpJwt = await strapi.store.get({ key: 'lpJwt' });
-
-        console.log('[!!!!! Проверка токена платёжной системы: !!!!]', lpJwt);
+        if (!lifePay.jwt) {
+          strapi.log.info('[NEW LIFEPAY CONNECTION]');
+          await lifePay.auth();
+        } else {
+          strapi.log.info('[PREVIOUS LIFEPAY CONNECTION in use]', lifePay.jwt);
+        }
 
         if (transactions && transactions.length) {
-          console.log(
-            '[CRON JOB => updateLifePayTransactionStatus] Надены трнзакции для проверки',
-            transactions
+          strapi.log.info(
+            '[CRON JOB => updateLifePayTransactionStatus] Надены трнзакции для проверки'
           );
+          console.log(transactions);
+
+          for (let i = 0; i < (transactions as []).length; i++) {
+            const transaction = transactions[i];
+            console.log('FETCHINB DATA FOR TRANSACTION', transaction);
+
+            const responseTransaction = await lifePay.get(
+              transaction.transactionId
+            );
+            console.log('RESPONSE TRANSACTION', responseTransaction);
+
+            // ... и если статус платёжки обновился
+            if (responseTransaction.status !== transaction.status) {
+              console.log(
+                '[CRON JOB => updateTransactionStatuses] Founded payment to update status',
+                {
+                  transaction: {
+                    id: transaction.transactionId,
+                    status: transaction.status,
+                  },
+                  responseTransaction: {
+                    id: responseTransaction.id,
+                    status: responseTransaction.status,
+                  },
+                }
+              );
+
+              // ... то обновляем запись и в нашей базе данных
+              const entry = await strapi.entityService.update(
+                'api::life-pay-transaction.life-pay-transaction',
+                transaction.id,
+                {
+                  data: {
+                    ...transaction,
+                    status: responseTransaction.status,
+                  },
+                }
+              );
+
+              strapi.log.info('Updated life-pay-transaction');
+              console.log({ entry });
+            }
+          }
         } else {
-          console.error(
-            '[CRON JOB => updateLifePayTransactionStatus] Не найдено не одной транзакции для проверки статуса',
-            transactions
+          strapi.log.error(
+            '[CRON JOB => updateLifePayTransactionStatus] Не найдено не одной транзакции для проверки статуса'
           );
+          console.error(transactions);
         }
       } catch (error) {
-        console.error('[CRON JOB => updateLifePayTransactionStatus]', error);
+        strapi.log.error('[CRON JOB => updateLifePayTransactionStatus]');
+        console.log(error);
       }
     },
     options: {

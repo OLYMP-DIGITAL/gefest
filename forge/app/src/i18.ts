@@ -142,6 +142,12 @@ const resources = {
           amountOfSharedCounts: 'Amount of selected shares',
         },
 
+        table: {
+          value: 'Value',
+          date: 'Date',
+          count: 'Shares count',
+        },
+
         createInvoiceError:
           'Error creating transaction. Please try again later or contact customer support.',
       },
@@ -290,6 +296,12 @@ const resources = {
           amount: 'Количество',
           currentAmount: 'Текущая стоимость доли',
           amountOfSharedCounts: 'Выборано долей на сумму',
+        },
+
+        table: {
+          value: 'Сумма',
+          date: 'Дата',
+          count: 'Количество долей',
         },
 
         createInvoiceError:

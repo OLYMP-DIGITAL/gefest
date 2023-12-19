@@ -1,7 +1,5 @@
 module.exports = ({ env }) => ({
   email: {
-    enabled: false,
-
     config: {
       provider: 'nodemailer',
       providerOptions: {

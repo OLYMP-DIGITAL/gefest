@@ -1,23 +1,13 @@
 // *****************************************************************************
 // =============================== CONSTANTS ===================================
+
+import { LifePayAuthPayload, LifePayAuthResponse } from './life-pay.types';
+
 // *****************************************************************************
 const LIFE_PAY_AUTH_URL = 'https://api-ecom.life-pay.ru/v1/auth';
 
 const LIFE_PAY_API_KEY = '371e8d524a252852cd186df76dfe4a5b';
 const LIFE_PAY_SERVICE_ID = 89264;
-
-// *****************************************************************************
-// =============================== INTERFACES ==================================
-// *****************************************************************************
-export interface LifePayAuthPayload {
-  api_key: string;
-  service_id: number;
-}
-
-export interface LifePayAuthResponse {
-  jwt: string;
-  lp_public: string;
-}
 
 class LifePay {
   jwt = '';
@@ -43,18 +33,35 @@ class LifePay {
         requestOptions
       ).then((response) => response.json())) as LifePayAuthResponse;
 
-      console.log('Результат аутентифиации', response);
-
       this.jwt = response.jwt;
-      await strapi.store.set({ key: 'lpJwt', value: response.jwt });
-      strapi.log.info(
-        `Установлена переменная lifePay jwt: ${await strapi.store.get({
-          key: 'lpJwt',
-        })}`
-      );
     } catch (error) {
-      strapi.log.error('Произошла ошибка при аутентификации на LifePay');
+      strapi.log.error(
+        `Произошла ошибка при аутентификации на LifePay: ${error.message}`
+      );
     }
+  }
+
+  async get(id: string) {
+    if (this._jwtExist()) {
+      var myHeaders = new Headers();
+      myHeaders.append('Authorization', `Bearer ${this.jwt}`);
+
+      var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+      };
+
+      return fetch(
+        `https://api-ecom.life-pay.ru/v1/invoices/${id}`,
+        requestOptions
+      ).then((result) => result.json());
+    } else {
+      strapi.log.warn('Попытка получить информацию о транзакции без jwt');
+    }
+  }
+
+  _jwtExist(): boolean {
+    return !!this.jwt;
   }
 }
 

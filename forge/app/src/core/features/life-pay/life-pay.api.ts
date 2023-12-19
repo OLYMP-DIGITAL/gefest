@@ -1,10 +1,12 @@
 import api from 'core/services/api';
 import { LIFE_PAY_API_KEY, LIFE_PAY_SERVICE_ID } from './life-pay.atom';
+import { LifePayTransaction } from 'core/modules/wallet/components/user-actions-table/user-actions-table';
 
 export enum LifePayRoutes {
   auth = 'https://api-ecom.life-pay.ru/v1/auth',
   createInvoice = 'https://api-ecom.life-pay.ru/v1/invoices',
   makeTransaction = 'life-pay-transaction',
+  userTransactions = 'life-pay-transaction/user',
 }
 
 //  ==================== AUTH ==================================================
@@ -84,4 +86,8 @@ export const makeTransaction = (
     LifePayRoutes.makeTransaction,
     payload
   );
+};
+
+export const getUserTransactions = (): Promise<LifePayTransaction[]> => {
+  return api.get<LifePayTransaction[]>(LifePayRoutes.userTransactions);
 };

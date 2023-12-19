@@ -13,5 +13,10 @@ export default {
       path: '/life-pay-transaction',
       handler: 'life-pay-transaction.post',
     },
+    {
+      method: 'GET',
+      path: '/life-pay-transaction/user',
+      handler: 'life-pay-transaction.user',
+    },
   ],
 };

@@ -39,7 +39,7 @@
       "required": true,
       "unique": true
     },
-    "state": {
+    "status": {
       "type": "enumeration",
       "enum": [
         "open",
@@ -49,6 +49,11 @@
         "error"
       ],
       "default": "open"
+    },
+    "amount": {
+      "type": "biginteger",
+      "default": "0",
+      "required": true
     }
   }
 }
