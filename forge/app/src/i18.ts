@@ -12,6 +12,17 @@ const resources = {
       grpahGrow: 'Growth Chart',
       partners: 'Partners',
 
+      screens: {
+        wallet: 'Wallet',
+        cabinet: 'Personal Cabinet',
+        grpahGrow: 'Growth Chart',
+        partners: 'Partners',
+        documents: 'Documents',
+        news: 'News',
+        faq: 'FAQ',
+        payment: 'Payment',
+        article: 'News',
+      },
       documents: {
         title: 'Documents',
         instructions: 'Intructions',
@@ -162,6 +173,18 @@ const resources = {
       cabinet: 'Личный кабинет',
       grpahGrow: 'График роста',
       partners: 'Партнёры',
+
+      screens: {
+        wallet: 'Мой кошелёк',
+        cabinet: 'Личный кабинет',
+        grpahGrow: 'График роста',
+        partners: 'Партнёры',
+        documents: 'Документы',
+        news: 'Новости',
+        faq: 'FAQ',
+        payment: 'Оплата',
+        article: 'Новость',
+      },
 
       documents: {
         title: 'Документы',

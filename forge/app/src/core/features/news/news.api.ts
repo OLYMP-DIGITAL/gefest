@@ -7,6 +7,6 @@ export enum NewsRoutes {
 }
 
 export const fetchNews = (lang: LangsEnum): Promise<NewsInfo[]> => {
-  const route = NewsRoutes.all.replace(/:lang/g, `${lang || LangsEnum.ru}`);
+  const route = NewsRoutes.all.replace(/:lang/g, `${lang || LangsEnum.en}`);
   return api.get<NewsInfo[]>(route);
 };

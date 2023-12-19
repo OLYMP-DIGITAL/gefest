@@ -5,7 +5,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { NewsCard } from './news/components/news-card.component';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigation } from 'core/types/navigation';
+import { NavigatorScreensEnum, StackNavigation } from 'core/types/navigation';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from 'core/providers/language.provider';
 
@@ -18,13 +18,14 @@ const ArticleScreen = () => {
 
     useEffect(() => {
         return () => setArticle(null)
-    }, []);
+    }, [lang]);
 
     useEffect(() => {
         if (article && article.lang !== lang) {
-            navigation.navigate(t('news') as any)
+            setArticle(null);
+            navigation.navigate(NavigatorScreensEnum.news as any)
         }
-    }, [lang]);
+    }, [lang, article]);
 
     const style = useMemo(() => StyleSheet.create({
         wrapper: {
@@ -53,7 +54,7 @@ const ArticleScreen = () => {
         <ScrollView>
             <View style={style.wrapper}>
                 <View style={style.rowWrapper}>
-                    <TouchableOpacity onPress={() => navigation.navigate(t('news') as any)}>
+                    <TouchableOpacity onPress={() => navigation.navigate(NavigatorScreensEnum.news as any)}>
                         <View style={style.rowWrapper}>
                             <Image style={{ width: 15, height: 15, tintColor: '#6842FF', paddingRight: 10 }}
                                 source={require('assets/arrow-left.png')} />
