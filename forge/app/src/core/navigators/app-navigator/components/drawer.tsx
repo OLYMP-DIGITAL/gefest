@@ -3,11 +3,10 @@ import {
   DrawerItem,
   DrawerItemList,
 } from '@react-navigation/drawer';
-import { LangSwitcher } from 'core/components/lang-switcher';
 import { useAuth } from 'core/providers/auth.provider';
 import { useWindowSize } from 'core/providers/theme.provider';
 import { useTranslation } from 'react-i18next';
-import { Image, ImageBackground, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
 import { useCopyToClipboard } from 'usehooks-ts';
 
@@ -24,51 +23,54 @@ export function Drawer(props: any) {
   const [, setCopiedValue] = useCopyToClipboard();
 
   return (
-    <ImageBackground
-      source={require('assets/sidebarBack.png')}
-      resizeMode="stretch"
-      style={styles.backgroundImage}
+    // <ImageBackground
+    //   source={require('assets/sidebarBack.png')}
+    //   resizeMode="stretch"
+    //   style={styles.backgroundImage}
+    // >
+    <View
+      style={[styles.sidebarBlock, !smallSize && { paddingVertical: 30 }]}
     >
-      <View
-        style={[styles.sidebarBlock, !smallSize && { paddingVertical: 30 }]}
-      >
-        <DrawerContentScrollView {...props}>
-          {smallSize && (
-            <>
-              <View style={[styles.sidebarBlock, { padding: 20 }]}>
-                <View style={styles.reverseRow}>
-                  <LangSwitcher />
-                </View>
-
-                <View style={[styles.sidebarBlock, { paddingTop: 10 }]}>
-                  <Text style={[styles.sidebarInfo, { paddingTop: 10 }]}>
-                    {user?.username}{' '}
-                    {(user?.lastname ? user?.lastname[0] : '') + '.'}
-                  </Text>
-                </View>
+      <DrawerContentScrollView {...props}>
+        {smallSize && (
+          <>
+            <View style={{ ...styles.row, paddingVertical: 20, paddingHorizontal: 15, height: 100 }}>
+              <View style={{ ...styles.row, flex: 10 }}>
+                <Text style={styles.sidebarInfo}>
+                  {user?.username}{' '}
+                  {(user?.lastname ? user?.lastname[0] : '') + '.'}
+                </Text>
               </View>
 
-              <DrawerItem
-                label={t('referalLink')}
-                labelStyle={styles.menuItems}
-                onPress={() => {
-                  setCopiedValue(`${refValue}`);
-                  toast.show(t('messages.referalCopied'));
-                }}
-                icon={() => (
-                  <Image
-                    style={{ width: 20, height: 19, marginLeft: 10 }}
-                    source={require('assets/ref-icon.png')}
-                  />
-                )}
-              />
-            </>
-          )}
+              <View style={styles.row}>
+                <Image
+                  style={{ width: 21, height: 22, tintColor: '#bdbdbd' }}
+                  source={require('assets/logout-icon.png')}
+                />
+              </View>
+            </View>
 
-          <DrawerItemList state={newState} {...rest} />
-        </DrawerContentScrollView>
-      </View>
-    </ImageBackground>
+            <DrawerItem
+              label={t('referalLink')}
+              labelStyle={styles.menuItems}
+              onPress={() => {
+                setCopiedValue(`${refValue}`);
+                toast.show(t('messages.referalCopied'));
+              }}
+              icon={() => (
+                <Image
+                  style={{ width: 20, height: 19, marginLeft: 10 }}
+                  source={require('assets/ref-icon.png')}
+                />
+              )}
+            />
+          </>
+        )}
+
+        <DrawerItemList state={newState} {...rest} />
+      </DrawerContentScrollView>
+    </View>
+    // </ImageBackground>
   );
 }
 
@@ -84,15 +86,19 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
   },
   sidebarBlock: {
+    backgroundColor: '#35383F',
     alignItems: 'center',
     flexDirection: 'column',
     justifyContent: 'center',
+    height: '100%',
   },
-  reverseRow: {
+  row: {
     flex: 1,
     width: '100%',
     display: 'flex',
-    flexDirection: 'row-reverse',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   sidebarInfo: {
     color: 'white',

@@ -25,6 +25,7 @@ const screenOptions: any = {
   activeBackgroundColor: 'white',
   drawerInactiveTintColor: 'white',
   inactiveBackgroundColor: 'white',
+  drawerActiveBackgroundColor: '#41454c',
 };
 
 interface Props {
@@ -60,7 +61,6 @@ export function AppNavigator({ screens }: Props) {
           component={Component as any}
           options={{
             ...(screenOptions as any),
-
             drawerLabelStyle: {
               ...styles.menuItems,
               display: hidden ? 'none' : 'flex',

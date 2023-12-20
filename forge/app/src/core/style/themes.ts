@@ -28,6 +28,6 @@ export const darkTheme: typeof lightTheme = {
   primaryBackground: '#000000', // Темный фон
   primaryText: '#ffffff', // Цвет текста на темном фоне
   // Добавьте другие цвета и свойства для темной темы
-  secondaryText: '#93999c',
+  secondaryText: '#bdbdbd',
   cardBorder: '#424242',
 };

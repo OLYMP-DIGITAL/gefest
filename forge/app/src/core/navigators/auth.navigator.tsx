@@ -19,7 +19,7 @@ import { LangSwitcher } from 'core/components/lang-switcher';
 const navigationOptions: NativeStackNavigationOptions = {
   title: 'Custom Header Title', // Заголовок шапки
   headerStyle: {
-    backgroundColor: '#263238', // Цвет фона шапки
+    backgroundColor: '#35383F', // Цвет фона шапки
   },
   headerTintColor: 'white', // Цвет текста в шапке
 };

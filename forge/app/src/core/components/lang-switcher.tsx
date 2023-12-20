@@ -19,12 +19,14 @@ export const LangSwitcher = () => {
 const styles = StyleSheet.create({
     wrapper: {
         display: 'flex',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     langLabel: {
         paddingHorizontal: 5,
-        color: '#93999c',
+        color: '#bdbdbd',
         fontSize: 18,
-        fontWeight: '500',
+        fontWeight: '400',
     }
 })
