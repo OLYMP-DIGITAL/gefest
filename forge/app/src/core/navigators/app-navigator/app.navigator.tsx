@@ -4,11 +4,10 @@ import {
 } from '@react-navigation/drawer';
 import { Drawer } from 'core/navigators/app-navigator/components/drawer';
 import { Header } from 'core/navigators/app-navigator/components/header';
-import { ScreenSize, useWindowSize } from 'core/providers/theme.provider';
 import { NavigationStack } from 'core/types/navigation';
 import { configAtom, fetchConfig } from 'core/features/config/config.feature';
-import { useEffect, useState } from 'react';
-import { Image, Platform, StyleSheet } from 'react-native';
+import { useEffect } from 'react';
+import { Image, StyleSheet } from 'react-native';
 import { useSetRecoilState } from 'recoil';
 import { useTranslation } from 'react-i18next';
 

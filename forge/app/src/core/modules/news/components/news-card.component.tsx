@@ -13,8 +13,6 @@ import { articleAtom } from 'core/features/news/news.atoms';
 import { H4Text } from 'core/components/text/h4.text';
 import { convertDateToString } from 'core/helpers/date-string-converter';
 import { useTranslation } from 'react-i18next';
-import { useNavigation } from '@react-navigation/native';
-import { NavigatorScreensEnum, StackNavigation } from 'core/types/navigation';
 
 interface Props {
   data: NewsData;
@@ -22,8 +20,6 @@ interface Props {
 }
 
 export const NewsCard = ({ data, details }: Props) => {
-  const navigation = useNavigation<StackNavigation>();
-
   const { theme } = useTheme();
   const { sizeType } = useWindowSize();
   const { t } = useTranslation();
@@ -172,7 +168,6 @@ export const NewsCard = ({ data, details }: Props) => {
               <TouchableOpacity
                 onPress={() => {
                   setArticle(data);
-                  navigation.navigate(NavigatorScreensEnum.article as any);
                 }}
               >
                 <View style={style.detailsRow}>

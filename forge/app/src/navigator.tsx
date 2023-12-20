@@ -13,7 +13,6 @@ import { userAtom } from 'core/features/users/users.atoms';
 import { useAuth } from 'core/providers/auth.provider';
 import { useRecoilValue } from 'recoil';
 import { PaymentScreen } from 'core/modules/payment/payment.screen';
-import ArticleScreen from 'core/modules/ArticleScreen';
 import { NavigationContainer, NavigationState } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -104,11 +103,6 @@ export function Navigator() {
                 {
                   name: NavigatorScreensEnum.payment,
                   component: PaymentScreen,
-                  hidden: true,
-                },
-                {
-                  name: NavigatorScreensEnum.article,
-                  component: ArticleScreen,
                   hidden: true,
                 },
               ]}

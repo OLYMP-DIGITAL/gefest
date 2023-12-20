@@ -1,31 +1,15 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { articleAtom } from "core/features/news/news.atoms";
 import { ScrollView, View, Image, Text, StyleSheet } from "react-native"
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { NewsCard } from './news/components/news-card.component';
+import { useRecoilState } from "recoil";
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useNavigation } from '@react-navigation/native';
-import { NavigatorScreensEnum, StackNavigation } from 'core/types/navigation';
 import { useTranslation } from 'react-i18next';
-import { useLanguage } from 'core/providers/language.provider';
+import { NewsCard } from './news-card.component';
 
-const ArticleScreen = () => {
-    const navigation = useNavigation<StackNavigation>();
+const ArticleView = () => {
     const { t } = useTranslation();
-    const { lang } = useLanguage();
 
     const [article, setArticle] = useRecoilState(articleAtom);
-
-    useEffect(() => {
-        return () => setArticle(null)
-    }, [lang]);
-
-    useEffect(() => {
-        if (article && article.lang !== lang) {
-            setArticle(null);
-            navigation.navigate(NavigatorScreensEnum.news as any)
-        }
-    }, [lang, article]);
 
     const style = useMemo(() => StyleSheet.create({
         wrapper: {
@@ -54,7 +38,7 @@ const ArticleScreen = () => {
         <ScrollView>
             <View style={style.wrapper}>
                 <View style={style.rowWrapper}>
-                    <TouchableOpacity onPress={() => navigation.navigate(NavigatorScreensEnum.news as any)}>
+                    <TouchableOpacity onPress={() => { setArticle(null) }}>
                         <View style={style.rowWrapper}>
                             <Image style={{ width: 15, height: 15, tintColor: '#6842FF', paddingRight: 10 }}
                                 source={require('assets/arrow-left.png')} />
@@ -71,4 +55,4 @@ const ArticleScreen = () => {
     )
 }
 
-export default ArticleScreen
+export default ArticleView
