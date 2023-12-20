@@ -174,6 +174,4 @@ function SignInScreen() {
   );
 }
 
-SignInScreen.route = 'SignIn';
-
 export default SignInScreen;

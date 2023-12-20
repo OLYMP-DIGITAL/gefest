@@ -9,7 +9,7 @@ import RoundedButton from 'core/components/rounded-button';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import api from 'core/services/api';
 import { NavigationProp } from '@react-navigation/native';
-import { NavigationStack } from 'core/types/navigation';
+import { AuthScreensEnum, NavigationStack } from 'core/types/navigation';
 import { saveToken } from 'core/services/token';
 import { User } from 'core/features/users/users.types';
 import { useToast } from 'react-native-toast-notifications';
@@ -72,7 +72,7 @@ export function SignUpScreen({
           });
         }
 
-        navigation.navigate('Finished');
+        navigation.navigate(AuthScreensEnum.finished as any);
       })
       .catch((error) => {
         console.log('An error occurred:', error);
@@ -183,8 +183,6 @@ export function SignUpScreen({
     </View>
   );
 }
-
-SignUpScreen.route = 'SignUp';
 
 const styles = StyleSheet.create({
   message: {

@@ -4,14 +4,11 @@ import {
   DrawerItemList,
 } from '@react-navigation/drawer';
 import { LangSwitcher } from 'core/components/lang-switcher';
-import { languageAtom } from 'core/features/language/language.atoms';
-import { LangsEnum } from 'core/features/language/language.types';
 import { useAuth } from 'core/providers/auth.provider';
 import { useWindowSize } from 'core/providers/theme.provider';
 import { useTranslation } from 'react-i18next';
 import { Image, ImageBackground, StyleSheet, Text, View } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
-import { useRecoilState } from 'recoil';
 import { useCopyToClipboard } from 'usehooks-ts';
 
 export function Drawer(props: any) {
@@ -25,8 +22,6 @@ export function Drawer(props: any) {
 
   const { smallSize } = useWindowSize();
   const [, setCopiedValue] = useCopyToClipboard();
-
-  const [lang, setLang] = useRecoilState(languageAtom);
 
   return (
     <ImageBackground

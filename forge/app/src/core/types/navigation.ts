@@ -11,6 +11,13 @@ export enum NavigatorScreensEnum {
   payment = 'payment',
 }
 
+export enum AuthScreensEnum {
+  finished = 'finished',
+  welcome = 'welcome',
+  signIn = 'signIn',
+  signUp = 'signUp',
+}
+
 export type ScreenNames = [
   'Home',
   'Partners',

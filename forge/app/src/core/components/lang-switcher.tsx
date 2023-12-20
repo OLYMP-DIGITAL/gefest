@@ -1,14 +1,17 @@
 import { LangsEnum } from "core/features/language/language.types";
 import { useLanguage } from "core/providers/language.provider";
+import { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native"
 
 export const LangSwitcher = () => {
-    const { lang, setLang } = useLanguage();
+    const { localize, setLang } = useLanguage();
 
     return (
         <View style={styles.wrapper}>
-            <Text style={{ ...styles.langLabel, color: lang === LangsEnum.en ? 'green' : 'white' }} onPress={() => setLang(LangsEnum.en)}>en</Text>
-            <Text style={{ ...styles.langLabel, color: lang === LangsEnum.ru ? 'green' : 'white' }} onPress={() => setLang(LangsEnum.ru)}>rus</Text>
+            <Text style={styles.langLabel}
+                onPress={() => setLang(localize)}>
+                {localize}
+            </Text>
         </View>
     )
 };
@@ -20,7 +23,7 @@ const styles = StyleSheet.create({
     },
     langLabel: {
         paddingHorizontal: 5,
-        color: 'white',
+        color: '#93999c',
         fontSize: 18,
         fontWeight: '500',
     }
