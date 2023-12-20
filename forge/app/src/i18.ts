@@ -68,6 +68,7 @@ const resources = {
         submit: 'Submit',
         save: 'Save',
         continue: 'Continue',
+        close: 'Close',
       },
 
       payment: {
@@ -233,6 +234,7 @@ const resources = {
         save: 'Сохранить',
         submit: 'Отправить',
         continue: 'Продолжить',
+        close: 'Закрыть',
       },
 
       payment: {
