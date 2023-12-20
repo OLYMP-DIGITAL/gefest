@@ -3,6 +3,7 @@ import {
   DrawerItem,
   DrawerItemList,
 } from '@react-navigation/drawer';
+import { LogoutButton } from 'core/components/logout-button';
 import { useAuth } from 'core/providers/auth.provider';
 import { useWindowSize } from 'core/providers/theme.provider';
 import { useTranslation } from 'react-i18next';
@@ -42,12 +43,7 @@ export function Drawer(props: any) {
                 </Text>
               </View>
 
-              <View style={styles.row}>
-                <Image
-                  style={{ width: 21, height: 22, tintColor: '#bdbdbd' }}
-                  source={require('assets/logout-icon.png')}
-                />
-              </View>
+              <LogoutButton />
             </View>
 
             <DrawerItem

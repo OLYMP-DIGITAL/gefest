@@ -1,5 +1,6 @@
 import { DrawerItem } from '@react-navigation/drawer';
 import { LangSwitcher } from 'core/components/lang-switcher';
+import { LogoutButton } from 'core/components/logout-button';
 import { useWindowSize } from 'core/providers/theme.provider';
 import { Image, StyleSheet, View } from 'react-native';
 
@@ -61,12 +62,7 @@ export const Header: React.FC<Props> = ({ title, navigation }) => {
         </View>
 
         {!smallSize && (
-          <View style={styles.logoutBlock}>
-            <Image
-              style={{ width: 21, height: 22, tintColor: '#bdbdbd' }}
-              source={require('assets/logout-icon.png')}
-            />
-          </View>
+          <LogoutButton />
         )}
       </View>
     </View>
@@ -83,11 +79,6 @@ const styles = StyleSheet.create({
 
   valueText: {
     color: '#fff',
-  },
-
-  logoutBlock: {
-    display: 'flex',
-    alignItems: 'center',
   },
 
   greenText: {
