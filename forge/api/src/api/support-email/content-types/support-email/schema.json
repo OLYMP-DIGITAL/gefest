@@ -1,0 +1,18 @@
+{
+  "kind": "singleType",
+  "collectionName": "support_emails",
+  "info": {
+    "singularName": "support-email",
+    "pluralName": "support-emails",
+    "displayName": "Support email"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "email": {
+      "type": "string"
+    }
+  }
+}

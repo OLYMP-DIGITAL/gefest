@@ -2,6 +2,7 @@ import api from 'core/services/api';
 import {
   SignInPayload,
   SignInResponse,
+  SupportEmailResponse,
   User,
   UserPayload,
 } from './users.types';
@@ -10,6 +11,7 @@ export enum UserRoutes {
   me = 'users/me?populate=*',
   signIn = 'auth/local',
   update = 'users/:id',
+  getSupport = 'support-email'
 }
 
 export const fetchMe = (): Promise<User> => {
@@ -24,6 +26,6 @@ export const update = (user: UserPayload, id: User['id']): Promise<User> => {
   return api.put<User>(UserRoutes.update.replace(/:id/g, String(id)), user);
 };
 
-export const fetchSupportEmail = (values: SignInPayload): Promise<SignInResponse> => {
-  return api.post<SignInResponse>(UserRoutes.signIn, values);
+export const fetchSupportEmail = (): Promise<SupportEmailResponse> => {
+  return api.get<SupportEmailResponse>(UserRoutes.getSupport);
 };

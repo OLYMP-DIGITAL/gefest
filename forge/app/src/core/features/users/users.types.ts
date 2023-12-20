@@ -46,3 +46,7 @@ export interface SignInSuccessResponse {
   jwt: string;
   user: User;
 }
+
+export type SupportEmailResponse = {
+  data: {id: number; attributes: {email: string;}}
+}

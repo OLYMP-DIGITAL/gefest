@@ -1,7 +1,7 @@
 import * as yup from 'yup'; // Библиотека для валидации
 import { Formik } from 'formik';
 import { H3Text } from 'core/components/text/h3.text';
-import { StyleSheet, Text, View } from 'react-native';
+import { Alert, Linking, StyleSheet, Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Input } from 'core/components/input';
@@ -16,6 +16,8 @@ import { useToast } from 'react-native-toast-notifications';
 import { ErrorResponse } from 'core/types/requests';
 import Icon from 'react-native-vector-icons/Feather';
 import { useTheme } from 'core/providers/theme.provider';
+import { Link } from 'core/components/link';
+import { fetchSupportEmail } from 'core/features/users/users.api';
 
 interface SignUpUser {
   email: string;
@@ -41,8 +43,39 @@ export function SignUpScreen({
   const { theme } = useTheme();
 
   const [hidePassword, setHidePassword] = useState<boolean>(true);
+  
+  const [supportEmail, setSupportEmail] = useState<string>('mailto:');
+
+  const fetchSupport = async () => {
+    try {
+      const response = await fetchSupportEmail();
+
+      if (response && response.data) {
+        let cleanedData = response.data.attributes.email;
+        setSupportEmail(supportEmail + cleanedData);
+      } else {
+        console.error('No support email data', response);
+      }
+    } catch (e) {
+      console.error('Error fetching support email', e);
+    }
+  };
+  
+  const handlePress = useCallback(async () => {
+    // Checking if the link is supported for links with custom URL scheme.
+    const supported = await Linking.canOpenURL(supportEmail);
+
+    if (supported) {
+      // Opening the link with some app, if the URL scheme is "http" the web link should be opened
+      // by some browser in the mobile
+      await Linking.openURL(supportEmail);
+    } else {
+      Alert.alert(`Don't know how to open this URL: ${supportEmail}`);
+    }
+  }, [supportEmail]);
 
   useEffect(() => {
+    fetchSupport();
     saveToken('');
   }, []);
 
@@ -180,6 +213,10 @@ export function SignUpScreen({
           </View>
         )}
       </Formik>
+      <Link
+        title={t('welcome.support')}
+        onPress={handlePress}
+      />
     </View>
   );
 }
