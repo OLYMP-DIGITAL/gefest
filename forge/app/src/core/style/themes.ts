@@ -1,7 +1,7 @@
 // themes.ts
 
 export const lightTheme = {
-  dark: '#424242',
+  dark: '#263238',
   link: '#246BFD',
   white: '#ffff',
   primary: '#D43238',
@@ -12,7 +12,7 @@ export const lightTheme = {
   primaryBackground: '#ffffff', // Светлый фон
   primaryText: '#000000', // Цвет текста на светлом фоне
   // Добавьте другие цвета и свойства для светлой темы
-
+  secondaryText: '#6e7376',
   cardBorder: '#424242',
 
   // Typography
@@ -22,7 +22,7 @@ export const lightTheme = {
 };
 
 export const darkTheme: typeof lightTheme = {
-  dark: '#424242',
+  dark: '#263238',
   link: '#246BFD',
   white: '#ffff',
   primary: '#D43238',
@@ -33,7 +33,7 @@ export const darkTheme: typeof lightTheme = {
   primaryBackground: '#000000', // Темный фон
   primaryText: '#ffffff', // Цвет текста на темном фоне
   // Добавьте другие цвета и свойства для темной темы
-
+  secondaryText: '#bdbdbd',
   cardBorder: '#424242',
 
   // Typography

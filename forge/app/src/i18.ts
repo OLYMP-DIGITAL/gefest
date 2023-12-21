@@ -23,6 +23,14 @@ const resources = {
         payment: 'Payment',
         article: 'News',
       },
+
+      authScreens: {
+        finished: 'Registration',
+        welcome: 'Welcome',
+        signIn: 'Sign in',
+        signUp: 'Sign up',
+      },
+
       documents: {
         title: 'Documents',
         instructions: 'Intructions',
@@ -189,6 +197,13 @@ const resources = {
         faq: 'FAQ',
         payment: 'Оплата',
         article: 'Новость',
+      },
+
+      authScreens: {
+        finished: 'Регистрация',
+        welcome: 'Добро пожаловать',
+        signIn: 'Вход',
+        signUp: 'Регистрация',
       },
 
       documents: {

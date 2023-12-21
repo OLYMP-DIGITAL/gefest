@@ -1,6 +1,6 @@
 import { Link } from 'core/components/link';
 import RoundedButton from 'core/components/rounded-button';
-import { NavigationStack } from 'core/types/navigation';
+import { AuthScreensEnum, NavigationStack } from 'core/types/navigation';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useTranslation } from 'react-i18next';
 import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
@@ -44,12 +44,12 @@ function WelcomeScreen({
         <View>
           <RoundedButton
             title={t('welcome.signIn')}
-            onPress={() => navigation.navigate('SignIn')}
+            onPress={() => navigation.navigate(AuthScreensEnum.signIn as any)}
           />
           <View style={styles.signUpWrapper}>
             <Link
               title={t('welcome.signUp')}
-              onPress={() => navigation.navigate('SignUp')}
+              onPress={() => navigation.navigate(AuthScreensEnum.signUp as any)}
             />
           </View>
         </View>
@@ -85,5 +85,4 @@ const styles = StyleSheet.create({
   },
 });
 
-WelcomeScreen.route = 'Welcome';
 export default WelcomeScreen;
