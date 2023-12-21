@@ -1,15 +1,18 @@
 import api from 'core/services/api';
 import {
+  ResetPasswordPayload,
   SignInPayload,
   SignInResponse,
   User,
   UserPayload,
 } from './users.types';
+import env, { envKyes } from 'core/services/env';
 
 export enum UserRoutes {
   me = 'users/me?populate=*',
   signIn = 'auth/local',
   update = 'users/:id',
+  resetPassword = '/auth/forgot-password',
 }
 
 export const fetchMe = (): Promise<User> => {
@@ -22,4 +25,8 @@ export const signIn = (values: SignInPayload): Promise<SignInResponse> => {
 
 export const update = (user: UserPayload, id: User['id']): Promise<User> => {
   return api.put<User>(UserRoutes.update.replace(/:id/g, String(id)), user);
+};
+
+export const resetPassword = (email: ResetPasswordPayload): Promise<{ data: any}> => {
+  return api.post(`${env[envKyes.apiHost]}${UserRoutes.resetPassword}`, email);
 };
