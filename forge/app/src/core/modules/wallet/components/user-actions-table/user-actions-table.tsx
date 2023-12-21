@@ -5,19 +5,6 @@ import { useTranslation } from 'react-i18next';
 import { Platform, StyleSheet, View } from 'react-native';
 import { Row, Rows, Table } from 'react-native-table-component';
 
-export interface LifePayTransaction {
-  id: number;
-  shareCount: number;
-  dollarRate: number;
-  transactionId: string;
-  transactionLink: string;
-  createdAt: string;
-  updatedAt: string;
-  shareValue: string;
-  status: string;
-  amount: number;
-}
-
 interface TableData {
   value: number;
   date: string;

@@ -14,6 +14,11 @@ export const lightTheme = {
   // Добавьте другие цвета и свойства для светлой темы
 
   cardBorder: '#424242',
+
+  // Typography
+  fontDisplay: '#757575',
+  fontTitle: '#212121',
+  fontBody: '#212121',
 };
 
 export const darkTheme: typeof lightTheme = {
@@ -30,4 +35,11 @@ export const darkTheme: typeof lightTheme = {
   // Добавьте другие цвета и свойства для темной темы
 
   cardBorder: '#424242',
+
+  // Typography
+  fontDisplay: '#757575',
+  fontTitle: '#212121',
+  fontBody: '#212121',
 };
+
+export type Theme = typeof lightTheme;
