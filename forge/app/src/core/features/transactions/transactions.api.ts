@@ -1,5 +1,6 @@
 import api from 'core/services/api';
 import { MakeTransactionResponse, Transaction } from './transactions.types';
+import { LifePayTransaction } from '../life-pay/life-pay.types';
 
 export enum TransactionsRoute {
   user = 'transaction/user',
@@ -15,6 +16,6 @@ export const getTransaction = (paymentId: string): Promise<Transaction> => {
   return api.get<Transaction>(TransactionsRoute.get.replace(/:id/g, paymentId));
 };
 
-export const fetchUserTransactions = (): Promise<Transaction> => {
-  return api.get<Transaction>(TransactionsRoute.user);
+export const fetchUserTransactions = (): Promise<LifePayTransaction> => {
+  return api.get<LifePayTransaction>(TransactionsRoute.user);
 };

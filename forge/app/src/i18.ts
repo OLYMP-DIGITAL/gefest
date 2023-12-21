@@ -149,7 +149,7 @@ const resources = {
           title: 'Pay shares',
           amount: 'Amount',
           desc: "To purchase shares, enter the desired quantity and press the 'Pay' button.",
-          currentAmount: 'Current share amount',
+          currentAmount: 'Current share value',
           amountOfSharedCounts: 'Amount of selected shares',
         },
 
@@ -161,6 +161,10 @@ const resources = {
 
         createInvoiceError:
           'Error creating transaction. Please try again later or contact customer support.',
+
+        totalAmount: 'Total amount',
+        portfolioValue: 'Portfolio value',
+        totalSharesCount: 'Shares count',
       },
     },
   },
@@ -329,6 +333,10 @@ const resources = {
 
         createInvoiceError:
           'Ошибка создания транзакции. Пожалуйста, попробуйте позже или обратитесь в службу поддержки',
+
+        totalAmount: 'Сумма всех пополнений',
+        portfolioValue: 'Стоимость портфеля',
+        totalSharesCount: 'Приобретено долей',
       },
     },
   },
