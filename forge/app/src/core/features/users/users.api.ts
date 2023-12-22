@@ -11,7 +11,7 @@ export enum UserRoutes {
   me = 'users/me?populate=*',
   signIn = 'auth/local',
   update = 'users/:id',
-  getSupport = 'support-email'
+  getSupport = 'support',
 }
 
 export const fetchMe = (): Promise<User> => {

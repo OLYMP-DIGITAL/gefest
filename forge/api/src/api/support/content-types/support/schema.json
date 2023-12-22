@@ -1,10 +1,10 @@
 {
   "kind": "singleType",
-  "collectionName": "support_emails",
+  "collectionName": "supports",
   "info": {
-    "singularName": "support-email",
-    "pluralName": "support-emails",
-    "displayName": "Support email"
+    "singularName": "support",
+    "pluralName": "supports",
+    "displayName": "Support"
   },
   "options": {
     "draftAndPublish": true
