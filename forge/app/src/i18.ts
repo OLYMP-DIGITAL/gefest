@@ -23,6 +23,14 @@ const resources = {
         payment: 'Payment',
         article: 'News',
       },
+
+      authScreens: {
+        finished: 'Registration',
+        welcome: 'Welcome',
+        signIn: 'Sign in',
+        signUp: 'Sign up',
+      },
+
       documents: {
         title: 'Documents',
         instructions: 'Intructions',
@@ -68,6 +76,7 @@ const resources = {
         submit: 'Submit',
         save: 'Save',
         continue: 'Continue',
+        close: 'Close',
       },
 
       payment: {
@@ -150,7 +159,7 @@ const resources = {
           title: 'Pay shares',
           amount: 'Amount',
           desc: "To purchase shares, enter the desired quantity and press the 'Pay' button.",
-          currentAmount: 'Current share amount',
+          currentAmount: 'Current share value',
           amountOfSharedCounts: 'Amount of selected shares',
         },
 
@@ -162,6 +171,10 @@ const resources = {
 
         createInvoiceError:
           'Error creating transaction. Please try again later or contact customer support.',
+
+        totalAmount: 'Total amount',
+        portfolioValue: 'Portfolio value',
+        totalSharesCount: 'Shares count',
       },
     },
   },
@@ -185,6 +198,13 @@ const resources = {
         faq: 'FAQ',
         payment: 'Оплата',
         article: 'Новость',
+      },
+
+      authScreens: {
+        finished: 'Регистрация',
+        welcome: 'Добро пожаловать',
+        signIn: 'Вход',
+        signUp: 'Регистрация',
       },
 
       documents: {
@@ -234,6 +254,7 @@ const resources = {
         save: 'Сохранить',
         submit: 'Отправить',
         continue: 'Продолжить',
+        close: 'Закрыть',
       },
 
       payment: {
@@ -331,6 +352,10 @@ const resources = {
 
         createInvoiceError:
           'Ошибка создания транзакции. Пожалуйста, попробуйте позже или обратитесь в службу поддержки',
+
+        totalAmount: 'Сумма всех пополнений',
+        portfolioValue: 'Стоимость портфеля',
+        totalSharesCount: 'Приобретено долей',
       },
     },
   },

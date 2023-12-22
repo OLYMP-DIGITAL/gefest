@@ -1,14 +1,17 @@
 import React from 'react';
-import { View, ScrollView } from 'react-native';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { fetchNews } from 'core/features/news/news.api';
-import { NewsCard } from './components/news-card.component';
 import { NewsInfo } from 'core/features/news/news.types';
 import { useLanguage } from 'core/providers/language.provider';
+import { useRecoilState } from 'recoil';
+import { articleAtom } from 'core/features/news/news.atoms';
+import ArticleView from './components/article-view.component';
+import NewsView from './components/news-view.component';
 
 export const NewsScreen = () => {
   const { lang } = useLanguage();
   const [news, setNews] = useState<NewsInfo[]>();
+  const [article, setArticle] = useRecoilState(articleAtom);
 
   const getNews = async () => {
     try {
@@ -25,39 +28,18 @@ export const NewsScreen = () => {
   }
 
   useEffect(() => {
-    getNews()
+    getNews();
+    setArticle(null);
   }, [lang]);
 
-  const createCard = useCallback(() => {
-    let cards: JSX.Element[] = [];
-
-    news && news.map((data, index) => {
-      let value = data.attributes;
-
-      cards.push(
-        <NewsCard key={`news-${index}`}
-          data={{
-            lang: lang,
-            title: value.title,
-            description: value.description || undefined,
-            text: value.text,
-            date: value.date,
-            imageUrl: value?.image?.data
-              ? value.image.data.attributes.url
-              : undefined,
-          }}
-        />)
-    })
-
-    return cards
-  }, [news])
 
   return (
-    <ScrollView>
-      <View style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
-        {createCard()}
-      </View>
-    </ScrollView>
+    <>
+      {!article
+        ? <NewsView news={news || []} />
+        : <ArticleView />
+      }
+    </>
   );
 };
 

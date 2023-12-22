@@ -9,7 +9,13 @@ export enum NavigatorScreensEnum {
   news = 'news',
   faq = 'faq',
   payment = 'payment',
-  article = 'article',
+}
+
+export enum AuthScreensEnum {
+  finished = 'finished',
+  welcome = 'welcome',
+  signIn = 'signIn',
+  signUp = 'signUp',
 }
 
 export type ScreenNames = [
@@ -20,7 +26,6 @@ export type ScreenNames = [
   'SignUp',
   'Welcome',
   'Finished',
-  'Article',
   'News'
 ]; // type these manually
 export type RootStackParamList = Record<ScreenNames[number], undefined>;
@@ -29,6 +34,7 @@ export type StackNavigation = NavigationProp<RootStackParamList>;
 export type NavigationStack = {
   Home: undefined;
   Partners: undefined;
+  News: undefined;
 
   // Payment
   Payment: undefined;
@@ -38,8 +44,4 @@ export type NavigationStack = {
   SignUp: undefined;
   Welcome: undefined;
   Finished: undefined;
-
-  // News details
-  Article: undefined;
-  News: undefined;
 };

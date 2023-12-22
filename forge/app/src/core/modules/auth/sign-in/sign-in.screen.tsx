@@ -1,6 +1,7 @@
 import { Input } from 'core/components/input';
 import RoundedButton from 'core/components/rounded-button';
 import { fetchSupportEmail, signIn } from 'core/features/users/users.api';
+import { resetPassword, signIn } from 'core/features/users/users.api';
 import { tokenAtom, userAtom } from 'core/features/users/users.atoms';
 import { useTheme } from 'core/providers/theme.provider';
 import { ResponseErrorName } from 'core/types/requests';
@@ -8,6 +9,13 @@ import { Formik } from 'formik';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, Linking, StyleSheet, Text, View } from 'react-native';
+import {
+  Modal,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
 import Icon from 'react-native-vector-icons/Feather';
 import { useSetRecoilState } from 'recoil';
@@ -32,9 +40,28 @@ function SignInScreen() {
 
   const [showResendEmail, setShowResendEmail] = useState<boolean>(false);
   const [hidePassword, setHidePassword] = useState<boolean>(true);
+  const [isModalVisible, setModalVisible] = useState(false);
 
   const setUser = useSetRecoilState(userAtom);
   const setToken = useSetRecoilState(tokenAtom);
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+
+  const sendEmail = async (email: string) => {
+    try {
+      const response = await resetPassword({ email });
+
+      if (response && response.data && response.data.length !== 0) {
+        console.error('Reset password email sent!', response);
+      } else {
+        console.error('Empty reset passwrod response', response);
+      }
+    } catch (e) {
+      console.error('Error sending reset password email', e);
+    }
+  };
 
   const validationSchema = useMemo(
     () =>
@@ -124,6 +151,28 @@ function SignInScreen() {
           top: 20,
           backgroundColor: theme.greyscale50,
         },
+        forgotPasswordLink: {
+          color: theme.link,
+          marginTop: 10,
+        },
+        modalContainer: {
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        },
+        modalContent: {
+          backgroundColor: 'white',
+          padding: 20,
+          borderRadius: 10,
+          elevation: 5,
+          height: 'auto',
+        },
+        buttonContainer: {
+          width: '90%',
+          marginTop: 10,
+          alignSelf: 'center',
+        },
       }),
     [theme]
   );
@@ -209,10 +258,49 @@ function SignInScreen() {
         title={t('welcome.support')}
         onPress={handlePress}
       />
+      <TouchableOpacity onPress={toggleModal}>
+        <Text style={styles.forgotPasswordLink}>Forgot Password?</Text>
+      </TouchableOpacity>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isModalVisible}
+        onRequestClose={toggleModal}
+      >
+        <View style={styles.modalContainer}>
+          <Formik
+            initialValues={{
+              email: '',
+            }}
+            onSubmit={(values) => sendEmail(values.email)}
+          >
+            {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
+              <View style={styles.modalContent}>
+                <Input
+                  placeholder={'email'}
+                  onChangeText={handleChange('email')}
+                  onBlur={handleBlur('email')}
+                  value={values.email}
+                />
+                <View style={styles.buttonContainer}>
+                  <RoundedButton
+                    title={t('buttons.continue')}
+                    onPress={handleSubmit as () => void}
+                  />
+                </View>
+                <View style={styles.buttonContainer}>
+                  <RoundedButton
+                    title={t('buttons.close')}
+                    onPress={toggleModal}
+                  />
+                </View>
+              </View>
+            )}
+          </Formik>
+        </View>
+      </Modal>
     </View>
   );
 }
-
-SignInScreen.route = 'SignIn';
 
 export default SignInScreen;

@@ -1,11 +1,10 @@
 import RoundedButton from 'core/components/rounded-button';
 import { BodyXlRegular } from 'core/components/text/body-xl-regular.text';
 import { H3Text } from 'core/components/text/h3.text';
-import { H4Text } from 'core/components/text/h4.text';
 import { useTheme } from 'core/providers/theme.provider';
 import api from 'core/services/api';
 import env from 'core/services/env';
-import { NavigationStack } from 'core/types/navigation';
+import { AuthScreensEnum, NavigationStack } from 'core/types/navigation';
 import { NavigationProp } from '@react-navigation/native';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -102,7 +101,7 @@ export const FinishedScreen = ({
           title={t('finished.toSignIn')}
           onPress={() => {
             // setUser(route.params?.user || null);
-            navigation.navigate('SignIn');
+            navigation.navigate(AuthScreensEnum.signIn as any);
           }}
         />
       </View>
@@ -137,7 +136,5 @@ export const FinishedScreen = ({
     </View>
   );
 };
-
-FinishedScreen.route = 'Finished';
 
 export default FinishedScreen;

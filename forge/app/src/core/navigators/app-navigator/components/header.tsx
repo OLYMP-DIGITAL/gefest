@@ -1,11 +1,8 @@
 import { DrawerItem } from '@react-navigation/drawer';
 import { LangSwitcher } from 'core/components/lang-switcher';
-import { configAtom } from 'core/features/config/config.feature';
-import { userAtom } from 'core/features/users/users.atoms';
-import { useTheme, useWindowSize } from 'core/providers/theme.provider';
-import { useTranslation } from 'react-i18next';
-import { Image, ImageBackground, StyleSheet, Text, View } from 'react-native';
-import { useRecoilValue } from 'recoil';
+import { LogoutButton } from 'core/components/logout-button';
+import { useWindowSize } from 'core/providers/theme.provider';
+import { Image, StyleSheet, View } from 'react-native';
 
 interface Props {
   title: string;
@@ -21,99 +18,67 @@ enum logoStyles {
 const Burger = () => {
   return (
     <Image
-      style={{ width: 40, height: 40 }}
+      style={{ width: 25, height: 25, tintColor: '#bdbdbd' }}
       source={require('assets/burger-1.png')}
     />
   );
 };
 
 export const Header: React.FC<Props> = ({ title, navigation }) => {
-  const user = useRecoilValue(userAtom);
-  const config = useRecoilValue(configAtom);
-
-  const { t } = useTranslation();
-  const { theme } = useTheme();
   const { smallSize, sizeType } = useWindowSize();
 
   return (
-    <ImageBackground
-      id="app-bar-image"
-      source={require('assets/headerBack.png')}
-      resizeMode="cover"
-      style={[styles.backgroundImage, { backgroundColor: theme.dark }]}
+    // <ImageBackground
+    //   id="app-bar-image"
+    //   source={require('assets/headerBack.png')}
+    //   resizeMode="cover"
+    //   style={[styles.backgroundImage, { backgroundColor: theme.dark }]}
+    // >
+    <View
+      style={[
+        styles.headerContainer,
+        smallSize && {
+          paddingHorizontal: 5,
+        },
+      ]}
     >
-      <View
-        style={[
-          styles.headerContainer,
-          smallSize && {
-            paddingHorizontal: 5,
-            paddingVertical: 5,
-          },
-        ]}
-      >
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <DrawerItem
-            label={Burger}
-            onPress={() => navigation.toggleDrawer()}
-          />
-        </View>
+      <View style={styles.rowBlock}>
+        <DrawerItem
+          label={Burger}
+          onPress={() => navigation.toggleDrawer()}
+        />
 
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={styles.rowBlock}>
           <Image
             style={styles[`${sizeType}Logo` as logoStyles]}
             source={require('assets/logo.png')}
           />
         </View>
+      </View>
 
-        {!smallSize && (
-          <View style={styles.infoContainer}>
-            <Text style={styles.boldText}>{t('referalLink')}</Text>
-            <Text style={{ color: '#fff' }}>{user?.id}</Text>
-          </View>
-        )}
-
-        <View style={[styles.infoContainer, { marginRight: 10 }]}>
-          <Text style={smallSize ? styles.thinText : styles.boldText}>
-            {t('companyCost')}
-          </Text>
-          <Text style={[{ color: '#fff' }, smallSize && { fontSize: 12 }]}>
-            {config?.companyValue} <Text style={styles.greenText}>+850%</Text>
-          </Text>
+      <View style={styles.rowBlock}>
+        <View style={styles.langContainer}>
+          <LangSwitcher />
         </View>
 
         {!smallSize && (
-          <>
-            <View style={styles.infoContainer}>
-              <LangSwitcher />
-            </View>
-
-            <View style={styles.userWrapper}>
-              <Text style={styles.valueText}>
-                {user?.username}{' '}
-                {(user?.lastname ? user?.lastname[0] : '') + '.'}
-              </Text>
-            </View>
-          </>
+          <LogoutButton />
         )}
       </View>
-    </ImageBackground>
+    </View>
+    // </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
-  infoContainer: {
+  langContainer: {
     color: 'white',
     alignItems: 'center',
+    marginRight: 25,
   },
 
   valueText: {
     color: '#fff',
-  },
-
-  userWrapper: {
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'row',
   },
 
   greenText: {
@@ -134,12 +99,20 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
 
+  rowBlock: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+
   headerContainer: {
-    color: 'white',
+    backgroundColor: '#35383F',
+    color: '#bdbdbd',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
+    paddingVertical: 5,
 
     borderBottomWidth: 1,
     borderBottomColor: '#737373',
@@ -154,7 +127,7 @@ const styles = StyleSheet.create({
     width: 140,
     height: 28,
     marginRight: 10,
-    marginLeft: -30,
+    marginLeft: -20,
   },
   mediumLogo: {
     width: 180,
@@ -162,8 +135,8 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   largeLogo: {
-    width: 200,
-    height: 40,
+    width: 180,
+    height: 36,
     marginRight: 10,
   },
 });
