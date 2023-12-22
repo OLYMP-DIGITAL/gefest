@@ -148,10 +148,7 @@ export const LifePayCard = () => {
               )}
             </View>
 
-            <Text>
-              По клику вы будете переадресованы на страницу с оплатой. Убедитесь
-              что у вас не блокируются вслывающие окна для сайта
-            </Text>
+            <Text>{t('lifePay.card.warmMessage')}</Text>
           </View>
 
           <View style={styles.actionsWrapper}>
@@ -223,6 +220,7 @@ const useStyles = () => {
           padding: 8,
           paddingHorizontal: 16,
           minHeight: 52,
+          marginTop: 'auto',
         },
 
         materialButton: {
@@ -246,6 +244,10 @@ const useStyles = () => {
 
         inputWrapper: {
           marginVertical: 13,
+        },
+
+        warmMessage: {
+          color: theme.fontCaption,
         },
       }),
     [theme]

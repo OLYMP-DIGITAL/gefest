@@ -9,7 +9,7 @@ export const TextDisplay = ({ children }: Props) => {
   const styles = useStyles((theme) => ({
     text: {
       color: theme.fontDisplay,
-      fontSize: '3.4rem',
+      fontSize: 40,
       lineHeight: '4rem',
       letterSpacing: 0,
       fontWeight: '300',
