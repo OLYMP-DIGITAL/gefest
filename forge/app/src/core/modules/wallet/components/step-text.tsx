@@ -6,6 +6,8 @@ import { useTheme } from 'core/providers/theme.provider';
 import { StackNavigation } from 'core/types/navigation';
 import { Card, CardTitle } from 'core/ui/components/card';
 import { CardContent } from 'core/ui/components/card/card-content';
+import { TextBody } from 'core/ui/components/typography/text-body';
+import { TextTitle } from 'core/ui/components/typography/text-title';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, StyleSheet, Text, View } from 'react-native';
@@ -37,19 +39,17 @@ export const StepText = () => {
   );
 
   return (
+    <>
+      <TextTitle>{t('wallet.step')}</TextTitle>
+      <TextBody>{t('wallet.desc')}</TextBody>
+    </>
+  );
+
+  return (
     <Card>
       <CardTitle title={t('wallet.step')} />
       <CardContent text={t('wallet.desc')} />
     </Card>
   );
-
-  return (
-    <View style={styles.wrapper}>
-      <View style={styles.titles}>
-        <H3Text text={t('wallet.step')} />
-        <H3Text text={t('wallet.stepLabel')} />
-      </View>
-      <Text>{t('wallet.desc')}</Text>
-    </View>
-  );
+  // <H3Text text={t('wallet.stepLabel')} />
 };

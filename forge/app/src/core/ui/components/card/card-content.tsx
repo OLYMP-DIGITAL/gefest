@@ -4,9 +4,10 @@ import { TextBody } from '../typography/text-body';
 
 interface Props {
   text?: string;
+  children?: React.ReactNode;
 }
 
-export const CardContent = ({ text }: Props) => {
+export const CardContent = ({ text, children }: Props) => {
   const styles = useStyles((theme) => ({
     wrapper: {
       padding: 16,
@@ -17,7 +18,8 @@ export const CardContent = ({ text }: Props) => {
 
   return (
     <View style={styles.wrapper}>
-      <TextBody>{text}</TextBody>
+      {text && <TextBody>{text}</TextBody>}
+      {children && children}
     </View>
   );
 };

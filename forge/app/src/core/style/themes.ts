@@ -19,6 +19,7 @@ export const lightTheme = {
   fontDisplay: '#757575',
   fontTitle: '#212121',
   fontBody: '#212121',
+  fontCaption: '#757575',
 };
 
 export const darkTheme: typeof lightTheme = {
@@ -40,6 +41,7 @@ export const darkTheme: typeof lightTheme = {
   fontDisplay: '#757575',
   fontTitle: '#212121',
   fontBody: '#212121',
+  fontCaption: '#757575',
 };
 
 export type Theme = typeof lightTheme;

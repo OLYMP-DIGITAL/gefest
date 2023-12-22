@@ -14,7 +14,7 @@ import { Card, CardTitle } from 'core/ui/components/card';
 import { CardContent } from 'core/ui/components/card/card-content';
 import { TotalAmount } from './components/total-amount';
 import { useLifePayTransactions } from 'core/features/life-pay/use-life-pay-transactions.hook';
-import { ShareCOunt } from './components/share-count';
+import { ShareCount } from './components/share-count';
 import { PortfolioValue } from './components/portfolio-value';
 import { TextDisplay } from 'core/ui/components/typography/text-display';
 
@@ -45,7 +45,7 @@ const WalletScreen = () => {
               <TotalAmount />
 
               <View style={styles.mt}>
-                <ShareCOunt />
+                <ShareCount />
               </View>
 
               <View style={styles.mt}>
@@ -85,7 +85,7 @@ const useStyles = () => {
         },
 
         infoCards: {
-          width: 200,
+          width: 300,
           marginLeft: 45,
         },
       }),

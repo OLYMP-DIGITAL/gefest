@@ -160,6 +160,8 @@ const resources = {
           desc: "To purchase shares, enter the desired quantity and press the 'Pay' button.",
           currentAmount: 'Current share value',
           amountOfSharedCounts: 'Amount of selected shares',
+          warmMessage:
+            'Upon clicking, you will be redirected to the payment page. Ensure that pop-ups are not blocked for the website.',
         },
 
         table: {
@@ -340,6 +342,8 @@ const resources = {
           amount: 'Количество',
           currentAmount: 'Текущая стоимость доли',
           amountOfSharedCounts: 'Выборано долей на сумму',
+          warmMessage:
+            'По клику вы будете переадресованы на страницу с оплатой. Убедитесь что у вас не блокируются вслывающие окна для сайта',
         },
 
         table: {
