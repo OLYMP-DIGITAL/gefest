@@ -4,6 +4,8 @@ import { H3Text } from 'core/components/text/h3.text';
 import { Transaction } from 'core/features/transactions/transactions.types';
 import { useTheme } from 'core/providers/theme.provider';
 import { StackNavigation } from 'core/types/navigation';
+import { Card, CardTitle } from 'core/ui/components/card';
+import { CardContent } from 'core/ui/components/card/card-content';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, StyleSheet, Text, View } from 'react-native';
@@ -32,6 +34,13 @@ export const StepText = () => {
         },
       }),
     [theme]
+  );
+
+  return (
+    <Card>
+      <CardTitle title={t('wallet.step')} />
+      <CardContent text={t('wallet.desc')} />
+    </Card>
   );
 
   return (
