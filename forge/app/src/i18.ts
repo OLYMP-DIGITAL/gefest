@@ -98,7 +98,7 @@ const resources = {
         requestSuccess: 'Thank you. Request completed successfully',
         referalCopied: 'Referal ID is copied',
         minValue: 'Min value is',
-        maxValue: 'Max value is',
+        maxValue: 'Maximum number of shares available for acquisition',
         isNumber: 'Value must be a number',
       },
 
@@ -134,7 +134,8 @@ const resources = {
         desc: 'Unique conditions in connection with the beginning of the formation of the initial capital of a targeted investment project.',
         stagesIsFinished: 'Stages is finished',
         stagesLoading: 'Stages loading...',
-        stagesLimit: 'Equity Acquisition Limit',
+        stagesLimit:
+          'At this stage of the project, the volume of individual investments is limited.',
         stagesDates: 'Stage period',
       },
       month: {
@@ -284,7 +285,7 @@ const resources = {
         requestSuccess: 'Спасибо. Запрос выполнен успешно',
         referalCopied: 'Реферальный идентификатор скопирован',
         minValue: 'Минимальное значение',
-        maxValue: 'Максимальное значение',
+        maxValue: 'Максимальное количество долей доступных для приобретения',
         isNumber: 'Значение может быть только числом',
       },
 
@@ -321,7 +322,8 @@ const resources = {
         desc: 'Уникальные условия в связи с началом формирования первоначального капитала адресного инвестиционного проекта.',
         stagesIsFinished: 'Все этапы закончены',
         stagesLoading: 'Загрузка этапов...',
-        stagesLimit: 'Лимит на преобретение долей',
+        stagesLimit:
+          'На данном этапе проекта объём индивидуальных инвестиций ограничен',
         stagesDates: 'Период этапа',
       },
       month: {
@@ -351,7 +353,7 @@ const resources = {
           amount: 'Количество',
           currentAmount: 'Текущая стоимость доли',
           amountOfSharedCounts: 'Выбрано долей на сумму',
-          transactionLimit: 'Оставшийся лимит на покупку акций',
+          transactionLimit: 'Оставшийся лимит на покупку долей',
           warmMessage:
             'По клику вы будете переадресованы на страницу с оплатой. Убедитесь что у вас не блокируются вслывающие окна для сайта',
         },

@@ -4,7 +4,8 @@
   "info": {
     "singularName": "investment-stage",
     "pluralName": "investment-stages",
-    "displayName": "Инвестиционные этапы"
+    "displayName": "Инвестиционные этапы",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -12,11 +13,11 @@
   "pluginOptions": {},
   "attributes": {
     "start": {
-      "type": "datetime",
+      "type": "date",
       "required": true
     },
     "end": {
-      "type": "datetime",
+      "type": "date",
       "required": true
     },
     "title": {
