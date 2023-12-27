@@ -21,13 +21,19 @@ export const useCurrentStage = () => {
 
   useEffect(() => {
     if (Array.isArray(stages)) {
-      const startDates: string[] = stages.map((stage) => stage.start);
-      const closesDate: Date | null = findClosestDate(startDates);
+      const startDates: [string, string][] = stages.map((stage) => [
+        stage.start,
+        stage.end,
+      ]);
+      // const closesDate: Date | null = findClosestDate(startDates);
+      const closesDate = getCurrentPeriod(startDates);
 
       if (closesDate) {
         setStage(
           stages.find(
-            (stage) => new Date(stage.start).getDate() === closesDate.getDate()
+            (stage) =>
+              new Date(stage.start).getDate() ===
+              new Date(closesDate[0]).getDate()
           ) || null
         );
       }
@@ -66,4 +72,21 @@ function findClosestDate(dates: string[]): Date | null {
   }
 
   return closestDate;
+}
+
+export function getCurrentPeriod(
+  datesArray: [string, string][]
+): [string, string] | null {
+  const currentDate = new Date();
+
+  for (const [startDate, endDate] of datesArray) {
+    const startDateTime = new Date(startDate);
+    const endDateTime = new Date(endDate);
+
+    if (currentDate >= startDateTime && currentDate <= endDateTime) {
+      return [startDate, endDate];
+    }
+  }
+
+  return null;
 }
