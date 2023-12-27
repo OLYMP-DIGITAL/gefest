@@ -1,13 +1,15 @@
 import { Input } from 'core/components/input';
+import { useCurrentStage } from 'core/features/investment-stage/use-current-stage';
 import {
-  MakeTransactionPayload,
   MakeTransactionResponse,
   makeTransaction,
 } from 'core/features/life-pay/life-pay.api';
+import { calcLimitOfTransactionValue } from 'core/features/life-pay/life-pay.helpers';
+import { useLifePayTransactions } from 'core/features/life-pay/use-life-pay-transactions.hook';
 import { useShareAmount } from 'core/features/share-amount/user-share-amount.hook';
 import { useTheme } from 'core/providers/theme.provider';
 import { Formik } from 'formik';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Linking,
@@ -29,13 +31,23 @@ interface PayForm {
 }
 
 export const LifePayCard = () => {
-  // useLifePayAuth();
-
   const { t } = useTranslation();
 
   const toast = useToast();
   const styles = useStyles();
   const shareAmount = useShareAmount();
+
+  const { stage } = useCurrentStage();
+  const { transactions } = useLifePayTransactions();
+  const [limit, setLimit] = useState<number>(0);
+
+  console.log('User transactions:', transactions);
+
+  useEffect(() => {
+    if (stage && transactions) {
+      setLimit(calcLimitOfTransactionValue(transactions, stage.max));
+    }
+  }, [stage, transactions]);
 
   const onSubmit = useCallback((values: PayForm) => {
     makeTransaction({
@@ -46,12 +58,11 @@ export const LifePayCard = () => {
           throw response.error;
         }
 
-        console.log('Submit response', response);
         const url = response.link;
 
         if (url) {
           Linking.openURL(url)
-            .then(() => console.log('Document opened'))
+            .then(() => console.log('Transaction link opened'))
             .catch((error) => console.error('Error opening document:', error));
         }
       })
@@ -76,11 +87,16 @@ export const LifePayCard = () => {
         sharesCount: yup
           .number()
           .min(MIN_AMOUNT, `${t('messages.minValue')} ${MIN_AMOUNT}`)
-          .max(MAX_AMOUNT, `${t('messages.maxValue')} ${MAX_AMOUNT}`)
+          .max(
+            limit / Number(shareAmount),
+            `${t('messages.maxValue')} ${(limit / Number(shareAmount)).toFixed(
+              0
+            )}`
+          )
           .required(`${t('messages.isRequired')}`)
           .nullable(),
       }),
-    []
+    [limit, shareAmount]
   );
 
   const calcAmountOfShares = (count: number): number => {
@@ -123,6 +139,13 @@ export const LifePayCard = () => {
               {t('lifePay.card.currentAmount')}: $
               <Text style={styles.strong}>
                 {(shareAmount && Number(shareAmount / 100).toFixed(2)) || '0'}
+              </Text>
+            </Text>
+
+            <Text style={styles.marginTop10}>
+              {t('lifePay.card.transactionLimit')}: $
+              <Text style={styles.strong}>
+                {Number(limit / 100).toFixed(0)}
               </Text>
             </Text>
 

@@ -132,6 +132,10 @@ const resources = {
         step: '1 Step of investment',
         stepLabel: 'Initial Investment Offering',
         desc: 'Unique conditions in connection with the beginning of the formation of the initial capital of a targeted investment project.',
+        stagesIsFinished: 'Stages is finished',
+        stagesLoading: 'Stages loading...',
+        stagesLimit: 'Equity Acquisition Limit',
+        stagesDates: 'Stage period',
       },
       month: {
         '01': 'january',
@@ -160,6 +164,7 @@ const resources = {
           desc: "To purchase shares, enter the desired quantity and press the 'Pay' button.",
           currentAmount: 'Current share value',
           amountOfSharedCounts: 'Amount of selected shares',
+          transactionLimit: 'Remaining limit for stock purchase',
           warmMessage:
             'Upon clicking, you will be redirected to the payment page. Ensure that pop-ups are not blocked for the website.',
         },
@@ -314,6 +319,10 @@ const resources = {
         step: '1 этап инвестиций',
         stepLabel: 'Initial Investment Offering',
         desc: 'Уникальные условия в связи с началом формирования первоначального капитала адресного инвестиционного проекта.',
+        stagesIsFinished: 'Все этапы закончены',
+        stagesLoading: 'Загрузка этапов...',
+        stagesLimit: 'Лимит на преобретение долей',
+        stagesDates: 'Период этапа',
       },
       month: {
         '01': 'января',
@@ -342,6 +351,7 @@ const resources = {
           amount: 'Количество',
           currentAmount: 'Текущая стоимость доли',
           amountOfSharedCounts: 'Выбрано долей на сумму',
+          transactionLimit: 'Оставшийся лимит на покупку акций',
           warmMessage:
             'По клику вы будете переадресованы на страницу с оплатой. Убедитесь что у вас не блокируются вслывающие окна для сайта',
         },

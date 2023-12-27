@@ -1,16 +1,23 @@
-import { InvestmentStage } from 'core/features/investment-stage/investement-sage.types';
-import { useInvestmentStages } from 'core/features/investment-stage/use-investment-stages.hook';
-import { TextBody } from 'core/ui/components/typography/text-body';
-import { TextHeadline } from 'core/ui/components/typography/text-headline';
-import { TextTitle } from 'core/ui/components/typography/text-title';
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { InvestmentStage } from './investement-sage.types';
+import { getInvestmentStages } from './investment-stage.api';
 
-export const StepText = () => {
-  const { t } = useTranslation();
-  const stages = useInvestmentStages();
-  const [loading, setLoading] = useState<boolean>(true);
+export const useCurrentStage = () => {
   const [stage, setStage] = useState<InvestmentStage | null>(null);
+  const [stages, setStages] = useState<InvestmentStage[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    getInvestmentStages().then((response) => {
+      console.log('Goted investment stages', response);
+
+      if (response.data) {
+        setStages(
+          response.data.map((responseStage) => responseStage.attributes)
+        );
+      }
+    });
+  }, []);
 
   useEffect(() => {
     if (Array.isArray(stages)) {
@@ -29,26 +36,7 @@ export const StepText = () => {
     }
   }, [stages]);
 
-  return (() => {
-    if (loading) {
-      return <TextBody>{t('wallet.stagesLoading')}</TextBody>;
-    }
-
-    if (!stage) {
-      return <TextTitle>{t('wallet.stagesIsFinished')}</TextTitle>;
-    }
-
-    return (
-      <>
-        <TextHeadline>{stage.title}</TextHeadline>
-        <TextBody>{stage.description}</TextBody>
-        <TextTitle>
-          {t('wallet.stagesLimit')}: {stage.max / 100}$
-        </TextTitle>
-      </>
-    );
-  })();
-  // <H3Text text={t('wallet.stepLabel')} />
+  return { stages, stage, loading };
 };
 
 function findClosestDate(dates: string[]): Date | null {
