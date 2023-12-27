@@ -7,13 +7,7 @@ import { ResponseErrorName } from 'core/types/requests';
 import { Formik } from 'formik';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  Modal,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
 import Icon from 'react-native-vector-icons/Feather';
 import { useSetRecoilState } from 'recoil';
@@ -217,9 +211,9 @@ function SignInScreen() {
           </View>
         )}
       </Formik>
-      <TouchableOpacity onPress={toggleModal}>
+      {/* <TouchableOpacity onPress={toggleModal}>
         <Text style={styles.forgotPasswordLink}>Forgot Password?</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <Modal
         animationType="slide"
         transparent={true}

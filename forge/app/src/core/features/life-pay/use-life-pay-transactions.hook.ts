@@ -1,13 +1,12 @@
-import { useCallback, useEffect, useState } from 'react';
-import { Transaction } from '../transactions/transactions.types';
-import { fetchUserTransactions } from '../transactions/transactions.api';
 import { LifePayTransaction } from './life-pay.types';
+import { getUserTransactions } from './life-pay.api';
+import { useCallback, useEffect, useState } from 'react';
 
 export const useLifePayTransactions = () => {
   const [transactions, setTransactions] = useState<LifePayTransaction[]>([]);
 
   useEffect(() => {
-    fetchUserTransactions().then((trs) => {
+    getUserTransactions().then((trs) => {
       if (Array.isArray(trs)) {
         setTransactions(trs);
       }
@@ -15,7 +14,7 @@ export const useLifePayTransactions = () => {
   }, []);
 
   const fetchTransactions = useCallback(() => {
-    fetchUserTransactions().then((trs) => {
+    getUserTransactions().then((trs) => {
       if (Array.isArray(trs)) {
         setTransactions(trs);
       }

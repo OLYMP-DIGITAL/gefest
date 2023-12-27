@@ -1,0 +1,35 @@
+{
+  "kind": "collectionType",
+  "collectionName": "investment_stages",
+  "info": {
+    "singularName": "investment-stage",
+    "pluralName": "investment-stages",
+    "displayName": "Инвестиционные этапы"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "start": {
+      "type": "datetime",
+      "required": true
+    },
+    "end": {
+      "type": "datetime",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "max": {
+      "type": "integer",
+      "default": 0,
+      "required": true
+    }
+  }
+}
