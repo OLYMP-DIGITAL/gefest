@@ -45,6 +45,10 @@ export default {
       console.log('[LIFE PAY TRANSACTION] Поступил запрос на полу');
       const user: User = ctx.state.user;
 
+      if (!user.confirmed) {
+        throw new Error('User is not confirmed');
+      }
+
       // Количество приобретаемых долей
       const count: number = ctx.request.body.count;
 
