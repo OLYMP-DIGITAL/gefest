@@ -280,7 +280,7 @@ const useStyles = () => {
         },
 
         materialButtonText: {
-          color: '#000000de',
+          color: '#D43238',
           fontSize: 14,
           fontWeight: '600',
           textTransform: 'uppercase',

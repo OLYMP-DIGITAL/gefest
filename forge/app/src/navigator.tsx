@@ -100,11 +100,11 @@ export function Navigator() {
                   component: FaqScreen,
                   iconSrc: require('assets/faq-icon.png'),
                 },
-                {
-                  name: NavigatorScreensEnum.payment,
-                  component: PaymentScreen,
-                  hidden: true,
-                },
+                // {
+                //   name: NavigatorScreensEnum.payment,
+                //   component: PaymentScreen,
+                //   hidden: true,
+                // },
               ]}
             />
           );
