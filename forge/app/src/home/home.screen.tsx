@@ -256,6 +256,7 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
                       <input
                         ref={passportFaceRef}
                         type="file"
+                        accept="image/*"
                         onChange={() =>
                           uploadImage(passportFaceRef, 'passportFace')
                         }
@@ -270,6 +271,7 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
                         <input
                           ref={passportRegistrationRef}
                           type="file"
+                          accept="image/*"
                           onChange={() =>
                             uploadImage(
                               passportRegistrationRef,
@@ -287,6 +289,7 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
                       <input
                         ref={faceWithPassportRef}
                         type="file"
+                        accept="image/*"
                         onChange={() =>
                           uploadImage(faceWithPassportRef, 'faceWithPassport')
                         }
