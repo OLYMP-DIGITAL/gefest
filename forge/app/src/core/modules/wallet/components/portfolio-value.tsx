@@ -12,7 +12,8 @@ export const PortfolioValue = () => {
   const { t } = useTranslation();
   const { theme } = useTheme();
   const shareAmount = useShareAmount();
-  const [totalAmount, setTotalAmount] = useState<number>(0);
+  const [portfolioIncreasePercentage, setPortfolioIncreasePercentage] = useState<number>(0);
+  const [portfolioIncreaseUsd, setPortfolioIncreaseUsd] = useState<number>(0);
   const [transactions, setTransactions] = useState<LifePayTransaction[]>([]);
   const [portfolioValue, setPortfolioValue] = useState<number>(0);
 
@@ -36,8 +37,13 @@ export const PortfolioValue = () => {
 
       const currentPortfolioValue = shareCount * shareAmount;
 
-      setTotalAmount(
+      setPortfolioIncreasePercentage(
         +(((currentPortfolioValue - totalAmount) / totalAmount) * 100).toFixed(
+          2
+        )
+      );
+      setPortfolioIncreaseUsd(
+        +((currentPortfolioValue - totalAmount) / 100).toFixed(
           2
         )
       );
@@ -50,7 +56,7 @@ export const PortfolioValue = () => {
       <CardTitle title={t('lifePay.portfolioValue')} />
       <CardContent>
         <TextHeadline color={theme.primary}>{`${portfolioValue / 100}$ (${
-          totalAmount > 0 ? `+${totalAmount}` : `+${totalAmount}`
+          portfolioIncreasePercentage > 0 ? `+${portfolioIncreaseUsd}$ +${portfolioIncreasePercentage}` : `+${portfolioIncreaseUsd}$ +${portfolioIncreasePercentage}`
         }%)`}</TextHeadline>
       </CardContent>
     </Card>
