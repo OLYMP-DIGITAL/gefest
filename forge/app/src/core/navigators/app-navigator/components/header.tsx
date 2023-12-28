@@ -2,7 +2,9 @@ import { DrawerItem } from '@react-navigation/drawer';
 import { LangSwitcher } from 'core/components/lang-switcher';
 import { LogoutButton } from 'core/components/logout-button';
 import { useWindowSize } from 'core/providers/theme.provider';
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { userAtom } from '../../../features/users/users.atoms';
 
 interface Props {
   title: string;
@@ -26,7 +28,7 @@ const Burger = () => {
 
 export const Header: React.FC<Props> = ({ title, navigation }) => {
   const { smallSize, sizeType } = useWindowSize();
-
+  const user = useRecoilValue(userAtom);
   return (
     // <ImageBackground
     //   id="app-bar-image"
@@ -57,10 +59,12 @@ export const Header: React.FC<Props> = ({ title, navigation }) => {
       </View>
 
       <View style={styles.rowBlock}>
+        <View style={styles.userNameContainer}>
+          <Text style={styles.userNameLabel}> {user?.email} </Text>
+        </View>
         <View style={styles.langContainer}>
           <LangSwitcher />
         </View>
-
         {!smallSize && (
           <LogoutButton />
         )}
@@ -77,6 +81,18 @@ const styles = StyleSheet.create({
     marginRight: 25,
   },
 
+  userNameContainer: {
+    color: 'white',
+    alignItems: 'center',
+    marginRight: 25
+  },
+
+  userNameLabel: {
+    paddingHorizontal: 5,
+    color: '#bdbdbd',
+    fontSize: 18,
+    fontWeight: '400'
+  },
   valueText: {
     color: '#fff',
   },
