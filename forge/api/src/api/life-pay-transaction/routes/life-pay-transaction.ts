@@ -2,7 +2,7 @@
  * life-pay-transaction router
  */
 
-import { factories } from '@strapi/strapi';
+// import { factories } from '@strapi/strapi';
 
 // export default factories.createCoreRouter('api::life-pay-transaction.life-pay-transaction');
 
@@ -17,6 +17,11 @@ export default {
       method: 'GET',
       path: '/life-pay-transaction/user',
       handler: 'life-pay-transaction.user',
+    },
+    {
+      method: 'GET',
+      path: '/life-pay-transaction/test',
+      handler: 'life-pay-transaction.test',
     },
   ],
 };
