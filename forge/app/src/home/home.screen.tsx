@@ -78,6 +78,9 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
           .string()
           .email('Invalid email')
           .required(`${t('user.email')} ${t('messages.isRequired')}`),
+        phone: yup
+          .string()
+          .matches(new RegExp('^\\+\\d{1,4}\\s?\\d{1,4}\\s?\\d{1,9}\\d{1,5}?$'), (`${t('user.phone')} ${t('messages.phoneNumberValidation')}`))
       }),
     []
   );
@@ -221,6 +224,7 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
 
               <View style={{ marginVertical: 10, marginTop: 20 }}>
                 <Input
+                  textContentType={'telephoneNumber'}
                   placeholder={t('user.phone')}
                   editable={!user?.passportConfirmed}
                   onChangeText={handleChange('phone')}

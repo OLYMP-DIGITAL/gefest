@@ -93,6 +93,7 @@ const resources = {
 
       messages: {
         isRequired: 'is required field',
+        phoneNumberValidation: 'Acceptable format is: +441234567890',
         invalidEmail: 'invalid email',
         requestFailed: 'Request is failed. Please, try later',
         requestSuccess: 'Thank you. Request completed successfully',
@@ -285,6 +286,7 @@ const resources = {
 
       messages: {
         isRequired: 'обязательное поле',
+        phoneNumberValidation: 'Допустимый формат: +441234567890',
         invalidEmail: 'неправильный email',
         requestFailed:
           'Произошла ошбка во время запроса. Пожалйста, повторите позже',
