@@ -103,7 +103,7 @@ const resources = {
       },
 
       welcome: {
-        title: 'Your welcome to the Scandinavian financial capital',
+        title: 'Welcome To The Scandinavian Financial Capital',
         signIn: 'Sign in',
         signUp: 'Sign up',
         registered: 'Already have an account?',
