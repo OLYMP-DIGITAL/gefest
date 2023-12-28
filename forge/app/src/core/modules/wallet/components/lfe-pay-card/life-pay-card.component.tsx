@@ -166,7 +166,15 @@ export const LifePayCard = () => {
               <View style={styles.inputWrapper}>
                 <Input
                   placeholder={t('lifePay.card.amount')}
-                  onChangeText={handleChange('sharesCount')}
+                  onChangeText={e => {
+                    const currentInput = e.valueOf();
+                    if ((currentInput != null) && (currentInput !== '') && !isNaN(Number(currentInput.toString()))) {
+                      handleChange('sharesCount')(e);
+                    }
+                    if (currentInput == '') {
+                      handleChange('sharesCount')(e);
+                    }
+                  }}
                   onBlur={handleBlur('sharesCount')}
                   value={`${values.sharesCount || ''}`}
                   keyboardType="numeric"
