@@ -39,12 +39,14 @@ export const UserActionsTable = () => {
         `${t('lifePay.table.value')} ($)`,
         t('lifePay.table.date'),
         t('lifePay.table.count'),
+        t('lifePay.table.status'),
       ],
       tableData: [
         ...userTransactions.map((action) => [
           action.value,
           action.date,
           action.count,
+          'status',
         ]),
       ],
     };
@@ -57,6 +59,7 @@ export const UserActionsTable = () => {
           value: transaction.amount / 100,
           count: transaction.shareCount,
           date: transaction.createdAt,
+          status: transaction.status,
         }))
       );
     });

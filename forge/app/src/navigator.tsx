@@ -1,22 +1,21 @@
+import { FaqScreen } from 'core/modules/FAQ';
+import GrowthChartScreen from 'core/modules/GrowthChartScreen';
+import DocumentsScreen from 'core/modules/documents/documents.screen';
+import { NewsScreen } from 'core/modules/news';
+import PartnersScreen from 'core/modules/partners/partners.screen';
+import WalletScreen from 'core/modules/wallet/wallet.screen';
 import { AppNavigator } from 'core/navigators/app-navigator/app.navigator';
 import { AuthNavigator } from 'core/navigators/auth.navigator';
 import HomeScreen from './home/home.screen';
-import WalletScreen from 'core/modules/wallet/wallet.screen';
-import PartnersScreen from 'core/modules/partners/partners.screen';
-import DocumentsScreen from 'core/modules/documents/documents.screen';
-import { FaqScreen } from 'core/modules/FAQ';
-import GrowthChartScreen from 'core/modules/GrowthChartScreen';
-import { NewsScreen } from 'core/modules/news';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { NavigationContainer, NavigationState } from '@react-navigation/native';
 import { Loader } from 'core/components/loader';
 import { userAtom } from 'core/features/users/users.atoms';
 import { useAuth } from 'core/providers/auth.provider';
-import { useRecoilValue } from 'recoil';
-import { PaymentScreen } from 'core/modules/payment/payment.screen';
-import { NavigationContainer, NavigationState } from '@react-navigation/native';
-import { useEffect, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigatorScreensEnum } from 'core/types/navigation';
+import { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 
 export function Navigator() {
   const { isLoading } = useAuth();

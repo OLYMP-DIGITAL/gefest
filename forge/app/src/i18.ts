@@ -179,6 +179,7 @@ const resources = {
           value: 'Value',
           date: 'Date',
           count: 'Shares count',
+          status: 'Status',
         },
 
         createInvoiceError:
@@ -372,6 +373,7 @@ const resources = {
           value: 'Сумма',
           date: 'Дата',
           count: 'Количество долей',
+          status: 'Статус',
         },
 
         createInvoiceError:
