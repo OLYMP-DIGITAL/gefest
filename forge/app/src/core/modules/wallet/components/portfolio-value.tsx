@@ -1,4 +1,7 @@
-import { getUserTransactions } from 'core/features/life-pay/life-pay.api';
+import {
+  LifePayInvoiceStatus,
+  getUserTransactions,
+} from 'core/features/life-pay/life-pay.api';
 import { LifePayTransaction } from 'core/features/life-pay/life-pay.types';
 import { useShareAmount } from 'core/features/share-amount/user-share-amount.hook';
 import { useTheme } from 'core/providers/theme.provider';
@@ -12,7 +15,8 @@ export const PortfolioValue = () => {
   const { t } = useTranslation();
   const { theme } = useTheme();
   const shareAmount = useShareAmount();
-  const [portfolioIncreasePercentage, setPortfolioIncreasePercentage] = useState<number>(0);
+  const [portfolioIncreasePercentage, setPortfolioIncreasePercentage] =
+    useState<number>(0);
   const [portfolioIncreaseUsd, setPortfolioIncreaseUsd] = useState<number>(0);
   const [transactions, setTransactions] = useState<LifePayTransaction[]>([]);
   const [portfolioValue, setPortfolioValue] = useState<number>(0);
@@ -31,8 +35,10 @@ export const PortfolioValue = () => {
       for (let i = 0; i < transactions.length; i++) {
         const transaction = transactions[i];
 
-        shareCount += Number(transaction.shareCount);
-        totalAmount += Number(transaction.amount);
+        if (transaction.status === LifePayInvoiceStatus.success) {
+          shareCount += Number(transaction.shareCount);
+          totalAmount += Number(transaction.amount);
+        }
       }
 
       const currentPortfolioValue = shareCount * shareAmount;
@@ -43,9 +49,7 @@ export const PortfolioValue = () => {
         )
       );
       setPortfolioIncreaseUsd(
-        +((currentPortfolioValue - totalAmount) / 100).toFixed(
-          2
-        )
+        +((currentPortfolioValue - totalAmount) / 100).toFixed(2)
       );
       setPortfolioValue(currentPortfolioValue);
     }
@@ -56,7 +60,9 @@ export const PortfolioValue = () => {
       <CardTitle title={t('lifePay.portfolioValue')} />
       <CardContent>
         <TextHeadline color={theme.primary}>{`${portfolioValue / 100}$ (${
-          portfolioIncreasePercentage > 0 ? `+${portfolioIncreaseUsd}$ +${portfolioIncreasePercentage}` : `+${portfolioIncreaseUsd}$ +${portfolioIncreasePercentage}`
+          portfolioIncreasePercentage > 0
+            ? `+${portfolioIncreaseUsd}$ +${portfolioIncreasePercentage}`
+            : `+${portfolioIncreaseUsd}$ +${portfolioIncreasePercentage}`
         }%)`}</TextHeadline>
       </CardContent>
     </Card>

@@ -1,33 +1,31 @@
-import { getUserTransactions } from 'core/features/life-pay/life-pay.api';
+import {
+  LifePayInvoiceStatus,
+  getUserTransactions,
+} from 'core/features/life-pay/life-pay.api';
 import { useTheme } from 'core/providers/theme.provider';
+import { TFunction } from 'i18next';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Platform, StyleSheet, View } from 'react-native';
 import { Row, Rows, Table } from 'react-native-table-component';
 
+const getTransactionStatus = (
+  status: LifePayInvoiceStatus,
+  t: TFunction
+): string => {
+  if (status === LifePayInvoiceStatus.success) {
+    return t('lifePay.transactionStatus.success');
+  } else {
+    return t('lifePay.transactionStatus.pending');
+  }
+};
+
 interface TableData {
   value: number;
   date: string;
   count: number;
+  status: string;
 }
-
-const tableDataMock: TableData[] = [
-  {
-    value: 100,
-    date: '13.01.23',
-    count: 10,
-  },
-  {
-    value: 100,
-    date: '13.02.23',
-    count: 10,
-  },
-  {
-    value: 100,
-    date: '13.03.23',
-    count: 10,
-  },
-];
 
 export const UserActionsTable = () => {
   const [userTransactions, setUserTransactions] = useState<TableData[]>([]);
@@ -46,7 +44,7 @@ export const UserActionsTable = () => {
           action.value,
           action.date,
           action.count,
-          'status',
+          getTransactionStatus(action.status as LifePayInvoiceStatus, t),
         ]),
       ],
     };

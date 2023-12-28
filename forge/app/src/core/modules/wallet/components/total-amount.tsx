@@ -1,4 +1,7 @@
-import { getUserTransactions } from 'core/features/life-pay/life-pay.api';
+import {
+  LifePayInvoiceStatus,
+  getUserTransactions,
+} from 'core/features/life-pay/life-pay.api';
 import { LifePayTransaction } from 'core/features/life-pay/life-pay.types';
 import { useTheme } from 'core/providers/theme.provider';
 import { Card, CardTitle } from 'core/ui/components/card';
@@ -26,7 +29,9 @@ export const TotalAmount = () => {
       for (let i = 0; i < transactions.length; i++) {
         const transaction = transactions[i];
 
-        value += Number(transaction.amount);
+        if (transaction.status === LifePayInvoiceStatus.success) {
+          value += Number(transaction.amount);
+        }
       }
 
       setValue(value);

@@ -8,10 +8,11 @@ export const calcLimitOfTransactionValue = (
 
   for (let index = 0; index < userTransactions.length; index++) {
     const transaction = userTransactions[index];
+
+    // if (transaction.status === LifePayInvoiceStatus.success) {
+    // }
     summOfUserTransactions += Number(transaction.amount);
   }
-
-  console.log('TEST LIMIT', stageLimit, summOfUserTransactions);
 
   return stageLimit - summOfUserTransactions;
 };

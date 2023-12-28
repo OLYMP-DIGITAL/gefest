@@ -183,6 +183,11 @@ const resources = {
           status: 'Status',
         },
 
+        transactionStatus: {
+          pending: 'Successfully paid',
+          success: 'счет успешно оплачен',
+        },
+
         createInvoiceError:
           'Error creating transaction. Please try again later or contact customer support.',
 
@@ -376,6 +381,11 @@ const resources = {
           date: 'Дата',
           count: 'Количество долей',
           status: 'Статус',
+        },
+
+        transactionStatus: {
+          pending: 'Ожидает оплаты',
+          success: 'Оплачено',
         },
 
         createInvoiceError:

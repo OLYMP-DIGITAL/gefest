@@ -44,7 +44,7 @@ export const LifePayCard = () => {
   const navigation = useNavigation<StackNavigation>();
 
   const { stage } = useCurrentStage();
-  const { transactions } = useLifePayTransactions();
+  const { transactions, fetchTransactions } = useLifePayTransactions();
   const [limit, setLimit] = useState<number>(0);
 
   console.log('User:', user?.confirmed);
@@ -65,6 +65,9 @@ export const LifePayCard = () => {
         }
 
         const url = response.link;
+
+        // Перезапрос транзакций для перерасчёта лимитов
+        fetchTransactions();
 
         if (url) {
           Linking.openURL(url)

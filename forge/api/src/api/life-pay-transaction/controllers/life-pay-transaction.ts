@@ -5,6 +5,8 @@
 // import { factories } from '@strapi/strapi'
 // import { Strapi, RequestContext } from '@strapi/strapi';
 import { Context } from 'koa';
+import { LifePayTransaction } from '../../../libs/life-pay/life-pay.types';
+import { getCurrentStage } from '../../../libs/stages/helpers/get-current-stage';
 
 const LIFE_PAY_AUTH_URL = 'https://api-ecom.life-pay.ru/v1/auth';
 const LIFE_PAY_CREATE_INVOICE_URL = 'https://api-ecom.life-pay.ru/v1/invoices';
@@ -12,12 +14,74 @@ const LIFE_PAY_CREATE_INVOICE_URL = 'https://api-ecom.life-pay.ru/v1/invoices';
 const LIFE_PAY_API_KEY = process.env.LIFE_PAY_API_KEY as string;
 const LIFE_PAY_SERVICE_ID = Number(process.env.LIFE_PAY_SERVICE_ID);
 
+export const calcLimitOfTransactionValue = (
+  userTransactions: LifePayTransaction[],
+  stageLimit: number
+): number => {
+  let summOfUserTransactions = 0;
+
+  for (let index = 0; index < userTransactions.length; index++) {
+    const transaction = userTransactions[index];
+
+    // if (transaction.status === LifePayInvoiceStatus.success) {
+    // }
+    summOfUserTransactions += Number(transaction.shareValue);
+  }
+
+  console.log('calcLimitOfTransactionValue', {
+    stageLimit,
+    summOfUserTransactions,
+  });
+
+  return stageLimit - summOfUserTransactions;
+};
+
 // export default factories.createCoreController('api::life-pay-transaction.life-pay-transaction');
 export default {
   async test(ctx: Context) {
     console.log('TEST REQUEST PROCESS ENV', process.env.TEST_VARIABLE);
     console.log('TEST REQUEST PROCESS API ENV', process.env.API_TEST_VARIABLE);
     // API_TEST_VARIABLE
+
+    const userTransactions = await strapi.entityService.findMany(
+      'api::life-pay-transaction.life-pay-transaction',
+      {
+        filters: {
+          $or: [
+            {
+              status: 'success',
+            },
+            {
+              status: 'open',
+            },
+            {
+              status: 'pending',
+            },
+          ],
+        },
+      }
+    );
+
+    const stages = await strapi.entityService.findMany(
+      'api::investment-stage.investment-stage'
+    );
+
+    const currentStage = getCurrentStage(stages as any);
+
+    let limit = 0;
+    if (userTransactions) {
+      limit = calcLimitOfTransactionValue(
+        userTransactions as any,
+        currentStage.max
+      );
+    }
+
+    ctx.body = {
+      limit: limit / 100,
+      nearestStage: currentStage,
+      userTransactions,
+      stages,
+    };
   },
 
   async user(ctx: Context) {
@@ -28,7 +92,7 @@ export default {
         'api::life-pay-transaction.life-pay-transaction',
         {
           filters: {
-            $and: [
+            $or: [
               {
                 status: 'success',
               },
@@ -102,6 +166,9 @@ export default {
       // Добавление 5%
       const additionalPercent = 5;
       const finalAmount = (kopeck * (1 + additionalPercent / 100)) / 100;
+
+      // ==================== ПОДСЧЁТ ЛИМИТА НА ПОКУПАЕМЫЕ ДОЛИ ================
+      console.log('[LIFE PAY TRANSACTION] Проверка на лимит покупаемы долей');
 
       console.log('[LIFE PAY TRANSACTION] Авторизация в системе LifePay');
 
