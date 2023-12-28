@@ -166,6 +166,11 @@ const resources = {
           currentAmount: 'Current share value',
           amountOfSharedCounts: 'Amount of selected shares',
           transactionLimit: 'Remaining limit for stock purchase',
+          toCabinet: 'To cabinet',
+
+          needConfirm:
+            'Once your information is confirmed, you\'ll be able to purchase shares in the company. To submit personal information for verification, click the link or use the "Personal Cabinet" section in the menu.',
+
           warmMessage:
             'Upon clicking, you will be redirected to the payment page. Ensure that pop-ups are not blocked for the website.',
         },
@@ -351,9 +356,14 @@ const resources = {
           desc: 'Чтобы приобрести доли, введие желаемое количество и нажмите кнопку "купить"',
           title: 'Приобретение долей',
           amount: 'Количество',
+          toCabinet: 'В личный кабинет',
           currentAmount: 'Текущая стоимость доли',
           amountOfSharedCounts: 'Выбрано долей на сумму',
           transactionLimit: 'Оставшийся лимит на покупку долей',
+
+          needConfirm:
+            'Как только ваши персональные данные будут подтверждены, вы сможете покупать доли в компании. Для отправки личных данных на проверку, перейдите по ссылке или воспользуйтесь разделом "Личный Кабинет" в меню',
+
           warmMessage:
             'По клику вы будете переадресованы на страницу с оплатой. Убедитесь что у вас не блокируются вслывающие окна для сайта',
         },
