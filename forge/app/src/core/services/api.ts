@@ -37,7 +37,9 @@ class Api {
     }
 
     headers.append('accept', '*/*');
-    headers.append('Authorization', `${BEARER} ${this.token}`);
+    if (this.token) {
+      headers.append('Authorization', `${BEARER} ${this.token}`);
+    }
 
     const requestOptions = {
       body: raw,
@@ -75,7 +77,10 @@ class Api {
 
     headers.append('Content-Type', 'application/json');
     headers.append('accept', '*/*');
-    headers.append('Authorization', `${BEARER} ${this.token}`);
+
+    if (this.token) {
+      headers.append('Authorization', `${BEARER} ${this.token}`);
+    }
 
     const requestOptions = {
       body: raw,
