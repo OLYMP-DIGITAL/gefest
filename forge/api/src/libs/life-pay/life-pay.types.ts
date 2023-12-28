@@ -52,4 +52,5 @@ export interface LifePayTransaction {
   status: LifePayInvoiceStatus;
   transactionId: string;
   transactionLink: string;
+  amount: number;
 }

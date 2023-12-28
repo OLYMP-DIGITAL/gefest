@@ -96,12 +96,12 @@ export const LifePayCard = () => {
         sharesCount: yup
           .number()
           .min(MIN_AMOUNT, `${t('messages.minValue')} ${MIN_AMOUNT}`)
-          .max(
-            limit / Number(shareAmount),
-            `${t('messages.maxValue')} ${(limit / Number(shareAmount)).toFixed(
-              0
-            )}`
-          )
+          // .max(
+          //   limit / Number(shareAmount),
+          //   `${t('messages.maxValue')} ${(limit / Number(shareAmount)).toFixed(
+          //     0
+          //   )}`
+          // )
           .required(`${t('messages.isRequired')}`)
           .nullable(),
       }),
@@ -169,9 +169,13 @@ export const LifePayCard = () => {
               <View style={styles.inputWrapper}>
                 <Input
                   placeholder={t('lifePay.card.amount')}
-                  onChangeText={e => {
+                  onChangeText={(e) => {
                     const currentInput = e.valueOf();
-                    if ((currentInput != null) && (currentInput !== '') && !isNaN(Number(currentInput.toString()))) {
+                    if (
+                      currentInput != null &&
+                      currentInput !== '' &&
+                      !isNaN(Number(currentInput.toString()))
+                    ) {
                       handleChange('sharesCount')(e);
                     }
                     if (currentInput == '') {

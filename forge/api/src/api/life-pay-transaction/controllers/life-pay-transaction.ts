@@ -14,35 +14,9 @@ const LIFE_PAY_CREATE_INVOICE_URL = 'https://api-ecom.life-pay.ru/v1/invoices';
 const LIFE_PAY_API_KEY = process.env.LIFE_PAY_API_KEY as string;
 const LIFE_PAY_SERVICE_ID = Number(process.env.LIFE_PAY_SERVICE_ID);
 
-export const calcLimitOfTransactionValue = (
-  userTransactions: LifePayTransaction[],
-  stageLimit: number
-): number => {
-  let summOfUserTransactions = 0;
-
-  for (let index = 0; index < userTransactions.length; index++) {
-    const transaction = userTransactions[index];
-
-    // if (transaction.status === LifePayInvoiceStatus.success) {
-    // }
-    summOfUserTransactions += Number(transaction.shareValue);
-  }
-
-  console.log('calcLimitOfTransactionValue', {
-    stageLimit,
-    summOfUserTransactions,
-  });
-
-  return stageLimit - summOfUserTransactions;
-};
-
 // export default factories.createCoreController('api::life-pay-transaction.life-pay-transaction');
 export default {
   async test(ctx: Context) {
-    console.log('TEST REQUEST PROCESS ENV', process.env.TEST_VARIABLE);
-    console.log('TEST REQUEST PROCESS API ENV', process.env.API_TEST_VARIABLE);
-    // API_TEST_VARIABLE
-
     const userTransactions = await strapi.entityService.findMany(
       'api::life-pay-transaction.life-pay-transaction',
       {
@@ -82,6 +56,21 @@ export default {
       userTransactions,
       stages,
     };
+
+    function calcLimitOfTransactionValue(
+      userTransactions: LifePayTransaction[],
+      stageLimit: number
+    ): number {
+      let summOfUserTransactions = 0;
+
+      for (let index = 0; index < userTransactions.length; index++) {
+        const transaction = userTransactions[index];
+
+        summOfUserTransactions += Number(transaction.amount);
+      }
+
+      return stageLimit - summOfUserTransactions;
+    }
   },
 
   async user(ctx: Context) {
@@ -165,10 +154,21 @@ export default {
 
       // Добавление 5%
       const additionalPercent = 5;
-      const finalAmount = (kopeck * (1 + additionalPercent / 100)) / 100;
+      const finalAmountRubls = (kopeck * (1 + additionalPercent / 100)) / 100;
 
       // ==================== ПОДСЧЁТ ЛИМИТА НА ПОКУПАЕМЫЕ ДОЛИ ================
       console.log('[LIFE PAY TRANSACTION] Проверка на лимит покупаемы долей');
+      const limit = await getUserLimit();
+
+      console.log('[LIFE PAY TRANSACTION] LIMIT', {
+        limit,
+        cents,
+        calc: cents * (1 + additionalPercent / 100),
+      });
+
+      if (cents > limit) {
+        throw new Error('Limit of transactions');
+      }
 
       console.log('[LIFE PAY TRANSACTION] Авторизация в системе LifePay');
 
@@ -185,7 +185,7 @@ export default {
       const transactionPayload = {
         jwt: lifePayAuth.jwt,
         name: 'покупка долей',
-        amount: finalAmount,
+        amount: finalAmountRubls,
         order_id: orderId,
         currency_code: Currency.rub,
         service_id: LIFE_PAY_SERVICE_ID,
@@ -245,6 +245,58 @@ export default {
     }
   },
 };
+
+async function getUserLimit() {
+  const userTransactions = await strapi.entityService.findMany(
+    'api::life-pay-transaction.life-pay-transaction',
+    {
+      filters: {
+        $or: [
+          {
+            status: 'success',
+          },
+          {
+            status: 'open',
+          },
+          {
+            status: 'pending',
+          },
+        ],
+      },
+    }
+  );
+
+  const stages = await strapi.entityService.findMany(
+    'api::investment-stage.investment-stage'
+  );
+
+  const currentStage = getCurrentStage(stages as any);
+
+  let limit = 0;
+  if (userTransactions) {
+    limit = calcLimitOfTransactionValue(
+      userTransactions as any,
+      currentStage.max
+    );
+  }
+
+  function calcLimitOfTransactionValue(
+    userTransactions: LifePayTransaction[],
+    stageLimit: number
+  ): number {
+    let summOfUserTransactions = 0;
+
+    for (let index = 0; index < userTransactions.length; index++) {
+      const transaction = userTransactions[index];
+
+      summOfUserTransactions += Number(transaction.amount);
+    }
+
+    return stageLimit - summOfUserTransactions;
+  }
+
+  return limit;
+}
 
 async function makeLifepPayInvoice({
   amount,
