@@ -6,8 +6,8 @@ import { LifePayAuthPayload, LifePayAuthResponse } from './life-pay.types';
 // *****************************************************************************
 const LIFE_PAY_AUTH_URL = 'https://api-ecom.life-pay.ru/v1/auth';
 
-const LIFE_PAY_API_KEY = '371e8d524a252852cd186df76dfe4a5b';
-const LIFE_PAY_SERVICE_ID = 89264;
+const LIFE_PAY_API_KEY = process.env.LIFE_PAY_API_KEY as string;
+const LIFE_PAY_SERVICE_ID = Number(process.env.LIFE_PAY_SERVICE_ID);
 
 class LifePay {
   jwt = '';

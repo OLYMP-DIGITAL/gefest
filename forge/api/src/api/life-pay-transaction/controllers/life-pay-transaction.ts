@@ -9,11 +9,17 @@ import { Context } from 'koa';
 const LIFE_PAY_AUTH_URL = 'https://api-ecom.life-pay.ru/v1/auth';
 const LIFE_PAY_CREATE_INVOICE_URL = 'https://api-ecom.life-pay.ru/v1/invoices';
 
-const LIFE_PAY_API_KEY = '371e8d524a252852cd186df76dfe4a5b';
-const LIFE_PAY_SERVICE_ID = 89264;
+const LIFE_PAY_API_KEY = process.env.LIFE_PAY_API_KEY as string;
+const LIFE_PAY_SERVICE_ID = Number(process.env.LIFE_PAY_SERVICE_ID);
 
 // export default factories.createCoreController('api::life-pay-transaction.life-pay-transaction');
 export default {
+  async test(ctx: Context) {
+    console.log('TEST REQUEST PROCESS ENV', process.env.TEST_VARIABLE);
+    console.log('TEST REQUEST PROCESS API ENV', process.env.API_TEST_VARIABLE);
+    // API_TEST_VARIABLE
+  },
+
   async user(ctx: Context) {
     try {
       console.log('CHECK USER', ctx.state.user);
