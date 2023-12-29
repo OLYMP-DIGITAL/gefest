@@ -74,11 +74,11 @@ export function Navigator() {
                   component: HomeScreen,
                   iconSrc: require('assets/profile-icon.png'),
                 },
-                {
-                  name: NavigatorScreensEnum.grpahGrow,
-                  component: GrowthChartScreen,
-                  iconSrc: require('assets/growth-icon.png'),
-                },
+                // {
+                //   name: NavigatorScreensEnum.grpahGrow,
+                //   component: GrowthChartScreen,
+                //   iconSrc: require('assets/growth-icon.png'),
+                // },
                 {
                   name: NavigatorScreensEnum.partners,
                   component: PartnersScreen,
