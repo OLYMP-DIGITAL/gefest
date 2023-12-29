@@ -96,12 +96,12 @@ export const LifePayCard = () => {
         sharesCount: yup
           .number()
           .min(MIN_AMOUNT, `${t('messages.minValue')} ${MIN_AMOUNT}`)
-          // .max(
-          //   limit / Number(shareAmount),
-          //   `${t('messages.maxValue')} ${(limit / Number(shareAmount)).toFixed(
-          //     0
-          //   )}`
-          // )
+          .max(
+            limit / Number(shareAmount),
+            `${t('messages.maxValue')} ${(limit / Number(shareAmount)).toFixed(
+              0
+            )}`
+          )
           .required(`${t('messages.isRequired')}`)
           .nullable(),
       }),
