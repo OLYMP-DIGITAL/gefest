@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { NavigationStack } from 'core/types/navigation';
 import { DrawerScreenProps } from '@react-navigation/drawer';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import RoundedButton from 'core/components/rounded-button';
 import { Input } from 'core/components/input';
 import { Formik } from 'formik';
@@ -109,13 +109,30 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
   const passportFaceRef = useRef<HTMLInputElement | null>(null);
   const faceWithPassportRef = useRef<HTMLInputElement | null>(null);
   const passportRegistrationRef = useRef<HTMLInputElement | null>(null);
-
+  const fileTypes = [
+    'image/apng',
+    'image/bmp',
+    'image/gif',
+    'image/jpeg',
+    'image/pjpeg',
+    'image/png',
+    'image/svg+xml',
+    'image/tiff',
+    'image/webp',
+    'image/x-icon'
+  ];
   const uploadImage = useCallback(
     (ref: any, field: string) => {
       const file = (ref.current as any)?.files[0];
 
       if (!file) {
         console.error('Файл не выбран');
+        return;
+      }
+      if (!fileTypes.includes(file.type)) {
+        toast.show(t('messages.fileTypeIsInvalid'), {
+          type: 'warning'
+        });
         return;
       }
 
@@ -258,6 +275,7 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
 
                     {(!user?.passportConfirmed && !user?.passportFace && (
                       <input
+                        style={{ overflow: 'hidden',width:'90px'}}
                         ref={passportFaceRef}
                         type="file"
                         accept="image/*"
@@ -273,6 +291,7 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
                     {(!user?.passportConfirmed &&
                       !user?.passportRegistration && (
                         <input
+                          style={{ overflow: 'hidden',width:'90px'}}
                           ref={passportRegistrationRef}
                           type="file"
                           accept="image/*"
@@ -291,6 +310,7 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
 
                     {(!user?.passportConfirmed && !user?.faceWithPassport && (
                       <input
+                        style={{ overflow: 'hidden',width:'90px'}}
                         ref={faceWithPassportRef}
                         type="file"
                         accept="image/*"

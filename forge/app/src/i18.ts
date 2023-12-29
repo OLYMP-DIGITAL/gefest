@@ -97,6 +97,7 @@ const resources = {
         invalidEmail: 'invalid email',
         requestFailed: 'Request is failed. Please, try later',
         requestSuccess: 'Thank you. Request completed successfully',
+        fileTypeIsInvalid: 'Please chose an image to upload',
         referalCopied: 'Referal ID is copied',
         minValue: 'Min value is',
         maxValue: 'Maximum number of shares available for acquisition',
@@ -296,6 +297,7 @@ const resources = {
         requestFailed:
           'Произошла ошбка во время запроса. Пожалйста, повторите позже',
         requestSuccess: 'Спасибо. Запрос выполнен успешно',
+        fileTypeIsInvalid: 'Пожалуйста выберите картинку для загрузки',
         referalCopied: 'Реферальный идентификатор скопирован',
         minValue: 'Минимальное значение',
         maxValue: 'Максимальное количество долей доступных для приобретения',
