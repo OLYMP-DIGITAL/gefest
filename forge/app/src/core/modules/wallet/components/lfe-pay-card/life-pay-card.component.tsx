@@ -5,6 +5,7 @@ import {
   MakeTransactionResponse,
   makeTransaction,
 } from 'core/features/life-pay/life-pay.api';
+import { lifePayTransactionsAtom } from 'core/features/life-pay/life-pay.atom';
 import { calcLimitOfTransactionValue } from 'core/features/life-pay/life-pay.helpers';
 import { useLifePayTransactions } from 'core/features/life-pay/use-life-pay-transactions.hook';
 import { useShareAmount } from 'core/features/share-amount/user-share-amount.hook';
@@ -34,7 +35,11 @@ interface PayForm {
   sharesCount: number;
 }
 
-export const LifePayCard = () => {
+interface Props {
+  fetchTransactions: () => void;
+}
+
+export const LifePayCard = ({ fetchTransactions }: Props) => {
   const { t } = useTranslation();
 
   const user = useRecoilValue(userAtom);
@@ -44,7 +49,7 @@ export const LifePayCard = () => {
   const navigation = useNavigation<StackNavigation>();
 
   const { stage } = useCurrentStage();
-  const { transactions, fetchTransactions } = useLifePayTransactions();
+  const transactions = useRecoilValue(lifePayTransactionsAtom);
   const [limit, setLimit] = useState<number>(0);
 
   useEffect(() => {

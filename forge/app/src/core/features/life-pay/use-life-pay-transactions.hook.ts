@@ -12,11 +12,15 @@ export const useLifePayTransactions = () => {
   );
 
   useEffect(() => {
-    getUserTransactions().then((trs) => {
-      if (Array.isArray(trs)) {
-        setTransactions(trs);
-      }
-    });
+    if (user) {
+      console.log('USER UPDATED', user?.email);
+
+      getUserTransactions().then((trs) => {
+        if (Array.isArray(trs)) {
+          setTransactions(trs);
+        }
+      });
+    }
   }, [user]);
 
   const fetchTransactions = useCallback(() => {

@@ -1,10 +1,5 @@
-import {
-  LifePayInvoiceStatus,
-  getUserTransactions,
-} from 'core/features/life-pay/life-pay.api';
+import { LifePayInvoiceStatus } from 'core/features/life-pay/life-pay.api';
 import { lifePayTransactionsAtom } from 'core/features/life-pay/life-pay.atom';
-import { LifePayTransaction } from 'core/features/life-pay/life-pay.types';
-import { useLifePayTransactions } from 'core/features/life-pay/use-life-pay-transactions.hook';
 import { useTheme } from 'core/providers/theme.provider';
 import { Card, CardTitle } from 'core/ui/components/card';
 import { CardContent } from 'core/ui/components/card/card-content';
@@ -20,19 +15,17 @@ export const TotalAmount = () => {
   const transactions = useRecoilValue(lifePayTransactionsAtom);
 
   useEffect(() => {
-    if (transactions.length) {
-      let value = 0;
+    let value = 0;
 
-      for (let i = 0; i < transactions.length; i++) {
-        const transaction = transactions[i];
+    for (let i = 0; i < transactions.length; i++) {
+      const transaction = transactions[i];
 
-        if (transaction.status === LifePayInvoiceStatus.success) {
-          value += Number(transaction.amount);
-        }
+      if (transaction.status === LifePayInvoiceStatus.success) {
+        value += Number(transaction.amount);
       }
-
-      setValue(value);
     }
+
+    setValue(value);
   }, [transactions]);
 
   return (

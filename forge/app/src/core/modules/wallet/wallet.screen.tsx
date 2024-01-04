@@ -13,7 +13,7 @@ import { UserActionsTable } from './components/user-actions-table/user-actions-t
 import { useLifePayTransactions } from 'core/features/life-pay/use-life-pay-transactions.hook';
 
 const WalletScreen = () => {
-  useLifePayTransactions();
+  const { fetchTransactions } = useLifePayTransactions();
 
   const styles = useStyles();
   const { t } = useTranslation();
@@ -27,7 +27,7 @@ const WalletScreen = () => {
           <StepText />
 
           <View style={styles.cards}>
-            <LifePayCard />
+            <LifePayCard fetchTransactions={fetchTransactions} />
 
             <View style={styles.infoCards}>
               <TotalAmount />

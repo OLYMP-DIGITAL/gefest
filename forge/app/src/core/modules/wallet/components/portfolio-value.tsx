@@ -24,7 +24,7 @@ export const PortfolioValue = () => {
   const transactions = useRecoilValue(lifePayTransactionsAtom);
 
   useEffect(() => {
-    if (transactions.length && shareAmount) {
+    if (shareAmount) {
       let shareCount = 0;
       let totalAmount = 0;
 

@@ -19,19 +19,17 @@ export const ShareCount = () => {
   const transactions = useRecoilValue(lifePayTransactionsAtom);
 
   useEffect(() => {
-    if (transactions.length) {
-      let value = 0;
+    let value = 0;
 
-      for (let i = 0; i < transactions.length; i++) {
-        const transaction = transactions[i];
+    for (let i = 0; i < transactions.length; i++) {
+      const transaction = transactions[i];
 
-        if (transaction.status === LifePayInvoiceStatus.success) {
-          value += Number(transaction.shareCount);
-        }
+      if (transaction.status === LifePayInvoiceStatus.success) {
+        value += Number(transaction.shareCount);
       }
-
-      setValue(value);
     }
+
+    setValue(value);
   }, [transactions]);
 
   return (
