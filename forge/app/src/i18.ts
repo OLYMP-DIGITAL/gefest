@@ -49,12 +49,12 @@ const resources = {
 
       user: {
         email: 'Email',
-        lastname: 'Lastname',
-        name: 'Password',
+        lastname: 'Last name',
+        name: 'First name',
         phone: 'Phone',
         username: 'Login',
         password: 'Password',
-        middlename: 'Middlename',
+        middlename: 'Middle name',
         emailOrLogin: 'Email or login',
       },
 
