@@ -13,6 +13,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import { useSetRecoilState } from 'recoil';
 import * as yup from 'yup';
 import { ConfirmButton } from './components/confirm-button';
+import api from 'core/services/api';
 
 interface SignInUser {
   email: string;
@@ -96,6 +97,8 @@ function SignInScreen() {
          * Сохранение токена и пользователя в глобальном стейте
          */
         if (response.jwt && response.user) {
+          api.token = response.jwt;
+
           setToken(response.jwt);
           setUser(response.user);
         }
