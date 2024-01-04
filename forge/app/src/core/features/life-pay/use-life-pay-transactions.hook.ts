@@ -1,9 +1,15 @@
 import { LifePayTransaction } from './life-pay.types';
 import { getUserTransactions } from './life-pay.api';
 import { useCallback, useEffect, useState } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { userAtom } from '../users/users.atoms';
+import { lifePayTransactionsAtom } from './life-pay.atom';
 
 export const useLifePayTransactions = () => {
-  const [transactions, setTransactions] = useState<LifePayTransaction[]>([]);
+  const user = useRecoilValue(userAtom);
+  const [transactions, setTransactions] = useRecoilState(
+    lifePayTransactionsAtom
+  );
 
   useEffect(() => {
     getUserTransactions().then((trs) => {
@@ -11,7 +17,7 @@ export const useLifePayTransactions = () => {
         setTransactions(trs);
       }
     });
-  }, []);
+  }, [user]);
 
   const fetchTransactions = useCallback(() => {
     getUserTransactions().then((trs) => {

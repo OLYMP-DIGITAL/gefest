@@ -22,6 +22,7 @@ const WalletScreen = () => {
 
         <View style={{ display: 'flex', flexDirection: 'column' }}>
           <StepText />
+
           <View style={styles.cards}>
             <LifePayCard />
 

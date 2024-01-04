@@ -1,13 +1,12 @@
-import {
-  LifePayInvoiceStatus,
-  getUserTransactions,
-} from 'core/features/life-pay/life-pay.api';
+import { LifePayInvoiceStatus } from 'core/features/life-pay/life-pay.api';
+import { lifePayTransactionsAtom } from 'core/features/life-pay/life-pay.atom';
 import { useTheme } from 'core/providers/theme.provider';
 import { TFunction } from 'i18next';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Platform, StyleSheet, View } from 'react-native';
 import { Row, Rows, Table } from 'react-native-table-component';
+import { useRecoilValue } from 'recoil';
 
 const getTransactionStatus = (
   status: LifePayInvoiceStatus,
@@ -28,6 +27,7 @@ interface TableData {
 }
 
 export const UserActionsTable = () => {
+  const transactions = useRecoilValue(lifePayTransactionsAtom);
   const [userTransactions, setUserTransactions] = useState<TableData[]>([]);
   const { t } = useTranslation();
   const styles = useUserActionsTableStyels();
@@ -51,17 +51,15 @@ export const UserActionsTable = () => {
   }, [userTransactions]);
 
   useEffect(() => {
-    getUserTransactions().then((transactions) => {
-      setUserTransactions(
-        transactions.map((transaction) => ({
-          value: transaction.amount / 100,
-          count: transaction.shareCount,
-          date: transaction.createdAt,
-          status: transaction.status,
-        }))
-      );
-    });
-  }, []);
+    setUserTransactions(
+      transactions.map((transaction) => ({
+        value: transaction.amount / 100,
+        count: transaction.shareCount,
+        date: transaction.createdAt,
+        status: transaction.status,
+      }))
+    );
+  }, [transactions]);
 
   return (
     <View

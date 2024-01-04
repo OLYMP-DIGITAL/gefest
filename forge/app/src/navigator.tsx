@@ -42,8 +42,10 @@ export function Navigator() {
   const persistNavigationState = async (state: NavigationState | undefined) => {
     if (state) {
       try {
-        const serializedState = JSON.stringify(state);
-        await AsyncStorage.setItem('navigationState', serializedState);
+        if (user) {
+          const serializedState = JSON.stringify(state);
+          await AsyncStorage.setItem('navigationState', serializedState);
+        }
       } catch (error) {
         console.error('Error persisting navigation state:', error);
       }

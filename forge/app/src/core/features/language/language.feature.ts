@@ -8,7 +8,7 @@ declare var localStorage: {
 };
 
 // Функция для определения платформы
-const isWeb = () => {
+export const isWeb = () => {
   return Platform.OS === 'web';
 };
 
