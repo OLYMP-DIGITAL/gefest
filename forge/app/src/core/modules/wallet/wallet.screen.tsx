@@ -1,6 +1,6 @@
 import { useTheme } from 'core/providers/theme.provider';
 import { TextDisplay } from 'core/ui/components/typography/text-display';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -10,8 +10,11 @@ import { ShareCount } from './components/share-count';
 import { StepText } from './components/step-text';
 import { TotalAmount } from './components/total-amount';
 import { UserActionsTable } from './components/user-actions-table/user-actions-table';
+import { useLifePayTransactions } from 'core/features/life-pay/use-life-pay-transactions.hook';
 
 const WalletScreen = () => {
+  useLifePayTransactions();
+
   const styles = useStyles();
   const { t } = useTranslation();
 

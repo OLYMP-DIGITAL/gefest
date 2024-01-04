@@ -62,6 +62,9 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
       api.token = token;
       saveToken(token);
       fetchLoggedInUser();
+    } else {
+      api.token = '';
+      saveToken('');
     }
   }, [token]);
 
