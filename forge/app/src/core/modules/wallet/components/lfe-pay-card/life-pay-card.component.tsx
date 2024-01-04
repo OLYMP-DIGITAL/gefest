@@ -47,8 +47,6 @@ export const LifePayCard = () => {
   const { transactions, fetchTransactions } = useLifePayTransactions();
   const [limit, setLimit] = useState<number>(0);
 
-  console.log('User:', user?.confirmed);
-
   useEffect(() => {
     if (stage && transactions) {
       setLimit(calcLimitOfTransactionValue(transactions, stage.max));
@@ -193,13 +191,13 @@ export const LifePayCard = () => {
                 )}
               </View>
 
-              {(user?.confirmed && (
+              {(user?.passportConfirmed && (
                 <Text>{t('lifePay.card.warmMessage')}</Text>
               )) || <Text>{t('lifePay.card.needConfirm')}</Text>}
             </View>
 
             <View style={styles.actionsWrapper}>
-              {(user?.confirmed && (
+              {(user?.passportConfirmed && (
                 <TouchableOpacity
                   style={[
                     styles.materialButton,

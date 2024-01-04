@@ -42,7 +42,7 @@ export const PortfolioValue = () => {
       setPortfolioIncreasePercentage(
         +(((currentPortfolioValue - totalAmount) / totalAmount) * 100).toFixed(
           2
-        )
+        ) || 0
       );
       setPortfolioIncreaseUsd(
         +((currentPortfolioValue - totalAmount) / 100).toFixed(2)
@@ -58,7 +58,7 @@ export const PortfolioValue = () => {
         <TextHeadline color={theme.primary}>{`${portfolioValue / 100}$ (${
           portfolioIncreasePercentage > 0
             ? `+${portfolioIncreaseUsd}$ +${portfolioIncreasePercentage}`
-            : `+${portfolioIncreaseUsd}$ +${portfolioIncreasePercentage}`
+            : `-${portfolioIncreaseUsd}$ -${portfolioIncreasePercentage}`
         }%)`}</TextHeadline>
       </CardContent>
     </Card>

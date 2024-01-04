@@ -185,8 +185,8 @@ const resources = {
         },
 
         transactionStatus: {
-          pending: 'Successfully paid',
-          success: 'счет успешно оплачен',
+          pending: 'Pending',
+          success: 'Successfully paid',
         },
 
         createInvoiceError:
