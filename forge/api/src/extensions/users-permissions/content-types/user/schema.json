@@ -108,8 +108,7 @@
       ]
     },
     "referal": {
-      "required": false,
-      "type": "integer"
+      "type": "string"
     }
   }
 }

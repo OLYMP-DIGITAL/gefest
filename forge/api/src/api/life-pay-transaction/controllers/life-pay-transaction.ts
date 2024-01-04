@@ -81,15 +81,18 @@ export default {
         'api::life-pay-transaction.life-pay-transaction',
         {
           filters: {
-            $or: [
+            $and: [
               {
-                status: 'success',
+                $or: [
+                  { status: 'success' },
+                  { status: 'open' },
+                  { status: 'pending' },
+                ],
               },
               {
-                status: 'open',
-              },
-              {
-                status: 'pending',
+                user: {
+                  id: ctx.state.user.id,
+                },
               },
             ],
           },
