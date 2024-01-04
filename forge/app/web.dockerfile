@@ -10,6 +10,8 @@ RUN npm install
 # Copy other files
 COPY . .
 
+ARG API_HOST
+
 # build
 RUN npx expo export:web
 

@@ -19,6 +19,8 @@ const defaultEnv: Env = {
   DEFAULT_LANGUAGE: 'ru',
 };
 
+console.log('PROCESS ENV!!!!!!!!!!!!!', process.env.API_HOST);
+
 module.exports = ({ config }: { config: ExpoConfig }): ExpoConfig => {
   return {
     ...config,

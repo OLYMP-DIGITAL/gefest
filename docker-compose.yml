@@ -36,6 +36,8 @@ services:
     build:
       dockerfile: web.dockerfile
       context: ./forge/app
+      args:
+        - API_HOST=${API_HOST}
 
     ports:
       - "${WEB_PORT}:80"
