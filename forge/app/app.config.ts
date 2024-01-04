@@ -24,8 +24,18 @@ module.exports = ({ config }: { config: ExpoConfig }): ExpoConfig => {
     ...config,
 
     extra: {
-      production: { ...defaultEnv, API_HOST: 'https://api.sfcglobal.dk' },
-      development: { ...defaultEnv, API_HOST: 'http://localhost:1337' },
+      production: {
+        ...defaultEnv,
+        API_HOST: process?.env?.API_HOST
+          ? process.env.API_HOST
+          : 'https://api.sfcglobal.dk',
+      },
+      development: {
+        ...defaultEnv,
+        API_HOST: process?.env?.API_HOST
+          ? process.env.API_HOST
+          : 'http://localhost:1337',
+      },
     },
   };
 };
