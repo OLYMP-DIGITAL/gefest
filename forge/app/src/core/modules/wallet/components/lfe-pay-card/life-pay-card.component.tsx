@@ -12,6 +12,7 @@ import { useShareAmount } from 'core/features/share-amount/user-share-amount.hoo
 import { userAtom } from 'core/features/users/users.atoms';
 import { useTheme } from 'core/providers/theme.provider';
 import { NavigatorScreensEnum, StackNavigation } from 'core/types/navigation';
+import { Button } from 'core/ui/components/button/button.component';
 import { Formik } from 'formik';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -198,7 +199,11 @@ export const LifePayCard = ({ fetchTransactions }: Props) => {
 
               {(user?.passportConfirmed && (
                 <Text>{t('lifePay.card.warmMessage')}</Text>
-              )) || <Text>{t('lifePay.card.needConfirm')}</Text>}
+              )) || (
+                <Text style={styles.warmMessage}>
+                  {t('lifePay.card.needConfirm')}
+                </Text>
+              )}
             </View>
 
             <View style={styles.actionsWrapper}>
@@ -223,17 +228,14 @@ export const LifePayCard = ({ fetchTransactions }: Props) => {
                   </Text>
                 </TouchableOpacity>
               )) || (
-                <TouchableOpacity
-                  style={[styles.materialButton]}
+                <Button
                   onPress={() => {
                     navigation.navigate(NavigatorScreensEnum.cabinet as any);
                   }}
-                  // disabled={Object.keys(errors).length > 0}
+                  primary
                 >
-                  <Text style={[styles.materialButtonText]}>
-                    {t('lifePay.card.toCabinet')}
-                  </Text>
-                </TouchableOpacity>
+                  {t('lifePay.card.toCabinet')}
+                </Button>
               )}
             </View>
           </View>

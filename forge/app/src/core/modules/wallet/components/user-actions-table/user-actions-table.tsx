@@ -42,7 +42,15 @@ export const UserActionsTable = () => {
       tableData: [
         ...userTransactions.map((action) => [
           action.value,
-          action.date,
+          (() => {
+            const inputDate = action.date;
+
+            return new Date(inputDate).toLocaleDateString('ru-RU', {
+              year: 'numeric',
+              month: 'numeric',
+              day: 'numeric',
+            });
+          })(),
           action.count,
           getTransactionStatus(action.status as LifePayInvoiceStatus, t),
         ]),
@@ -79,9 +87,13 @@ export const UserActionsTable = () => {
         <Row
           data={table.tableHead}
           style={styles.head}
-          textStyle={styles.text}
+          textStyle={styles.textContent}
         />
-        <Rows data={table.tableData} textStyle={styles.text} />
+        <Rows
+          style={styles.head}
+          data={table.tableData}
+          textStyle={styles.textContent}
+        />
       </Table>
     </View>
   );
@@ -94,16 +106,30 @@ const useUserActionsTableStyels = () => {
     () =>
       StyleSheet.create({
         container: {
-          flex: 1,
-          width: '100%',
-          border: `1px solid #ccc`,
-          marginVertical: 30,
-          // paddingTop: 30,
           backgroundColor: '#fff',
+          borderWidth: 0,
           borderRadius: 2,
+          padding: 16, // Если нужен внутренний отступ
+          width: 'auto', // 'auto' по умолчанию в React Native
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 1 },
+          shadowOpacity: 0.12,
+          shadowRadius: 3,
+          elevation: 2, // Для имитации box-shadow на Android
+          fontFamily: 'Roboto',
+          fontSize: 13,
+          fontWeight: '400',
         },
-        head: { height: 40, backgroundColor: '#f1f8ff' },
-        text: { margin: 6 },
+        head: {
+          height: 40,
+          borderBottomWidth: 1,
+          borderBottomColor: '#e0e0e0',
+        },
+
+        textContent: { paddingHorizontal: 56, paddingVertical: 0 },
+        textHead: {
+          textAlign: 'center',
+        },
       }),
     [theme]
   );
