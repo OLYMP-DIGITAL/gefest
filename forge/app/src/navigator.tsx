@@ -17,6 +17,8 @@ import { NavigatorScreensEnum } from 'core/types/navigation';
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 
+import { WalletScreen as DevScreen } from 'core/finance/screens/wallet.screen';
+
 export function Navigator() {
   const { isLoading } = useAuth();
   const user = useRecoilValue(userAtom);
@@ -66,6 +68,12 @@ export function Navigator() {
           return (
             <AppNavigator
               screens={[
+                {
+                  name: NavigatorScreensEnum.dev,
+                  component: DevScreen,
+                  iconSrc: require('assets/wallet-icon.png'),
+                },
+
                 {
                   name: NavigatorScreensEnum.wallet,
                   component: WalletScreen,

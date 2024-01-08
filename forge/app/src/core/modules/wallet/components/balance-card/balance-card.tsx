@@ -105,7 +105,9 @@ export const BalanceCard = ({ transactions }: Props) => {
         <RoundedButton
           small
           title={t('payment.topUp')}
-          onPress={() => navigation.navigate(NavigatorScreensEnum.payment as any)}
+          onPress={() =>
+            navigation.navigate(NavigatorScreensEnum.payment as any)
+          }
         />
       </View>
     </View>

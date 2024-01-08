@@ -1,9 +1,12 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import env from 'core/services/env';
+import { financeLocalization } from 'core/finance/localization';
 
 const resources = {
   en: {
+    finance: financeLocalization.en,
+
     translation: {
       referalLink: 'Referal ID',
       companyCost: 'Company cost',
@@ -182,6 +185,7 @@ const resources = {
           date: 'Date',
           count: 'Shares count',
           status: 'Status',
+          title: 'Actions list',
         },
 
         transactionStatus: {
@@ -200,6 +204,8 @@ const resources = {
   },
 
   ru: {
+    finance: financeLocalization.ru,
+
     translation: {
       referalLink: 'Реферальный ID',
       companyCost: 'Стоимость компании',
@@ -381,8 +387,9 @@ const resources = {
         table: {
           value: 'Сумма',
           date: 'Дата',
-          count: 'Количество долей',
+          count: 'Долей',
           status: 'Статус',
+          title: 'Список операций',
         },
 
         transactionStatus: {

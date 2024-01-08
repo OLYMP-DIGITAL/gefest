@@ -73,7 +73,7 @@ const useStyles = () => {
         },
 
         infoCards: {
-          width: 300,
+          width: 400,
           marginLeft: 45,
         },
       }),

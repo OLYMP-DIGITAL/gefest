@@ -1,6 +1,7 @@
 import { NavigationProp } from '@react-navigation/native';
 
 export enum NavigatorScreensEnum {
+  dev = 'dev',
   wallet = 'wallet',
   cabinet = 'cabinet',
   grpahGrow = 'grpahGrow',

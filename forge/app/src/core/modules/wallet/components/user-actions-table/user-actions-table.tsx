@@ -4,7 +4,7 @@ import { useTheme } from 'core/providers/theme.provider';
 import { TFunction } from 'i18next';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Platform, StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, Text, View } from 'react-native';
 import { Row, Rows, Table } from 'react-native-table-component';
 import { useRecoilValue } from 'recoil';
 
@@ -83,6 +83,7 @@ export const UserActionsTable = () => {
             },
       ]}
     >
+      <Text style={styles.title}>{t('lifePay.table.title')}</Text>
       <Table>
         <Row
           data={table.tableHead}
@@ -129,6 +130,16 @@ const useUserActionsTableStyels = () => {
         textContent: { paddingHorizontal: 56, paddingVertical: 0 },
         textHead: {
           textAlign: 'center',
+        },
+
+        title: {
+          color: 'rgba(0, 0, 0, 0.87)',
+          fontWeight: '100',
+          fontSize: 20,
+          margin: 0,
+          paddingVertical: 24,
+          verticalAlign: 16,
+          paddingTop: 0,
         },
       }),
     [theme]

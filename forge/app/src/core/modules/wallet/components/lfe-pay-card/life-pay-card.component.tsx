@@ -198,7 +198,9 @@ export const LifePayCard = ({ fetchTransactions }: Props) => {
               </View>
 
               {(user?.passportConfirmed && (
-                <Text>{t('lifePay.card.warmMessage')}</Text>
+                <Text style={styles.warmMessage}>
+                  {t('lifePay.card.warmMessage')}
+                </Text>
               )) || (
                 <Text style={styles.warmMessage}>
                   {t('lifePay.card.needConfirm')}
