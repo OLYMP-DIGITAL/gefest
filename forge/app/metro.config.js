@@ -17,7 +17,9 @@ module.exports = (() => {
   };
 
   config.resolver.extraNodeModules = {
-    core: `${__dirname}/core`,
+    src: `${__dirname}/src`,
+    core: `${__dirname}/src/core`,
+    assets: `${__dirname}/src/assets`,
 
     'react-native-reanimated': path.resolve(
       __dirname,

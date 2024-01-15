@@ -1,5 +1,4 @@
 import { FaqScreen } from 'core/modules/FAQ';
-import GrowthChartScreen from 'core/modules/GrowthChartScreen';
 import DocumentsScreen from 'core/modules/documents/documents.screen';
 import { NewsScreen } from 'core/modules/news';
 import PartnersScreen from 'core/modules/partners/partners.screen';
