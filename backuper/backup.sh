@@ -30,3 +30,7 @@ echo "Backup file $FILENAME removed"
 # ===================
 # Decode
 # openssl enc -d -aes-256-cbc -iter 10000 -in /app/$FILENAME -out /путь/к/расшифрованному/файлу -pass pass:$BACKUP_KEY
+# Add to beginning of decrypted file to restore DB:
+# CREATE DATABASE IF NOT EXISTS gefest ;
+# USE gefest;
+# mysql -uroot -ppassword gefest --force < backup.decrypted.bac
