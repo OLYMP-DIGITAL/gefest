@@ -27,7 +27,7 @@
       "required": true
     },
     "dollarRate": {
-      "type": "integer"
+      "type": "float"
     },
     "transactionId": {
       "type": "string",
@@ -52,8 +52,15 @@
     },
     "amount": {
       "type": "biginteger",
-      "default": "0",
       "required": true
+    },
+    "currency": {
+      "type": "enumeration",
+      "enum": [
+        "RUR",
+        "ETH",
+        "USDT"
+      ]
     }
   }
 }
