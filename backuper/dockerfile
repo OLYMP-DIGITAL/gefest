@@ -1,0 +1,9 @@
+FROM alpine:latest
+
+ENV BACKUP_HOST=${BACKUP_HOST}
+
+RUN apk update
+RUN apk add mysql-client openssh sshpass openssl
+
+RUN mkdir /root/.ssh
+RUN ssh-keyscan -t rsa 217.197.116.108 >> /root/.ssh/known_hosts

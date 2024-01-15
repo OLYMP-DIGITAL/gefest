@@ -3,6 +3,10 @@ version: '3'
 volumes:
   api-data-stage:
 
+networks:
+  gefest-network:
+    driver: bridge
+
 services:
 # ================================= NGINX ======================================
   nginx:
@@ -96,3 +100,24 @@ services:
 
     ports:
       - "${DATABASE_PORT}:3306"
+
+    networks:
+      - gefest-network
+
+  backuper:
+    build: ./backuper
+    command: /app/start.sh
+    env_file: .env
+    container_name: gefest_backuper
+
+    tty: true
+    restart: unless-stopped
+
+    networks:
+      - gefest-network
+
+    depends_on:
+      - apiDB
+
+    volumes:
+      - ./backuper:/app
