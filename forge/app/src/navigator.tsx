@@ -90,11 +90,11 @@ export function Navigator() {
                   component: DocumentsScreen,
                   iconSrc: require('assets/documents-icon.png'),
                 },
-                {
-                  name: NavigatorScreensEnum.news,
-                  component: NewsScreen,
-                  iconSrc: require('assets/news-icon.png'),
-                },
+                // {
+                //   name: NavigatorScreensEnum.news,
+                //   component: NewsScreen,
+                //   iconSrc: require('assets/news-icon.png'),
+                // },
                 {
                   name: NavigatorScreensEnum.faq,
                   component: FaqScreen,
