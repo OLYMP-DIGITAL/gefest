@@ -5,7 +5,7 @@ import env from 'core/services/env';
 const resources = {
   en: {
     translation: {
-      referalLink: 'Referal ID',
+      referalLink: 'Copy referal ID',
       companyCost: 'Company cost',
 
       cabinet: 'Personal Cabinet',

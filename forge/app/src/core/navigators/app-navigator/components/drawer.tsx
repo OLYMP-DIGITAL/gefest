@@ -1,9 +1,9 @@
+import { Entypo } from '@expo/vector-icons';
 import {
   DrawerContentScrollView,
   DrawerItem,
   DrawerItemList,
 } from '@react-navigation/drawer';
-import { LogoutButton } from 'core/components/logout-button';
 import { useAuth } from 'core/providers/auth.provider';
 import { useWindowSize } from 'core/providers/theme.provider';
 import { useTranslation } from 'react-i18next';
@@ -29,39 +29,24 @@ export function Drawer(props: any) {
     //   resizeMode="stretch"
     //   style={styles.backgroundImage}
     // >
-    <View
-      style={[styles.sidebarBlock, !smallSize && { paddingVertical: 30 }]}
-    >
+    <View style={[styles.sidebarBlock, !smallSize && { paddingVertical: 30 }]}>
       <DrawerContentScrollView {...props}>
-        {smallSize && (
-          <>
-            <View style={{ ...styles.row, paddingVertical: 20, paddingHorizontal: 15, height: 100 }}>
-              <View style={{ ...styles.row, flex: 10 }}>
-                <Text style={styles.sidebarInfo}>
-                  {user?.username}{' '}
-                  {(user?.lastname ? user?.lastname[0] : '') + '.'}
-                </Text>
-              </View>
-
-              <LogoutButton />
-            </View>
-
-            <DrawerItem
-              label={t('referalLink')}
-              labelStyle={styles.menuItems}
-              onPress={() => {
-                setCopiedValue(`${refValue}`);
-                toast.show(t('messages.referalCopied'));
-              }}
-              icon={() => (
-                <Image
-                  style={{ width: 20, height: 19, marginLeft: 10 }}
-                  source={require('assets/ref-icon.png')}
-                />
-              )}
+        <DrawerItem
+          label={t('referalLink')}
+          labelStyle={styles.menuItems}
+          onPress={() => {
+            setCopiedValue(`${refValue}`);
+            toast.show(t('messages.referalCopied'));
+          }}
+          icon={() => (
+            <Entypo
+              style={{ marginLeft: 13 }}
+              name="copy"
+              size={20}
+              color="white"
             />
-          </>
-        )}
+          )}
+        />
 
         <DrawerItemList state={newState} {...rest} />
       </DrawerContentScrollView>
@@ -94,12 +79,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
-  },
-  sidebarInfo: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: '500',
+    justifyContent: 'center',
   },
   menuItems: {
     color: 'white',
