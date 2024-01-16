@@ -16,16 +16,18 @@ REMOTE_USER=$BACKUP_USER
 REMOTE_PATH=$BACKUP_PATH
 REMOTE_PASSWORD=$BACKUP_PASSWORD
 
+echo "Crating mysql dump" >> /app/logs
+
 mysqldump --host=$DB_HOST --user=$DB_USER --password=$DB_PASSWORD $DB | openssl enc -aes-256-cbc -iter 10000 -out /app/$FILENAME -pass pass:$BACKUP_KEY
 
-echo "Crated backup file: $FILENAME"
+echo "Crated backup file: $FILENAME" >> /app/logs
 
 sshpass -p $REMOTE_PASSWORD scp /app/$FILENAME $REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH
 
-echo "File is transported to remote host: $REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH"
+echo "File is transported to remote host: $REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH" >> /app/logs
 
 rm /app/$FILENAME
-echo "Backup file $FILENAME removed"
+echo "Backup file $FILENAME removed" >> /app/logs
 
 # ===================
 # Decode
