@@ -28,16 +28,24 @@ module.exports = ({ config }: { config: ExpoConfig }): ExpoConfig => {
     extra: {
       production: {
         ...defaultEnv,
-        API_HOST: process?.env?.API_HOST
-          ? process.env.API_HOST
-          : 'https://api.sfcglobal.dk',
+        API_HOST: getProductionHost(),
       },
       development: {
         ...defaultEnv,
-        API_HOST: process?.env?.API_HOST
-          ? process.env.API_HOST
-          : 'http://localhost:1337',
+        API_HOST: getDevelopmentHost(),
       },
     },
   };
 };
+
+function getProductionHost() {
+  return process?.env?.API_HOST
+    ? process.env.API_HOST
+    : 'https://api.sfcglobal.dk';
+}
+
+function getDevelopmentHost() {
+  return process?.env?.API_HOST
+    ? process.env.API_HOST
+    : 'http://localhost:1337';
+}

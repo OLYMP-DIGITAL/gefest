@@ -1,5 +1,4 @@
 import { FaqScreen } from 'core/modules/FAQ';
-import GrowthChartScreen from 'core/modules/GrowthChartScreen';
 import DocumentsScreen from 'core/modules/documents/documents.screen';
 import { NewsScreen } from 'core/modules/news';
 import PartnersScreen from 'core/modules/partners/partners.screen';
@@ -91,11 +90,11 @@ export function Navigator() {
                   component: DocumentsScreen,
                   iconSrc: require('assets/documents-icon.png'),
                 },
-                {
-                  name: NavigatorScreensEnum.news,
-                  component: NewsScreen,
-                  iconSrc: require('assets/news-icon.png'),
-                },
+                // {
+                //   name: NavigatorScreensEnum.news,
+                //   component: NewsScreen,
+                //   iconSrc: require('assets/news-icon.png'),
+                // },
                 {
                   name: NavigatorScreensEnum.faq,
                   component: FaqScreen,

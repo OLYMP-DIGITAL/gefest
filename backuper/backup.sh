@@ -23,6 +23,7 @@ mysqldump --host=$DB_HOST --user=$DB_USER --password=$DB_PASSWORD $DB | openssl 
 echo "Crated backup file: $FILENAME" >> /app/logs
 
 sshpass -p $REMOTE_PASSWORD scp /app/$FILENAME $REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH
+# sshpass -p BackupPassword13! scp /app/2024-01-15-12-47-00.enc az@217.197.116.108:/home/az/backups/gefest_test
 
 echo "File is transported to remote host: $REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH" >> /app/logs
 
