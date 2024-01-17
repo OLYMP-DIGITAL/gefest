@@ -2,6 +2,8 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import env from 'core/services/env';
 
+export type SystemLanguage = 'ru' | 'en';
+
 const resources = {
   en: {
     translation: {
@@ -307,6 +309,7 @@ const resources = {
         maxValue: 'Максимальное количество долей доступных для приобретения',
         isNumber: 'Значение может быть только числом',
         isInteger: 'Значение должно быть целым числом',
+        isPositive: 'Значение должно быть позитивным числом',
       },
 
       welcome: {

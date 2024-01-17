@@ -19,6 +19,7 @@ import Icon from 'react-native-vector-icons/Feather';
 
 import { Checkbox } from 'core/ui/components/checkbox';
 import { TextCaption } from 'core/ui/components/typography/text-caption';
+import { useLanguage } from 'core/hooks/use-language';
 
 interface SignUpUser {
   email: string;
@@ -42,6 +43,7 @@ export function SignUpScreen({
   const toast = useToast();
   const { t } = useTranslation();
   const { theme } = useTheme();
+  const { language } = useLanguage();
 
   const [noReferal, setNoReferal] = useState<boolean>(true);
   const [hidePassword, setHidePassword] = useState<boolean>(true);
@@ -73,7 +75,7 @@ export function SignUpScreen({
           .string()
           .required(`${t('user.password')} ${t('messages.isRequired')}`),
       }),
-    [noReferal]
+    [noReferal, language]
   );
 
   const onSubmit = useCallback((values: SignUpUser) => {
