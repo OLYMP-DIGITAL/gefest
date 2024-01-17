@@ -102,6 +102,8 @@ const resources = {
         minValue: 'Min value is',
         maxValue: 'Maximum number of shares available for acquisition',
         isNumber: 'Value must be a number',
+        isPositive: 'The value must be a positive number',
+        isInteger: 'The value must be an integer',
       },
 
       welcome: {
@@ -120,6 +122,8 @@ const resources = {
       },
       signUp: {
         title: 'Registration',
+        noReferal: 'I do not have a referral number',
+        askReferal: 'Ask the person who invited you for your referral number',
         setNameMessage:
           'Enter your full name exactly as it is written in your passport',
       },
@@ -302,6 +306,7 @@ const resources = {
         minValue: 'Минимальное значение',
         maxValue: 'Максимальное количество долей доступных для приобретения',
         isNumber: 'Значение может быть только числом',
+        isInteger: 'Значение должно быть целым числом',
       },
 
       welcome: {
@@ -313,6 +318,9 @@ const resources = {
       },
       signUp: {
         title: 'Регистрация',
+        noReferal: 'У меня нет реферального номера',
+        askReferal:
+          'Спросите реферальный номер у человека, который вас пригласил',
         setNameMessage: 'Укажите ФИО именно так, как написано в паспорте',
       },
       signIn: {

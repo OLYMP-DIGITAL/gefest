@@ -31,6 +31,10 @@ export function Drawer(props: any) {
     // >
     <View style={[styles.sidebarBlock, !smallSize && { paddingVertical: 30 }]}>
       <DrawerContentScrollView {...props}>
+        <View style={{ marginBottom: 13 }}>
+          <Text style={styles.sidebarInfo}>{user?.email}</Text>
+        </View>
+
         <DrawerItem
           label={t('referalLink')}
           labelStyle={styles.menuItems}
@@ -56,6 +60,12 @@ export function Drawer(props: any) {
 }
 
 const styles = StyleSheet.create({
+  sidebarInfo: {
+    fontSize: 14,
+    color: '#fff',
+    textAlign: 'center',
+  },
+
   profileImage: {
     width: 50,
     height: 50,

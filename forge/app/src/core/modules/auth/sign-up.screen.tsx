@@ -18,6 +18,7 @@ import { useToast } from 'react-native-toast-notifications';
 import Icon from 'react-native-vector-icons/Feather';
 
 import { Checkbox } from 'core/ui/components/checkbox';
+import { TextCaption } from 'core/ui/components/typography/text-caption';
 
 interface SignUpUser {
   email: string;
@@ -42,6 +43,7 @@ export function SignUpScreen({
   const { t } = useTranslation();
   const { theme } = useTheme();
 
+  const [noReferal, setNoReferal] = useState<boolean>(true);
   const [hidePassword, setHidePassword] = useState<boolean>(true);
 
   useEffect(() => {
@@ -51,7 +53,17 @@ export function SignUpScreen({
   const validationSchema = useMemo(
     () =>
       yup.object().shape({
-        referal: yup.string(),
+        referal: (() => {
+          if (noReferal) {
+            return yup.number().notRequired();
+          }
+
+          return yup
+            .number()
+            .integer(t('messages.isInteger'))
+            .required(t('messages.isRequired'))
+            .positive(t('messages.isPositive'));
+        })(),
         username: yup.string(),
         email: yup
           .string()
@@ -61,7 +73,7 @@ export function SignUpScreen({
           .string()
           .required(`${t('user.password')} ${t('messages.isRequired')}`),
       }),
-    []
+    [noReferal]
   );
 
   const onSubmit = useCallback((values: SignUpUser) => {
@@ -80,6 +92,10 @@ export function SignUpScreen({
         console.log('An error occurred:', error);
         toast.show(t('messages.requestFailed'));
       });
+  }, []);
+
+  const onChangeNoReferal = useCallback((checked: boolean) => {
+    setNoReferal(checked);
   }, []);
 
   const styles = useMemo(
@@ -169,19 +185,27 @@ export function SignUpScreen({
             </View>
 
             <View style={{ marginVertical: 10 }}>
+              <Checkbox
+                label={t('signUp.noReferal')}
+                checked={true}
+                onChange={onChangeNoReferal}
+              />
+            </View>
+
+            <View style={{ marginVertical: 10 }}>
               <Input
+                value={values.referal}
+                onBlur={handleBlur('referal')}
+                editable={!noReferal}
                 placeholder={t('referalLink')}
                 onChangeText={handleChange('referal')}
-                onBlur={handleBlur('referal')}
-                value={values.referal}
               />
               {errors.referal && (
                 <Text style={{ color: 'red' }}>{errors.referal}</Text>
               )}
-            </View>
-
-            <View style={{ marginVertical: 10 }}>
-              <Checkbox checked={true} label="test" />
+              <View style={{ marginTop: 3 }}>
+                <TextCaption>{t('signUp.askReferal')}</TextCaption>
+              </View>
             </View>
 
             <View style={{ marginVertical: 20 }}>

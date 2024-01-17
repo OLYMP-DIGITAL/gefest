@@ -8,10 +8,16 @@ import { CheckBox } from 'react-native-web';
 interface Props {
   label?: string;
   checked?: boolean;
+  disabled?: boolean;
   onChange?: (e: any) => void;
 }
 
-export const Checkbox = ({ label, onChange, checked: propsChecked }: Props) => {
+export const Checkbox = ({
+  label,
+  onChange,
+  checked: propsChecked,
+  disabled,
+}: Props) => {
   const { theme } = useTheme();
   const [checked, setChecked] = useState<boolean>(!!propsChecked);
 
@@ -48,7 +54,12 @@ export const Checkbox = ({ label, onChange, checked: propsChecked }: Props) => {
   if (Platform.OS === 'web') {
     return (
       <View style={styles.container}>
-        <CheckBox color={theme.primary} value={checked} onChange={onPress} />
+        <CheckBox
+          disabled={disabled}
+          color={theme.primary}
+          value={checked}
+          onChange={onPress}
+        />
         {label && <Text style={styles.label}>{label}</Text>}
       </View>
     );
@@ -56,6 +67,7 @@ export const Checkbox = ({ label, onChange, checked: propsChecked }: Props) => {
 
   return (
     <BouncyCheckbox
+      disabled={disabled}
       isChecked={checked}
       size={25}
       fillColor={theme.primary}
