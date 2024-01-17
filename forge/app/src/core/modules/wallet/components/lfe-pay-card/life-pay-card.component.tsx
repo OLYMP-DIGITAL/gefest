@@ -7,7 +7,6 @@ import {
 } from 'core/features/life-pay/life-pay.api';
 import { lifePayTransactionsAtom } from 'core/features/life-pay/life-pay.atom';
 import { calcLimitOfTransactionValue } from 'core/features/life-pay/life-pay.helpers';
-import { useLifePayTransactions } from 'core/features/life-pay/use-life-pay-transactions.hook';
 import { useShareAmount } from 'core/features/share-amount/user-share-amount.hook';
 import { userAtom } from 'core/features/users/users.atoms';
 import { useTheme } from 'core/providers/theme.provider';
@@ -30,7 +29,6 @@ import { useRecoilValue } from 'recoil';
 import * as yup from 'yup';
 
 const MIN_AMOUNT = 1;
-const MAX_AMOUNT = 50;
 
 interface PayForm {
   sharesCount: number;
@@ -94,6 +92,8 @@ export const LifePayCard = ({ fetchTransactions }: Props) => {
       });
   }, []);
 
+  console.log('MAX', limit / Number(shareAmount));
+
   const validationSchema = useMemo(
     () =>
       yup.object().shape({
@@ -101,9 +101,9 @@ export const LifePayCard = ({ fetchTransactions }: Props) => {
           .number()
           .min(MIN_AMOUNT, `${t('messages.minValue')} ${MIN_AMOUNT}`)
           .max(
-            limit / Number(shareAmount),
-            `${t('messages.maxValue')} ${(limit / Number(shareAmount)).toFixed(
-              0
+            Math.floor(limit / Number(shareAmount)),
+            `${t('messages.maxValue')} ${Math.floor(
+              limit / Number(shareAmount)
             )}`
           )
           .required(`${t('messages.isRequired')}`)
