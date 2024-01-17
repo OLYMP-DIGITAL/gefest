@@ -1,21 +1,23 @@
-import * as yup from 'yup'; // Библиотека для валидации
-import { Formik } from 'formik';
 import { H3Text } from 'core/components/text/h3.text';
-import { StyleSheet, Text, View } from 'react-native';
+import { Formik } from 'formik';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, Text, View } from 'react-native';
+import * as yup from 'yup'; // Библиотека для валидации
 
+import { NavigationProp } from '@react-navigation/native';
 import { Input } from 'core/components/input';
 import RoundedButton from 'core/components/rounded-button';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import api from 'core/services/api';
-import { NavigationProp } from '@react-navigation/native';
-import { AuthScreensEnum, NavigationStack } from 'core/types/navigation';
-import { saveToken } from 'core/services/token';
 import { User } from 'core/features/users/users.types';
-import { useToast } from 'react-native-toast-notifications';
-import { ErrorResponse } from 'core/types/requests';
-import Icon from 'react-native-vector-icons/Feather';
 import { useTheme } from 'core/providers/theme.provider';
+import api from 'core/services/api';
+import { saveToken } from 'core/services/token';
+import { AuthScreensEnum, NavigationStack } from 'core/types/navigation';
+import { ErrorResponse } from 'core/types/requests';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useToast } from 'react-native-toast-notifications';
+import Icon from 'react-native-vector-icons/Feather';
+
+import { Checkbox } from 'core/ui/components/checkbox';
 
 interface SignUpUser {
   email: string;
@@ -80,22 +82,25 @@ export function SignUpScreen({
       });
   }, []);
 
-  const styles = useMemo(() =>
-    StyleSheet.create({
-      passwordContainer: {
-        flexDirection: 'row',
-      },
-      passwordInput: {
-        flex: 1,
-        paddingRight: 50,
-      },
-      icon: {
-        position: 'absolute',
-        right: 18,
-        top: 20,
-        backgroundColor: theme.greyscale50
-      }
-    }), [theme]);
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        passwordContainer: {
+          flexDirection: 'row',
+        },
+        passwordInput: {
+          flex: 1,
+          paddingRight: 50,
+        },
+        icon: {
+          position: 'absolute',
+          right: 18,
+          top: 20,
+          backgroundColor: theme.greyscale50,
+        },
+      }),
+    [theme]
+  );
 
   return (
     <View
@@ -148,10 +153,15 @@ export function SignUpScreen({
                   onBlur={handleBlur('password')}
                   value={values.password}
                 />
-                <Icon name={hidePassword ? 'eye-off' : 'eye'}
-                  size={20} style={styles.icon}
-                  color={!values.password ? theme.greyscale500 : theme.primaryText}
-                  onPress={() => setHidePassword(!hidePassword)} />
+                <Icon
+                  name={hidePassword ? 'eye-off' : 'eye'}
+                  size={20}
+                  style={styles.icon}
+                  color={
+                    !values.password ? theme.greyscale500 : theme.primaryText
+                  }
+                  onPress={() => setHidePassword(!hidePassword)}
+                />
               </View>
               {errors.password && (
                 <Text style={{ color: 'red' }}>{errors.password}</Text>
@@ -168,6 +178,10 @@ export function SignUpScreen({
               {errors.referal && (
                 <Text style={{ color: 'red' }}>{errors.referal}</Text>
               )}
+            </View>
+
+            <View style={{ marginVertical: 10 }}>
+              <Checkbox checked={true} label="test" />
             </View>
 
             <View style={{ marginVertical: 20 }}>

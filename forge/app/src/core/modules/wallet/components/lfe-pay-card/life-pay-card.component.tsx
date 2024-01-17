@@ -92,8 +92,6 @@ export const LifePayCard = ({ fetchTransactions }: Props) => {
       });
   }, []);
 
-  console.log('MAX', limit / Number(shareAmount));
-
   const validationSchema = useMemo(
     () =>
       yup.object().shape({

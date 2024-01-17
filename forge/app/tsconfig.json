@@ -6,13 +6,19 @@
       "node",
       "react-native",
       "jest",
-      "react"
+      "react",
     ],
     "strict": true,
     "baseUrl": "./src",
     "forceConsistentCasingInFileNames": true,
+    
+    "paths": {
+      "react-native-web": ["core/types/react-native-web.d.ts"]
+    },
+
   },
+
   "exclude": [
     "node_modules"
-  ]
+  ],
 }
