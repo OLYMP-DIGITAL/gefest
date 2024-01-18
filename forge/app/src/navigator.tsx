@@ -1,11 +1,10 @@
 import { FaqScreen } from 'core/modules/FAQ';
 import DocumentsScreen from 'core/modules/documents/documents.screen';
-import { NewsScreen } from 'core/modules/news';
 import PartnersScreen from 'core/modules/partners/partners.screen';
 import WalletScreen from 'core/modules/wallet/wallet.screen';
 import { AppNavigator } from 'core/navigators/app-navigator/app.navigator';
 import { AuthNavigator } from 'core/navigators/auth.navigator';
-import HomeScreen from './home/home.screen';
+import CabinetScreen from './home/cabinet.screen';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer, NavigationState } from '@react-navigation/native';
@@ -72,7 +71,7 @@ export function Navigator() {
                 },
                 {
                   name: NavigatorScreensEnum.cabinet,
-                  component: HomeScreen,
+                  component: CabinetScreen,
                   iconSrc: require('assets/profile-icon.png'),
                 },
                 // {

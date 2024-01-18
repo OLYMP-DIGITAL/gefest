@@ -10,8 +10,11 @@ interface Image {
 export interface UserPayload {
   name: string;
   email: string;
+  phone: string;
   lastname: string;
   middlename: string;
+  passportNumber: string;
+  registeredAddress: string;
 }
 
 export interface User {
@@ -21,10 +24,12 @@ export interface User {
   email: string;
   lastname: string;
   username: string;
+  passportNumber: string;
+  registeredAddress: string;
 
   passportFace: null | Image;
-  passportConfirmed: boolean;
   faceWithPassport: null | Image;
+  passportConfirmed: boolean;
   passportRegistration: null | Image;
 
   blocked: boolean;
@@ -49,4 +54,4 @@ export interface SignInSuccessResponse {
 
 export type ResetPasswordPayload = {
   email: string;
-}
+};

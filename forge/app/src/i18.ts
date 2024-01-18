@@ -58,6 +58,8 @@ const resources = {
         password: 'Password',
         middlename: 'Middle name',
         emailOrLogin: 'Email or login',
+        passportNumber: 'Passport series and number',
+        registeredAddress: 'Registered address',
       },
 
       cabinetPage: {
@@ -106,6 +108,8 @@ const resources = {
         isNumber: 'Value must be a number',
         isPositive: 'The value must be a positive number',
         isInteger: 'The value must be an integer',
+        minString: 'Minimum length',
+        maxString: 'Maximum length',
       },
 
       welcome: {
@@ -258,6 +262,8 @@ const resources = {
         password: 'Пароль',
         middlename: 'Отчество',
         emailOrLogin: 'Email или логин',
+        passportNumber: 'Серия и номер паспорта',
+        registeredAddress: 'Адрес регистрации',
       },
 
       cabinetPage: {
@@ -310,6 +316,8 @@ const resources = {
         isNumber: 'Значение может быть только числом',
         isInteger: 'Значение должно быть целым числом',
         isPositive: 'Значение должно быть позитивным числом',
+        minString: 'Минимальное количество символов',
+        maxString: 'Максимальное количество символов',
       },
 
       welcome: {

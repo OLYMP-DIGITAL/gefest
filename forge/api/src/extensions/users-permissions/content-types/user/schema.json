@@ -109,6 +109,14 @@
     },
     "referal": {
       "type": "string"
+    },
+    "registeredAddress": {
+      "type": "text"
+    },
+    "passportNumber": {
+      "type": "string",
+      "minLength": 7,
+      "maxLength": 16
     }
   }
 }

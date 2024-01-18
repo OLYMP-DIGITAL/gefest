@@ -18,6 +18,8 @@ import { H1Text } from 'core/components/text/h1.text';
 import { H4Text } from 'core/components/text/h4.text';
 import api from 'core/services/api';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useLanguage } from 'core/hooks/use-language';
+import { useTheme } from 'core/providers/theme.provider';
 
 // import Button from 'core/components/button';
 
@@ -43,9 +45,13 @@ const Confirmed = () => {
   );
 };
 
-export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
+export function CabinetScreen({
+  navigation,
+}: DrawerScreenProps<NavigationStack>) {
   const { t } = useTranslation();
   const toast = useToast();
+  const { theme } = useTheme();
+  const { language } = useLanguage();
   const [user, setUser] = useRecoilState(userAtom);
 
   const refetchMe = async () => {
@@ -74,15 +80,28 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
         middlename: yup
           .string()
           .required(`${t('user.middlename')} ${t('messages.isRequired')}`),
+        passportNumber: yup
+          .string()
+          .required(`${t('user.passportNumber')} ${t('messages.isRequired')}`)
+          .min(7, `${t('messages.minString')}: 7`)
+          .max(16, `${t('messages.maxString')}: 16`),
+        registeredAddress: yup
+          .string()
+          .required(
+            `${t('user.registeredAddress')}: ${t('messages.isRequired')}`
+          ),
         email: yup
           .string()
           .email('Invalid email')
           .required(`${t('user.email')} ${t('messages.isRequired')}`),
         phone: yup
           .string()
-          .matches(new RegExp('^\\+\\d{1,4}\\s?\\d{1,4}\\s?\\d{1,9}\\d{1,5}?$'), (`${t('user.phone')} ${t('messages.phoneNumberValidation')}`))
+          .matches(
+            new RegExp('^\\+\\d{1,4}\\s?\\d{1,4}\\s?\\d{1,9}\\d{1,5}?$'),
+            `${t('user.phone')} ${t('messages.phoneNumberValidation')}`
+          ),
       }),
-    []
+    [language]
   );
 
   const onSubmit = useCallback(
@@ -119,7 +138,7 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
     'image/svg+xml',
     'image/tiff',
     'image/webp',
-    'image/x-icon'
+    'image/x-icon',
   ];
   const uploadImage = useCallback(
     (ref: any, field: string) => {
@@ -131,7 +150,7 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
       }
       if (!fileTypes.includes(file.type)) {
         toast.show(t('messages.fileTypeIsInvalid'), {
-          type: 'warning'
+          type: 'warning',
         });
         return;
       }
@@ -174,6 +193,8 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
             middlename: user?.middlename || '',
             email: user?.email || '',
             phone: user?.phone || '',
+            passportNumber: user?.passportNumber || '',
+            registeredAddress: user?.registeredAddress || '',
             // password: '',
           }}
           validationSchema={validationSchema}
@@ -196,7 +217,7 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
                   value={values.name}
                 />
                 {!user?.passportConfirmed && errors.name && (
-                  <Text style={{ color: 'red' }}>{errors.name}</Text>
+                  <Text style={{ color: theme.error }}>{errors.name}</Text>
                 )}
               </View>
 
@@ -209,7 +230,7 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
                   value={values.lastname}
                 />
                 {!user?.passportConfirmed && errors.lastname && (
-                  <Text style={{ color: 'red' }}>{errors.lastname}</Text>
+                  <Text style={{ color: theme.error }}>{errors.lastname}</Text>
                 )}
               </View>
 
@@ -222,7 +243,9 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
                   value={values.middlename}
                 />
                 {!user?.passportConfirmed && errors.middlename && (
-                  <Text style={{ color: 'red' }}>{errors.middlename}</Text>
+                  <Text style={{ color: theme.error }}>
+                    {errors.middlename}
+                  </Text>
                 )}
               </View>
 
@@ -235,7 +258,37 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
                   value={values.email}
                 />
                 {!user?.passportConfirmed && errors.email && (
-                  <Text style={{ color: 'red' }}>{errors.email}</Text>
+                  <Text style={{ color: theme.error }}>{errors.email}</Text>
+                )}
+              </View>
+
+              <View style={{ marginVertical: 10 }}>
+                <Input
+                  placeholder={t('user.passportNumber')}
+                  editable={!user?.passportConfirmed}
+                  onChangeText={handleChange('passportNumber')}
+                  onBlur={handleBlur('passportNumber')}
+                  value={values.passportNumber}
+                />
+                {!user?.passportConfirmed && errors.passportNumber && (
+                  <Text style={{ color: theme.error }}>
+                    {errors.passportNumber}
+                  </Text>
+                )}
+              </View>
+
+              <View style={{ marginVertical: 10 }}>
+                <Input
+                  placeholder={t('user.registeredAddress')}
+                  editable={!user?.passportConfirmed}
+                  onChangeText={handleChange('registeredAddress')}
+                  onBlur={handleBlur('registeredAddress')}
+                  value={values.registeredAddress}
+                />
+                {!user?.passportConfirmed && errors.registeredAddress && (
+                  <Text style={{ color: theme.error }}>
+                    {errors.registeredAddress}
+                  </Text>
                 )}
               </View>
 
@@ -250,7 +303,7 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
                 />
 
                 {!user?.passportConfirmed && errors.phone && (
-                  <Text style={{ color: 'red' }}>{errors.phone}</Text>
+                  <Text style={{ color: theme.error }}>{errors.phone}</Text>
                 )}
               </View>
 
@@ -275,7 +328,7 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
 
                     {(!user?.passportConfirmed && !user?.passportFace && (
                       <input
-                        style={{ overflow: 'hidden',width:'90px'}}
+                        style={{ overflow: 'hidden', width: '90px' }}
                         ref={passportFaceRef}
                         type="file"
                         accept="image/*"
@@ -291,7 +344,7 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
                     {(!user?.passportConfirmed &&
                       !user?.passportRegistration && (
                         <input
-                          style={{ overflow: 'hidden',width:'90px'}}
+                          style={{ overflow: 'hidden', width: '90px' }}
                           ref={passportRegistrationRef}
                           type="file"
                           accept="image/*"
@@ -310,7 +363,7 @@ export function HomeScreen({ navigation }: DrawerScreenProps<NavigationStack>) {
 
                     {(!user?.passportConfirmed && !user?.faceWithPassport && (
                       <input
-                        style={{ overflow: 'hidden',width:'90px'}}
+                        style={{ overflow: 'hidden', width: '90px' }}
                         ref={faceWithPassportRef}
                         type="file"
                         accept="image/*"
@@ -351,4 +404,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default CabinetScreen;
