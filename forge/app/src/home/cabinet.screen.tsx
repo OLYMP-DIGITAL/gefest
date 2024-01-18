@@ -1,25 +1,25 @@
-import { useTranslation } from 'react-i18next';
-import { NavigationStack } from 'core/types/navigation';
 import { DrawerScreenProps } from '@react-navigation/drawer';
-import { StyleSheet, Text, View } from 'react-native';
-import RoundedButton from 'core/components/rounded-button';
 import { Input } from 'core/components/input';
+import RoundedButton from 'core/components/rounded-button';
+import { NavigationStack } from 'core/types/navigation';
 import { Formik } from 'formik';
 import { useCallback, useMemo, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
+import { StyleSheet, Text, View } from 'react-native';
 
-import * as yup from 'yup';
-import { useRecoilState } from 'recoil';
-import { userAtom } from 'core/features/users/users.atoms';
-import { fetchMe, update } from 'core/features/users/users.api';
-import { UserPayload } from 'core/features/users/users.types';
-import { useToast } from 'react-native-toast-notifications';
-import { H3Text } from 'core/components/text/h3.text';
 import { H1Text } from 'core/components/text/h1.text';
+import { H3Text } from 'core/components/text/h3.text';
 import { H4Text } from 'core/components/text/h4.text';
-import api from 'core/services/api';
-import { ScrollView } from 'react-native-gesture-handler';
+import { fetchMe, update } from 'core/features/users/users.api';
+import { userAtom } from 'core/features/users/users.atoms';
+import { UserPayload } from 'core/features/users/users.types';
 import { useLanguage } from 'core/hooks/use-language';
 import { useTheme } from 'core/providers/theme.provider';
+import api from 'core/services/api';
+import { ScrollView } from 'react-native-gesture-handler';
+import { useToast } from 'react-native-toast-notifications';
+import { useRecoilState } from 'recoil';
+import * as yup from 'yup';
 
 // import Button from 'core/components/button';
 
@@ -85,11 +85,13 @@ export function CabinetScreen({
           .required(`${t('user.passportNumber')} ${t('messages.isRequired')}`)
           .min(7, `${t('messages.minString')}: 7`)
           .max(16, `${t('messages.maxString')}: 16`),
-        registeredAddress: yup
-          .string()
-          .required(
-            `${t('user.registeredAddress')}: ${t('messages.isRequired')}`
-          ),
+        registeredAddress: (() => {
+          return yup
+            .string()
+            .required(
+              `${t('user.registeredAddress')}: ${t('messages.isRequired')}`
+            );
+        })(),
         email: yup
           .string()
           .email('Invalid email')

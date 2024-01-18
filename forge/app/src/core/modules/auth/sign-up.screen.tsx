@@ -224,12 +224,4 @@ export function SignUpScreen({
   );
 }
 
-const styles = StyleSheet.create({
-  message: {
-    width: 300,
-    textAlign: 'center',
-    marginTop: 20,
-  },
-});
-
 export default SignUpScreen;
