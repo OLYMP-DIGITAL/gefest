@@ -59,6 +59,7 @@ export const Checkbox = ({
           color={theme.primary}
           value={checked}
           onChange={onPress}
+          // onValueChange={}
         />
         {label && <Text style={styles.label}>{label}</Text>}
       </View>
