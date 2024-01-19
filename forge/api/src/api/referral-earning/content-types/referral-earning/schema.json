@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "referral_earnings",
+  "info": {
+    "singularName": "referral-earning",
+    "pluralName": "referral-earnings",
+    "displayName": "Реферальные начисления"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "transaction": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::life-pay-transaction.life-pay-transaction"
+    },
+    "value": {
+      "type": "decimal",
+      "default": 0,
+      "required": true,
+      "min": 0
+    },
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    }
+  }
+}
