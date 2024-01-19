@@ -118,7 +118,7 @@ const resources = {
         signUp: 'Sign up',
         registered: 'Already have an account?',
         emailContinue: 'Continue with email',
-        support: 'Support',
+        support: 'Contact technical support',
       },
       signIn: {
         text: '',
@@ -327,7 +327,7 @@ const resources = {
         signUp: 'Зарегистрироваться',
         registered: 'Уже есть аккаунт?',
         emailContinue: 'Продолжить с email',
-        support: 'Поддержка',
+        support: 'Написать в техподдержку',
       },
       signUp: {
         title: 'Регистрация',
