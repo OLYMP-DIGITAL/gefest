@@ -1,19 +1,24 @@
 import { Input } from 'core/components/input';
 import RoundedButton from 'core/components/rounded-button';
-import { resetPassword, signIn } from 'core/features/users/users.api';
+import { SupportEmailLink } from 'core/features/support/support-email-link.component';
+import {
+  fetchSupportEmail,
+  resetPassword,
+  signIn,
+} from 'core/features/users/users.api';
 import { tokenAtom, userAtom } from 'core/features/users/users.atoms';
 import { useTheme } from 'core/providers/theme.provider';
+import api from 'core/services/api';
 import { ResponseErrorName } from 'core/types/requests';
 import { Formik } from 'formik';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Linking, Modal, StyleSheet, Text, View } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
 import Icon from 'react-native-vector-icons/Feather';
 import { useSetRecoilState } from 'recoil';
 import * as yup from 'yup';
 import { ConfirmButton } from './components/confirm-button';
-import api from 'core/services/api';
 
 interface SignInUser {
   email: string;
@@ -108,6 +113,27 @@ function SignInScreen() {
       });
   }, []);
 
+  const [supportEmail, setSupportEmail] = useState<string>('mailto:');
+
+  const fetchSupport = async () => {
+    try {
+      const response = await fetchSupportEmail();
+
+      if (response && response.data) {
+        let cleanedData = response.data.attributes.email;
+        setSupportEmail(supportEmail + cleanedData);
+      } else {
+        console.error('No support email data', response);
+      }
+    } catch (e) {
+      console.error('Error fetching support email', e);
+    }
+  };
+
+  useEffect(() => {
+    fetchSupport();
+  }, []);
+
   const styles = useMemo(
     () =>
       StyleSheet.create({
@@ -149,6 +175,19 @@ function SignInScreen() {
       }),
     [theme]
   );
+
+  const handlePress = useCallback(async () => {
+    // Checking if the link is supported for links with custom URL scheme.
+    const supported = await Linking.canOpenURL(supportEmail);
+
+    if (supported) {
+      // Opening the link with some app, if the URL scheme is "http" the web link should be opened
+      // by some browser in the mobile
+      await Linking.openURL(supportEmail);
+    } else {
+      Alert.alert(`Don't know how to open this URL: ${supportEmail}`);
+    }
+  }, [supportEmail]);
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -214,6 +253,9 @@ function SignInScreen() {
           </View>
         )}
       </Formik>
+
+      <SupportEmailLink />
+
       {/* <TouchableOpacity onPress={toggleModal}>
         <Text style={styles.forgotPasswordLink}>Forgot Password?</Text>
       </TouchableOpacity> */}

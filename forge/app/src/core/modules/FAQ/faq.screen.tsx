@@ -78,6 +78,7 @@ export const FaqScreen = () => {
           style={styles.container}
         >
           <Accordion
+            underlayColor="#fff6f60"
             align="bottom"
             sections={faqs || sectionsMock}
             activeSections={activeSections}
@@ -111,6 +112,7 @@ const styles = StyleSheet.create({
   },
   accordContainer: {
     paddingBottom: 4,
+    paddingTop: 2,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -144,6 +146,7 @@ const styles = StyleSheet.create({
     fontFamily: `'Montserrat-Regular', sans-serif`,
   },
   accordBody: {
+    backgroundColor: '#fff',
     padding: 12,
   },
   seperator: {

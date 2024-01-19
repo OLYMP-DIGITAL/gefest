@@ -1,0 +1,18 @@
+{
+  "kind": "singleType",
+  "collectionName": "supports",
+  "info": {
+    "singularName": "support",
+    "pluralName": "supports",
+    "displayName": "Support"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "email": {
+      "type": "string"
+    }
+  }
+}

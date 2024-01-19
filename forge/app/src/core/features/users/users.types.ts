@@ -52,6 +52,10 @@ export interface SignInSuccessResponse {
   user: User;
 }
 
+export type SupportEmailResponse = {
+  data: { id: number; attributes: { email: string } };
+};
+
 export type ResetPasswordPayload = {
   email: string;
 };

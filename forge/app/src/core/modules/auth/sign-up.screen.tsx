@@ -1,7 +1,11 @@
+import { H3Text } from 'core/components/text/h3.text';
+import { useTranslation } from 'react-i18next';
+import { Text, View } from 'react-native';
+import * as yup from 'yup'; // Библиотека для валидации
+
 import { NavigationProp } from '@react-navigation/native';
 import { Input } from 'core/components/input';
 import RoundedButton from 'core/components/rounded-button';
-import { H3Text } from 'core/components/text/h3.text';
 import { User } from 'core/features/users/users.types';
 import { useStyles } from 'core/hooks/use-styles.hook';
 import { useTheme } from 'core/providers/theme.provider';
@@ -11,13 +15,11 @@ import { ErrorResponse } from 'core/types/requests';
 import { Checkbox } from 'core/ui/components/checkbox';
 import { TextCaption } from 'core/ui/components/typography/text-caption';
 import { useFormik } from 'formik';
-import { useCallback, useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
-import { useToast } from 'react-native-toast-notifications';
-import * as yup from 'yup'; // Библиотека для валидации
-import Icon from 'react-native-vector-icons/Feather';
 import { TFunction } from 'i18next';
-import { useTranslation } from 'react-i18next';
+import { useEffect, useState } from 'react';
+import { useToast } from 'react-native-toast-notifications';
+import Icon from 'react-native-vector-icons/Feather';
+import { SupportEmailLink } from 'core/features/support/support-email-link.component';
 
 interface FormValues {
   email: string;
@@ -92,6 +94,7 @@ export const SignUpScreen = ({
   const toast = useToast();
   const [noReferal, setNoReferal] = useState<boolean>(false);
   const [hidePassword, setHidePassword] = useState<boolean>(true);
+
   const [validationSchema, setValidationSchema] = useState(getDefaultSchema(t));
 
   const styles = useStyles((theme) => ({
@@ -236,6 +239,8 @@ export const SignUpScreen = ({
             disabled={Object.keys(errors).length > 0}
           />
         </View>
+
+        <SupportEmailLink />
       </View>
     </View>
   );

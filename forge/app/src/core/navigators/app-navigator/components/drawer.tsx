@@ -4,6 +4,7 @@ import {
   DrawerItem,
   DrawerItemList,
 } from '@react-navigation/drawer';
+import { SupportEmailLink } from 'core/features/support/support-email-link.component';
 import { useAuth } from 'core/providers/auth.provider';
 import { useWindowSize } from 'core/providers/theme.provider';
 import { useTranslation } from 'react-i18next';
@@ -53,6 +54,8 @@ export function Drawer(props: any) {
         />
 
         <DrawerItemList state={newState} {...rest} />
+
+        <SupportEmailLink />
       </DrawerContentScrollView>
     </View>
     // </ImageBackground>
