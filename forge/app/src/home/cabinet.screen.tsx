@@ -120,6 +120,8 @@ export function CabinetScreen({
             toast.show(t('messages.requestSuccess'), {
               type: 'success',
             });
+
+            refetchMe();
           }
         });
       }

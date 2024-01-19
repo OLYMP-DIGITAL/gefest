@@ -117,6 +117,19 @@ export const LifePayCard = ({ fetchTransactions }: Props) => {
       : 0;
   };
 
+  const useDataExists = useMemo(
+    () =>
+      user?.name &&
+      user?.lastname &&
+      user?.middlename &&
+      user?.passportFace &&
+      user?.passportNumber &&
+      user?.faceWithPassport &&
+      user?.registeredAddress &&
+      user?.passportRegistration,
+    [user]
+  );
+
   return (
     <Formik
       initialValues={{
@@ -205,7 +218,7 @@ export const LifePayCard = ({ fetchTransactions }: Props) => {
             </View>
 
             <View style={styles.actionsWrapper}>
-              {(user?.passportConfirmed && (
+              {(useDataExists && (
                 <TouchableOpacity
                   style={[
                     styles.materialButton,
