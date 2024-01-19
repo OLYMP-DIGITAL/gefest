@@ -1,4 +1,5 @@
-FROM node:lts
+# FROM node:lts
+FROM node:18.17.0
 # Installing libvips-dev for sharp Compatibility
 RUN apt update && apt-get install -y libvips-dev
 ARG NODE_ENV=development

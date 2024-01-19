@@ -3,6 +3,10 @@ version: '3'
 volumes:
   api-data-stage:
 
+networks:
+  gefest-network:
+    driver: bridge
+
 services:
 # ================================= NGINX ======================================
   nginx:
@@ -36,6 +40,8 @@ services:
     build:
       dockerfile: web.dockerfile
       context: ./forge/app
+      args:
+        - API_HOST=${API_HOST}
 
     ports:
       - "${WEB_PORT}:80"
@@ -51,7 +57,7 @@ services:
     env_file: .env
     environment:
       DATABASE_CLIENT: ${DATABASE_CLIENT}
-      DATABASE_HOST: apiDB
+      DATABASE_HOST: api_db
       DATABASE_NAME: ${DATABASE_NAME}
       DATABASE_USERNAME: ${DATABASE_USERNAME}
       DATABASE_PORT: ${DATABASE_PORT}
@@ -74,10 +80,13 @@ services:
 
     depends_on:
       - apiDB
+
+    networks:
+      - gefest-network
   
 # ================================= MYSQL ======================================
   apiDB:
-    container_name: api_db_stage
+    container_name: api_db
     platform: linux/amd64 #for platform error on Apple M1 chips
     restart: unless-stopped
     env_file: .env
@@ -94,3 +103,24 @@ services:
 
     ports:
       - "${DATABASE_PORT}:3306"
+
+    networks:
+      - gefest-network
+
+  backuper:
+    build: ./backuper
+    command: /app/start.sh
+    env_file: .env
+    container_name: gefest_backuper
+
+    tty: true
+    restart: unless-stopped
+
+    networks:
+      - gefest-network
+
+    depends_on:
+      - apiDB
+
+    volumes:
+      - ./backuper:/app

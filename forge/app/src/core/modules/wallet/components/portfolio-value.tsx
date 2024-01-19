@@ -1,40 +1,51 @@
-import { getUserTransactions } from 'core/features/life-pay/life-pay.api';
+import {
+  LifePayInvoiceStatus,
+  getUserTransactions,
+} from 'core/features/life-pay/life-pay.api';
+import { lifePayTransactionsAtom } from 'core/features/life-pay/life-pay.atom';
 import { LifePayTransaction } from 'core/features/life-pay/life-pay.types';
 import { useShareAmount } from 'core/features/share-amount/user-share-amount.hook';
+import { useTheme } from 'core/providers/theme.provider';
 import { Card, CardTitle } from 'core/ui/components/card';
 import { CardContent } from 'core/ui/components/card/card-content';
+import { TextHeadline } from 'core/ui/components/typography/text-headline';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useRecoilValue } from 'recoil';
 
 export const PortfolioValue = () => {
   const { t } = useTranslation();
+  const { theme } = useTheme();
   const shareAmount = useShareAmount();
+  const [portfolioIncreasePercentage, setPortfolioIncreasePercentage] =
+    useState<number>(0);
+  const [portfolioIncreaseUsd, setPortfolioIncreaseUsd] = useState<number>(0);
   const [portfolioValue, setPortfolioValue] = useState<number>(0);
-  const [totalAmount, setTotalAmount] = useState<number>(0);
-  const [transactions, setTransactions] = useState<LifePayTransaction[]>([]);
+  const transactions = useRecoilValue(lifePayTransactionsAtom);
 
   useEffect(() => {
-    getUserTransactions().then((trans) => {
-      setTransactions(trans);
-    });
-  }, []);
-
-  useEffect(() => {
-    if (transactions.length && shareAmount) {
+    if (shareAmount) {
       let shareCount = 0;
       let totalAmount = 0;
 
       for (let i = 0; i < transactions.length; i++) {
         const transaction = transactions[i];
 
-        shareCount += Number(transaction.shareCount);
-        totalAmount += Number(transaction.amount);
+        if (transaction.status === LifePayInvoiceStatus.success) {
+          shareCount += Number(transaction.shareCount);
+          totalAmount += Number(transaction.amount);
+        }
       }
 
       const currentPortfolioValue = shareCount * shareAmount;
 
-      setTotalAmount(
-        ((currentPortfolioValue - totalAmount) / totalAmount) * 100
+      setPortfolioIncreasePercentage(
+        +(((currentPortfolioValue - totalAmount) / totalAmount) * 100).toFixed(
+          2
+        ) || 0
+      );
+      setPortfolioIncreaseUsd(
+        +((currentPortfolioValue - totalAmount) / 100).toFixed(2)
       );
       setPortfolioValue(currentPortfolioValue);
     }
@@ -43,11 +54,13 @@ export const PortfolioValue = () => {
   return (
     <Card>
       <CardTitle title={t('lifePay.portfolioValue')} />
-      <CardContent
-        text={`${portfolioValue / 100}$ (${
-          totalAmount > 0 ? `+${totalAmount}` : `+${totalAmount}`
-        }%)`}
-      />
+      <CardContent>
+        <TextHeadline color={theme.primary}>{`${portfolioValue / 100}$ (${
+          portfolioIncreasePercentage > 0
+            ? `+${portfolioIncreaseUsd}$ +${portfolioIncreasePercentage}`
+            : `-${portfolioIncreaseUsd}$ -${portfolioIncreasePercentage}`
+        }%)`}</TextHeadline>
+      </CardContent>
     </Card>
   );
 };

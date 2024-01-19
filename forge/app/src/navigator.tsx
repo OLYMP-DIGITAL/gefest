@@ -1,22 +1,19 @@
+import { FaqScreen } from 'core/modules/FAQ';
+import DocumentsScreen from 'core/modules/documents/documents.screen';
+import PartnersScreen from 'core/modules/partners/partners.screen';
+import WalletScreen from 'core/modules/wallet/wallet.screen';
 import { AppNavigator } from 'core/navigators/app-navigator/app.navigator';
 import { AuthNavigator } from 'core/navigators/auth.navigator';
-import HomeScreen from './home/home.screen';
-import WalletScreen from 'core/modules/wallet/wallet.screen';
-import PartnersScreen from 'core/modules/partners/partners.screen';
-import DocumentsScreen from 'core/modules/documents/documents.screen';
-import { FaqScreen } from 'core/modules/FAQ';
-import GrowthChartScreen from 'core/modules/GrowthChartScreen';
-import { NewsScreen } from 'core/modules/news';
+import CabinetScreen from './home/cabinet.screen';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { NavigationContainer, NavigationState } from '@react-navigation/native';
 import { Loader } from 'core/components/loader';
 import { userAtom } from 'core/features/users/users.atoms';
 import { useAuth } from 'core/providers/auth.provider';
-import { useRecoilValue } from 'recoil';
-import { PaymentScreen } from 'core/modules/payment/payment.screen';
-import { NavigationContainer, NavigationState } from '@react-navigation/native';
-import { useEffect, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigatorScreensEnum } from 'core/types/navigation';
+import { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 
 export function Navigator() {
   const { isLoading } = useAuth();
@@ -43,8 +40,10 @@ export function Navigator() {
   const persistNavigationState = async (state: NavigationState | undefined) => {
     if (state) {
       try {
-        const serializedState = JSON.stringify(state);
-        await AsyncStorage.setItem('navigationState', serializedState);
+        if (user) {
+          const serializedState = JSON.stringify(state);
+          await AsyncStorage.setItem('navigationState', serializedState);
+        }
       } catch (error) {
         console.error('Error persisting navigation state:', error);
       }
@@ -72,14 +71,14 @@ export function Navigator() {
                 },
                 {
                   name: NavigatorScreensEnum.cabinet,
-                  component: HomeScreen,
+                  component: CabinetScreen,
                   iconSrc: require('assets/profile-icon.png'),
                 },
-                {
-                  name: NavigatorScreensEnum.grpahGrow,
-                  component: GrowthChartScreen,
-                  iconSrc: require('assets/growth-icon.png'),
-                },
+                // {
+                //   name: NavigatorScreensEnum.grpahGrow,
+                //   component: GrowthChartScreen,
+                //   iconSrc: require('assets/growth-icon.png'),
+                // },
                 {
                   name: NavigatorScreensEnum.partners,
                   component: PartnersScreen,
@@ -90,21 +89,21 @@ export function Navigator() {
                   component: DocumentsScreen,
                   iconSrc: require('assets/documents-icon.png'),
                 },
-                {
-                  name: NavigatorScreensEnum.news,
-                  component: NewsScreen,
-                  iconSrc: require('assets/news-icon.png'),
-                },
+                // {
+                //   name: NavigatorScreensEnum.news,
+                //   component: NewsScreen,
+                //   iconSrc: require('assets/news-icon.png'),
+                // },
                 {
                   name: NavigatorScreensEnum.faq,
                   component: FaqScreen,
                   iconSrc: require('assets/faq-icon.png'),
                 },
-                {
-                  name: NavigatorScreensEnum.payment,
-                  component: PaymentScreen,
-                  hidden: true,
-                },
+                // {
+                //   name: NavigatorScreensEnum.payment,
+                //   component: PaymentScreen,
+                //   hidden: true,
+                // },
               ]}
             />
           );

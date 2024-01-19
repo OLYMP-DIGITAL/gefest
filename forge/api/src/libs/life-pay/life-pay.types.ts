@@ -49,6 +49,8 @@ export interface LifePayTransaction {
   shareCount: number;
   dollarRate: number;
   orderId: string;
+  status: LifePayInvoiceStatus;
   transactionId: string;
   transactionLink: string;
+  amount: number;
 }

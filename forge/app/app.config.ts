@@ -19,13 +19,33 @@ const defaultEnv: Env = {
   DEFAULT_LANGUAGE: 'ru',
 };
 
+console.log('Проект собирается для окружения: ', process.env.API_HOST);
+
 module.exports = ({ config }: { config: ExpoConfig }): ExpoConfig => {
   return {
     ...config,
 
     extra: {
-      production: { ...defaultEnv, API_HOST: 'https://api.sfcglobal.dk' },
-      development: { ...defaultEnv, API_HOST: 'http://localhost:1337' },
+      production: {
+        ...defaultEnv,
+        API_HOST: getProductionHost(),
+      },
+      development: {
+        ...defaultEnv,
+        API_HOST: getDevelopmentHost(),
+      },
     },
   };
 };
+
+function getProductionHost() {
+  return process?.env?.API_HOST
+    ? process.env.API_HOST
+    : 'https://api.sfcglobal.dk';
+}
+
+function getDevelopmentHost() {
+  return process?.env?.API_HOST
+    ? process.env.API_HOST
+    : 'http://localhost:1337';
+}

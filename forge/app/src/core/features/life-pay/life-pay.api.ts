@@ -29,7 +29,11 @@ export const makeLifePayAuth = (): Promise<LifePayAuthReponse> => {
 
 //  ==================== Invoice create ========================================
 export enum LifePayInvoiceStatus {
-  open = 'open',
+  open = 'open', // счет открыт
+  pending = 'pending', // началась оплата по ссылке, необходимо отобразить лоадер на форме
+  success = 'success', // счет успешно оплачен
+  blocked = 'blocked', // средства захолдированы, но еще не оплачены/возвращены (двухстадийная оплата)
+  error = 'error', // счет нельзя оплатить (истек)
 }
 
 export interface LifePayCreateInvoceResponse {

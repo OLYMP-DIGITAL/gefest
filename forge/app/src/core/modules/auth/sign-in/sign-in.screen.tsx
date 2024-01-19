@@ -1,27 +1,24 @@
 import { Input } from 'core/components/input';
 import RoundedButton from 'core/components/rounded-button';
-import { fetchSupportEmail, signIn } from 'core/features/users/users.api';
-import { resetPassword, signIn } from 'core/features/users/users.api';
+import { SupportEmailLink } from 'core/features/support/support-email-link.component';
+import {
+  fetchSupportEmail,
+  resetPassword,
+  signIn,
+} from 'core/features/users/users.api';
 import { tokenAtom, userAtom } from 'core/features/users/users.atoms';
 import { useTheme } from 'core/providers/theme.provider';
+import api from 'core/services/api';
 import { ResponseErrorName } from 'core/types/requests';
 import { Formik } from 'formik';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Alert, Linking, StyleSheet, Text, View } from 'react-native';
-import {
-  Modal,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Alert, Linking, Modal, StyleSheet, Text, View } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
 import Icon from 'react-native-vector-icons/Feather';
 import { useSetRecoilState } from 'recoil';
 import * as yup from 'yup';
 import { ConfirmButton } from './components/confirm-button';
-import { Link } from 'core/components/link';
 
 interface SignInUser {
   email: string;
@@ -105,6 +102,8 @@ function SignInScreen() {
          * Сохранение токена и пользователя в глобальном стейте
          */
         if (response.jwt && response.user) {
+          api.token = response.jwt;
+
           setToken(response.jwt);
           setUser(response.user);
         }
@@ -113,7 +112,7 @@ function SignInScreen() {
         toast.show(`${e.message}`, { type: 'danger' });
       });
   }, []);
-  
+
   const [supportEmail, setSupportEmail] = useState<string>('mailto:');
 
   const fetchSupport = async () => {
@@ -254,13 +253,12 @@ function SignInScreen() {
           </View>
         )}
       </Formik>
-      <Link
-        title={t('welcome.support')}
-        onPress={handlePress}
-      />
-      <TouchableOpacity onPress={toggleModal}>
+
+      <SupportEmailLink />
+
+      {/* <TouchableOpacity onPress={toggleModal}>
         <Text style={styles.forgotPasswordLink}>Forgot Password?</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <Modal
         animationType="slide"
         transparent={true}

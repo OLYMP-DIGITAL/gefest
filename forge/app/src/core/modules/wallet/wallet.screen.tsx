@@ -1,49 +1,39 @@
-import { H1Text } from 'core/components/text/h1.text';
-import { fetchUserTransactions } from 'core/features/transactions/transactions.api';
-import { Transaction } from 'core/features/transactions/transactions.types';
 import { useTheme } from 'core/providers/theme.provider';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { TextDisplay } from 'core/ui/components/typography/text-display';
+import React, { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { useInterval } from 'usehooks-ts';
 import { LifePayCard } from './components/lfe-pay-card/life-pay-card.component';
-import { StepText } from './components/step-text';
-import { UserActionsTable } from './components/user-actions-table/user-actions-table';
-import { Card, CardTitle } from 'core/ui/components/card';
-import { CardContent } from 'core/ui/components/card/card-content';
-import { TotalAmount } from './components/total-amount';
-import { useLifePayTransactions } from 'core/features/life-pay/use-life-pay-transactions.hook';
-import { ShareCOunt } from './components/share-count';
 import { PortfolioValue } from './components/portfolio-value';
+import { ShareCount } from './components/share-count';
+import { StepText } from './components/step-text';
+import { TotalAmount } from './components/total-amount';
+import { UserActionsTable } from './components/user-actions-table/user-actions-table';
+import { useLifePayTransactions } from 'core/features/life-pay/use-life-pay-transactions.hook';
 
 const WalletScreen = () => {
+  const { fetchTransactions } = useLifePayTransactions();
+
   const styles = useStyles();
   const { t } = useTranslation();
-  // const { fetchTransactions } = useLifePayTransactions();
-
-  // useEffect(() => {
-  //   fetchTransactions();
-  // }, []);
-
-  // useInterval(() => {
-  //   fetchTransactions();
-  // }, 60000);
 
   return (
     <ScrollView>
       <View style={styles.wrapper}>
-        <H1Text text={t('wallet.title')} />
+        <TextDisplay>{t('wallet.title')}</TextDisplay>
 
         <View style={{ display: 'flex', flexDirection: 'column' }}>
+          <StepText />
+
           <View style={styles.cards}>
-            <LifePayCard />
+            <LifePayCard fetchTransactions={fetchTransactions} />
 
             <View style={styles.infoCards}>
               <TotalAmount />
 
               <View style={styles.mt}>
-                <ShareCOunt />
+                <ShareCount />
               </View>
 
               <View style={styles.mt}>
@@ -51,8 +41,6 @@ const WalletScreen = () => {
               </View>
             </View>
           </View>
-
-          <StepText />
 
           <UserActionsTable />
         </View>
@@ -85,7 +73,7 @@ const useStyles = () => {
         },
 
         infoCards: {
-          width: 200,
+          width: 300,
           marginLeft: 45,
         },
       }),

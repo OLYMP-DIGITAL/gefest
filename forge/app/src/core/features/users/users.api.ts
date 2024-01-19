@@ -31,7 +31,10 @@ export const update = (user: UserPayload, id: User['id']): Promise<User> => {
 
 export const fetchSupportEmail = (): Promise<SupportEmailResponse> => {
   return api.get<SupportEmailResponse>(UserRoutes.getSupport);
-  
-export const resetPassword = (email: ResetPasswordPayload): Promise<{ data: any}> => {
+};
+
+export const resetPassword = (
+  email: ResetPasswordPayload
+): Promise<{ data: any }> => {
   return api.post(`${env[envKyes.apiHost]}${UserRoutes.resetPassword}`, email);
 };

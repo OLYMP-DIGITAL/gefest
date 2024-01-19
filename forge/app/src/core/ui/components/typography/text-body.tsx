@@ -9,7 +9,7 @@ export const TextBody = ({ children }: Props) => {
   const styles = useStyles((theme) => ({
     text: {
       color: theme.fontBody,
-      fontSize: '1.3rem',
+      fontSize: 15,
       lineHeight: '2rem',
       letterSpacing: '0.01rem',
       fontWeight: '300',

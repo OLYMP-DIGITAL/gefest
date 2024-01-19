@@ -1,6 +1,6 @@
 import api from 'core/services/api';
-import { MakeTransactionResponse, Transaction } from './transactions.types';
 import { LifePayTransaction } from '../life-pay/life-pay.types';
+import { Transaction } from './transactions.types';
 
 export enum TransactionsRoute {
   user = 'transaction/user',

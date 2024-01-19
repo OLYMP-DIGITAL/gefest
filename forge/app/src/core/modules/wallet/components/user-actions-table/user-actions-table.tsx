@@ -1,35 +1,33 @@
-import { getUserTransactions } from 'core/features/life-pay/life-pay.api';
+import { LifePayInvoiceStatus } from 'core/features/life-pay/life-pay.api';
+import { lifePayTransactionsAtom } from 'core/features/life-pay/life-pay.atom';
 import { useTheme } from 'core/providers/theme.provider';
+import { TFunction } from 'i18next';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Platform, StyleSheet, View } from 'react-native';
 import { Row, Rows, Table } from 'react-native-table-component';
+import { useRecoilValue } from 'recoil';
+
+const getTransactionStatus = (
+  status: LifePayInvoiceStatus,
+  t: TFunction
+): string => {
+  if (status === LifePayInvoiceStatus.success) {
+    return t('lifePay.transactionStatus.success');
+  } else {
+    return t('lifePay.transactionStatus.pending');
+  }
+};
 
 interface TableData {
   value: number;
   date: string;
   count: number;
+  status: string;
 }
 
-const tableDataMock: TableData[] = [
-  {
-    value: 100,
-    date: '13.01.23',
-    count: 10,
-  },
-  {
-    value: 100,
-    date: '13.02.23',
-    count: 10,
-  },
-  {
-    value: 100,
-    date: '13.03.23',
-    count: 10,
-  },
-];
-
 export const UserActionsTable = () => {
+  const transactions = useRecoilValue(lifePayTransactionsAtom);
   const [userTransactions, setUserTransactions] = useState<TableData[]>([]);
   const { t } = useTranslation();
   const styles = useUserActionsTableStyels();
@@ -39,28 +37,37 @@ export const UserActionsTable = () => {
         `${t('lifePay.table.value')} ($)`,
         t('lifePay.table.date'),
         t('lifePay.table.count'),
+        t('lifePay.table.status'),
       ],
       tableData: [
         ...userTransactions.map((action) => [
           action.value,
-          action.date,
+          (() => {
+            const inputDate = action.date;
+
+            return new Date(inputDate).toLocaleDateString('ru-RU', {
+              year: 'numeric',
+              month: 'numeric',
+              day: 'numeric',
+            });
+          })(),
           action.count,
+          getTransactionStatus(action.status as LifePayInvoiceStatus, t),
         ]),
       ],
     };
   }, [userTransactions]);
 
   useEffect(() => {
-    getUserTransactions().then((transactions) => {
-      setUserTransactions(
-        transactions.map((transaction) => ({
-          value: transaction.amount / 100,
-          count: transaction.shareCount,
-          date: transaction.createdAt,
-        }))
-      );
-    });
-  }, []);
+    setUserTransactions(
+      transactions.map((transaction) => ({
+        value: transaction.amount / 100,
+        count: transaction.shareCount,
+        date: transaction.createdAt,
+        status: transaction.status,
+      }))
+    );
+  }, [transactions]);
 
   return (
     <View
@@ -80,9 +87,13 @@ export const UserActionsTable = () => {
         <Row
           data={table.tableHead}
           style={styles.head}
-          textStyle={styles.text}
+          textStyle={styles.textContent}
         />
-        <Rows data={table.tableData} textStyle={styles.text} />
+        <Rows
+          style={styles.head}
+          data={table.tableData}
+          textStyle={styles.textContent}
+        />
       </Table>
     </View>
   );
@@ -95,16 +106,30 @@ const useUserActionsTableStyels = () => {
     () =>
       StyleSheet.create({
         container: {
-          flex: 1,
-          width: '100%',
-          border: `1px solid #ccc`,
-          marginVertical: 30,
-          // paddingTop: 30,
           backgroundColor: '#fff',
+          borderWidth: 0,
           borderRadius: 2,
+          padding: 16, // Если нужен внутренний отступ
+          width: 'auto', // 'auto' по умолчанию в React Native
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 1 },
+          shadowOpacity: 0.12,
+          shadowRadius: 3,
+          elevation: 2, // Для имитации box-shadow на Android
+          fontFamily: 'Roboto',
+          fontSize: 13,
+          fontWeight: '400',
         },
-        head: { height: 40, backgroundColor: '#f1f8ff' },
-        text: { margin: 6 },
+        head: {
+          height: 40,
+          borderBottomWidth: 1,
+          borderBottomColor: '#e0e0e0',
+        },
+
+        textContent: { paddingHorizontal: 56, paddingVertical: 0 },
+        textHead: {
+          textAlign: 'center',
+        },
       }),
     [theme]
   );

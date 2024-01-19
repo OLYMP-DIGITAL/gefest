@@ -2,10 +2,12 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import env from 'core/services/env';
 
+export type SystemLanguage = 'ru' | 'en';
+
 const resources = {
   en: {
     translation: {
-      referalLink: 'Referal ID',
+      referalLink: 'Copy referal ID',
       companyCost: 'Company cost',
 
       cabinet: 'Personal Cabinet',
@@ -49,13 +51,15 @@ const resources = {
 
       user: {
         email: 'Email',
-        lastname: 'Lastname',
-        name: 'Password',
+        lastname: 'Last name',
+        name: 'First name',
         phone: 'Phone',
         username: 'Login',
         password: 'Password',
-        middlename: 'Middlename',
+        middlename: 'Middle name',
         emailOrLogin: 'Email or login',
+        passportNumber: 'Passport series and number',
+        registeredAddress: 'Registered address',
       },
 
       cabinetPage: {
@@ -93,17 +97,23 @@ const resources = {
 
       messages: {
         isRequired: 'is required field',
+        phoneNumberValidation: 'Acceptable format is: +441234567890',
         invalidEmail: 'invalid email',
         requestFailed: 'Request is failed. Please, try later',
         requestSuccess: 'Thank you. Request completed successfully',
+        fileTypeIsInvalid: 'Please chose an image to upload',
         referalCopied: 'Referal ID is copied',
         minValue: 'Min value is',
-        maxValue: 'Max value is',
+        maxValue: 'Maximum number of shares available for acquisition',
         isNumber: 'Value must be a number',
+        isPositive: 'The value must be a positive number',
+        isInteger: 'The value must be an integer',
+        minString: 'Minimum length',
+        maxString: 'Maximum length',
       },
 
       welcome: {
-        title: 'Your welcome to the Scandinavian financial capital',
+        title: 'Welcome To The Scandinavian Financial Capital',
         signIn: 'Sign in',
         signUp: 'Sign up',
         registered: 'Already have an account?',
@@ -119,6 +129,8 @@ const resources = {
       },
       signUp: {
         title: 'Registration',
+        noReferal: 'I do not have a referral number',
+        askReferal: 'Ask the person who invited you for your referral number',
         setNameMessage:
           'Enter your full name exactly as it is written in your passport',
       },
@@ -133,6 +145,11 @@ const resources = {
         step: '1 Step of investment',
         stepLabel: 'Initial Investment Offering',
         desc: 'Unique conditions in connection with the beginning of the formation of the initial capital of a targeted investment project.',
+        stagesIsFinished: 'Stages is finished',
+        stagesLoading: 'Stages loading...',
+        stagesLimit:
+          'At this stage of the project, the volume of individual investments is limited.',
+        stagesDates: 'Stage period',
       },
       month: {
         '01': 'january',
@@ -161,12 +178,26 @@ const resources = {
           desc: "To purchase shares, enter the desired quantity and press the 'Pay' button.",
           currentAmount: 'Current share value',
           amountOfSharedCounts: 'Amount of selected shares',
+          transactionLimit: 'Remaining limit for stock purchase',
+          toCabinet: 'To cabinet',
+
+          needConfirm:
+            'Once your information is confirmed, you\'ll be able to purchase shares in the company. To submit personal information for verification, click the link or use the "Personal Cabinet" section in the menu.',
+
+          warmMessage:
+            'Upon clicking, you will be redirected to the payment page. Ensure that pop-ups are not blocked for the website.',
         },
 
         table: {
           value: 'Value',
           date: 'Date',
           count: 'Shares count',
+          status: 'Status',
+        },
+
+        transactionStatus: {
+          pending: 'Pending',
+          success: 'Successfully paid',
         },
 
         createInvoiceError:
@@ -232,6 +263,8 @@ const resources = {
         password: 'Пароль',
         middlename: 'Отчество',
         emailOrLogin: 'Email или логин',
+        passportNumber: 'Серия и номер паспорта',
+        registeredAddress: 'Адрес регистрации',
       },
 
       cabinetPage: {
@@ -272,14 +305,20 @@ const resources = {
 
       messages: {
         isRequired: 'обязательное поле',
+        phoneNumberValidation: 'Допустимый формат: +441234567890',
         invalidEmail: 'неправильный email',
         requestFailed:
           'Произошла ошбка во время запроса. Пожалйста, повторите позже',
         requestSuccess: 'Спасибо. Запрос выполнен успешно',
+        fileTypeIsInvalid: 'Пожалуйста выберите картинку для загрузки',
         referalCopied: 'Реферальный идентификатор скопирован',
         minValue: 'Минимальное значение',
-        maxValue: 'Максимальное значение',
+        maxValue: 'Максимальное количество долей доступных для приобретения',
         isNumber: 'Значение может быть только числом',
+        isInteger: 'Значение должно быть целым числом',
+        isPositive: 'Значение должно быть позитивным числом',
+        minString: 'Минимальное количество символов',
+        maxString: 'Максимальное количество символов',
       },
 
       welcome: {
@@ -292,6 +331,9 @@ const resources = {
       },
       signUp: {
         title: 'Регистрация',
+        noReferal: 'У меня нет реферального номера',
+        askReferal:
+          'Спросите реферальный номер у человека, который вас пригласил',
         setNameMessage: 'Укажите ФИО именно так, как написано в паспорте',
       },
       signIn: {
@@ -314,6 +356,11 @@ const resources = {
         step: '1 этап инвестиций',
         stepLabel: 'Initial Investment Offering',
         desc: 'Уникальные условия в связи с началом формирования первоначального капитала адресного инвестиционного проекта.',
+        stagesIsFinished: 'Все этапы закончены',
+        stagesLoading: 'Загрузка этапов...',
+        stagesLimit:
+          'На данном этапе проекта объём индивидуальных инвестиций ограничен',
+        stagesDates: 'Период этапа',
       },
       month: {
         '01': 'января',
@@ -340,14 +387,28 @@ const resources = {
           desc: 'Чтобы приобрести доли, введие желаемое количество и нажмите кнопку "купить"',
           title: 'Приобретение долей',
           amount: 'Количество',
+          toCabinet: 'Перейти в личный кабинет',
           currentAmount: 'Текущая стоимость доли',
-          amountOfSharedCounts: 'Выборано долей на сумму',
+          amountOfSharedCounts: 'Выбрано долей на сумму',
+          transactionLimit: 'Оставшийся лимит на покупку долей',
+
+          needConfirm:
+            'Как только ваши персональные данные будут подтверждены, вы сможете покупать доли в компании. Для отправки личных данных на проверку, перейдите по ссылке или воспользуйтесь разделом "Личный Кабинет" в меню',
+
+          warmMessage:
+            'По клику вы будете переадресованы на страницу с оплатой. Убедитесь что у вас не блокируются вслывающие окна для сайта',
         },
 
         table: {
           value: 'Сумма',
           date: 'Дата',
           count: 'Количество долей',
+          status: 'Статус',
+        },
+
+        transactionStatus: {
+          pending: 'Ожидает оплаты',
+          success: 'Оплачено',
         },
 
         createInvoiceError:

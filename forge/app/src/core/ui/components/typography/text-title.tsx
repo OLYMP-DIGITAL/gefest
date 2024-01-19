@@ -9,7 +9,7 @@ export const TextTitle = ({ children }: Props) => {
   const styles = useStyles((theme) => ({
     text: {
       color: theme.fontTitle,
-      fontSize: 24,
+      fontSize: 23,
       // fontSize: '2rem',
       // lineHeight: '2.8rem',
       letterSpacing: '0.005rem',

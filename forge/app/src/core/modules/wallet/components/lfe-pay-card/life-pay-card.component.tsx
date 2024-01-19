@@ -1,13 +1,19 @@
+import { useNavigation } from '@react-navigation/native';
 import { Input } from 'core/components/input';
+import { useCurrentStage } from 'core/features/investment-stage/use-current-stage';
 import {
-  MakeTransactionPayload,
   MakeTransactionResponse,
   makeTransaction,
 } from 'core/features/life-pay/life-pay.api';
+import { lifePayTransactionsAtom } from 'core/features/life-pay/life-pay.atom';
+import { calcLimitOfTransactionValue } from 'core/features/life-pay/life-pay.helpers';
 import { useShareAmount } from 'core/features/share-amount/user-share-amount.hook';
+import { userAtom } from 'core/features/users/users.atoms';
 import { useTheme } from 'core/providers/theme.provider';
+import { NavigatorScreensEnum, StackNavigation } from 'core/types/navigation';
+import { Button } from 'core/ui/components/button/button.component';
 import { Formik } from 'formik';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Linking,
@@ -18,24 +24,38 @@ import {
   View,
 } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
+import { useRecoilValue } from 'recoil';
 
 import * as yup from 'yup';
 
 const MIN_AMOUNT = 1;
-const MAX_AMOUNT = 50;
 
 interface PayForm {
   sharesCount: number;
 }
 
-export const LifePayCard = () => {
-  // useLifePayAuth();
+interface Props {
+  fetchTransactions: () => void;
+}
 
+export const LifePayCard = ({ fetchTransactions }: Props) => {
   const { t } = useTranslation();
 
+  const user = useRecoilValue(userAtom);
   const toast = useToast();
   const styles = useStyles();
   const shareAmount = useShareAmount();
+  const navigation = useNavigation<StackNavigation>();
+
+  const { stage } = useCurrentStage();
+  const transactions = useRecoilValue(lifePayTransactionsAtom);
+  const [limit, setLimit] = useState<number>(0);
+
+  useEffect(() => {
+    if (stage && transactions) {
+      setLimit(calcLimitOfTransactionValue(transactions, stage.max));
+    }
+  }, [stage, transactions]);
 
   const onSubmit = useCallback((values: PayForm) => {
     makeTransaction({
@@ -46,12 +66,14 @@ export const LifePayCard = () => {
           throw response.error;
         }
 
-        console.log('Submit response', response);
         const url = response.link;
+
+        // Перезапрос транзакций для перерасчёта лимитов
+        fetchTransactions();
 
         if (url) {
           Linking.openURL(url)
-            .then(() => console.log('Document opened'))
+            .then(() => console.log('Transaction link opened'))
             .catch((error) => console.error('Error opening document:', error));
         }
       })
@@ -76,11 +98,16 @@ export const LifePayCard = () => {
         sharesCount: yup
           .number()
           .min(MIN_AMOUNT, `${t('messages.minValue')} ${MIN_AMOUNT}`)
-          .max(MAX_AMOUNT, `${t('messages.maxValue')} ${MAX_AMOUNT}`)
+          .max(
+            Math.floor(limit / Number(shareAmount)),
+            `${t('messages.maxValue')} ${Math.floor(
+              limit / Number(shareAmount)
+            )}`
+          )
           .required(`${t('messages.isRequired')}`)
           .nullable(),
       }),
-    []
+    [limit, shareAmount]
   );
 
   const calcAmountOfShares = (count: number): number => {
@@ -98,84 +125,120 @@ export const LifePayCard = () => {
       onSubmit={onSubmit}
       validationSchema={validationSchema}
     >
-      {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
-        <View
-          style={[
-            styles.wrapper,
-            Platform.OS === 'android'
-              ? { elevation: 5 }
-              : {
-                  shadowColor: 'rgba(0, 0, 0, 0.2)',
-                  shadowOffset: { width: 0, height: 3 },
-                  shadowOpacity: 1,
-                  shadowRadius: 5,
-                },
-          ]}
-        >
-          <View style={styles.titleWrapper}>
-            <Text style={styles.title}>{t('lifePay.card.title')}</Text>
-          </View>
+      {({ handleChange, handleBlur, handleSubmit, values, errors }) => {
+        return (
+          <View
+            style={[
+              styles.wrapper,
+              Platform.OS === 'android'
+                ? { elevation: 5 }
+                : {
+                    shadowColor: 'rgba(0, 0, 0, 0.2)',
+                    shadowOffset: { width: 0, height: 3 },
+                    shadowOpacity: 1,
+                    shadowRadius: 5,
+                  },
+            ]}
+          >
+            <View style={styles.titleWrapper}>
+              <Text style={styles.title}>{t('lifePay.card.title')}</Text>
+            </View>
 
-          <View style={styles.contentWrapper}>
-            <Text>{t('lifePay.card.desc')}</Text>
+            <View style={styles.contentWrapper}>
+              <Text>{t('lifePay.card.desc')}</Text>
 
-            <Text style={styles.marginTop10}>
-              {t('lifePay.card.currentAmount')}: $
-              <Text style={styles.strong}>
-                {(shareAmount && Number(shareAmount / 100).toFixed(2)) || '0'}
+              <Text style={styles.marginTop10}>
+                {t('lifePay.card.currentAmount')}: $
+                <Text style={styles.strong}>
+                  {(shareAmount && Number(shareAmount / 100).toFixed(2)) || '0'}
+                </Text>
               </Text>
-            </Text>
 
-            <Text>
-              {t('lifePay.card.amountOfSharedCounts')}: $
-              <Text style={styles.strong}>
-                {calcAmountOfShares(values.sharesCount)}
+              <Text style={styles.marginTop10}>
+                {t('lifePay.card.transactionLimit')}: $
+                <Text style={styles.strong}>
+                  {Number(limit / 100).toFixed(0)}
+                </Text>
               </Text>
-            </Text>
 
-            <View style={styles.inputWrapper}>
-              <Input
-                placeholder={t('lifePay.card.amount')}
-                onChangeText={handleChange('sharesCount')}
-                onBlur={handleBlur('sharesCount')}
-                value={`${values.sharesCount || ''}`}
-                keyboardType="numeric"
-              />
-              {errors.sharesCount && (
-                <Text style={{ color: '#F75555', fontSize: 14 }}>
-                  {errors.sharesCount}
+              <Text>
+                {t('lifePay.card.amountOfSharedCounts')}: $
+                <Text style={styles.strong}>
+                  {calcAmountOfShares(values.sharesCount)}
+                </Text>
+              </Text>
+
+              <View style={styles.inputWrapper}>
+                <Input
+                  placeholder={t('lifePay.card.amount')}
+                  onChangeText={(e) => {
+                    const currentInput = e.valueOf();
+                    if (
+                      currentInput != null &&
+                      currentInput !== '' &&
+                      !isNaN(Number(currentInput.toString()))
+                    ) {
+                      handleChange('sharesCount')(e);
+                    }
+                    if (currentInput == '') {
+                      handleChange('sharesCount')(e);
+                    }
+                  }}
+                  onBlur={handleBlur('sharesCount')}
+                  value={`${values.sharesCount || ''}`}
+                  keyboardType="numeric"
+                />
+                {errors.sharesCount && (
+                  <Text style={{ color: '#F75555', fontSize: 14 }}>
+                    {errors.sharesCount}
+                  </Text>
+                )}
+              </View>
+
+              {(user?.passportConfirmed && (
+                <Text>{t('lifePay.card.warmMessage')}</Text>
+              )) || (
+                <Text style={styles.warmMessage}>
+                  {t('lifePay.card.needConfirm')}
                 </Text>
               )}
             </View>
 
-            <Text>
-              По клику вы будете переадресованы на страницу с оплатой. Убедитесь
-              что у вас не блокируются вслывающие окна для сайта
-            </Text>
+            <View style={styles.actionsWrapper}>
+              {(user?.passportConfirmed && (
+                <TouchableOpacity
+                  style={[
+                    styles.materialButton,
+                    Object.keys(errors).length > 0 &&
+                      styles.disabledMaterialButton,
+                  ]}
+                  onPress={handleSubmit as () => void}
+                  disabled={Object.keys(errors).length > 0}
+                >
+                  <Text
+                    style={[
+                      styles.materialButtonText,
+                      Object.keys(errors).length > 0 &&
+                        styles.disabledMaterialButtonText,
+                    ]}
+                  >
+                    {t('lifePay.card.pay')}
+                  </Text>
+                </TouchableOpacity>
+              )) || (
+                <Button
+                  onPress={() => {
+                    navigation.navigate(NavigatorScreensEnum.cabinet as any);
+                  }}
+                  primary
+                >
+                  {t('lifePay.card.toCabinet')}
+                </Button>
+              )}
+            </View>
           </View>
-
-          <View style={styles.actionsWrapper}>
-            <TouchableOpacity
-              style={[
-                styles.materialButton,
-                Object.keys(errors).length > 0 && styles.disabledMaterialButton,
-              ]}
-              onPress={handleSubmit as () => void}
-              disabled={Object.keys(errors).length > 0}
-            >
-              <Text
-                style={[
-                  styles.materialButtonText,
-                  Object.keys(errors).length > 0 &&
-                    styles.disabledMaterialButtonText,
-                ]}
-              >
-                {t('lifePay.card.pay')}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      )}
+        );
+      }}
     </Formik>
   );
 };
@@ -223,6 +286,7 @@ const useStyles = () => {
           padding: 8,
           paddingHorizontal: 16,
           minHeight: 52,
+          marginTop: 'auto',
         },
 
         materialButton: {
@@ -234,7 +298,7 @@ const useStyles = () => {
         },
 
         materialButtonText: {
-          color: '#000000de',
+          color: '#D43238',
           fontSize: 14,
           fontWeight: '600',
           textTransform: 'uppercase',
@@ -246,6 +310,10 @@ const useStyles = () => {
 
         inputWrapper: {
           marginVertical: 13,
+        },
+
+        warmMessage: {
+          color: theme.fontCaption,
         },
       }),
     [theme]

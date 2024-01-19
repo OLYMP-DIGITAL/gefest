@@ -14,11 +14,13 @@ export const lightTheme = {
   // Добавьте другие цвета и свойства для светлой темы
   secondaryText: '#6e7376',
   cardBorder: '#424242',
+  error: '#FF3C41',
 
   // Typography
   fontDisplay: '#757575',
   fontTitle: '#212121',
   fontBody: '#212121',
+  fontCaption: '#757575',
 };
 
 export const darkTheme: typeof lightTheme = {
@@ -35,11 +37,13 @@ export const darkTheme: typeof lightTheme = {
   // Добавьте другие цвета и свойства для темной темы
   secondaryText: '#bdbdbd',
   cardBorder: '#424242',
+  error: '#FF3C41',
 
   // Typography
   fontDisplay: '#757575',
   fontTitle: '#212121',
   fontBody: '#212121',
+  fontCaption: '#757575',
 };
 
 export type Theme = typeof lightTheme;
