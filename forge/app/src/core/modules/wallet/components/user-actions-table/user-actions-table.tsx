@@ -1,5 +1,6 @@
 import { LifePayInvoiceStatus } from 'core/features/life-pay/life-pay.api';
 import { lifePayTransactionsAtom } from 'core/features/life-pay/life-pay.atom';
+import { useLanguage } from 'core/hooks/use-language';
 import { useTheme } from 'core/providers/theme.provider';
 import { TFunction } from 'i18next';
 import { useEffect, useMemo, useState } from 'react';
@@ -27,6 +28,7 @@ interface TableData {
 }
 
 export const UserActionsTable = () => {
+  const { language } = useLanguage();
   const transactions = useRecoilValue(lifePayTransactionsAtom);
   const [userTransactions, setUserTransactions] = useState<TableData[]>([]);
   const { t } = useTranslation();
@@ -56,7 +58,7 @@ export const UserActionsTable = () => {
         ]),
       ],
     };
-  }, [userTransactions]);
+  }, [userTransactions, language]);
 
   useEffect(() => {
     setUserTransactions(
