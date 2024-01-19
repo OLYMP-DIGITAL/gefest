@@ -1,8 +1,9 @@
 import api from 'core/services/api';
 import { InvestmentStage } from './investement-sage.types';
+import { LangsEnum } from '../language/language.types';
 
 export enum InvestmentStageRoutes {
-  get = 'investment-stages',
+  get = 'investment-stages?locale=:lang',
 }
 
 export interface GetInvestmentStageReponse {
@@ -22,6 +23,10 @@ export interface GetInvestmentStageReponse {
   };
 }
 
-export const getInvestmentStages = (): Promise<GetInvestmentStageReponse> => {
-  return api.get<GetInvestmentStageReponse>(InvestmentStageRoutes.get);
+export const getInvestmentStages = (
+  lang?: string
+): Promise<GetInvestmentStageReponse> => {
+  return api.get<GetInvestmentStageReponse>(
+    InvestmentStageRoutes.get.replace(/:lang/g, `${lang || LangsEnum.en}`)
+  );
 };
