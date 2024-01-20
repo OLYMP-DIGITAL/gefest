@@ -11,8 +11,11 @@ import { StepText } from './components/step-text';
 import { TotalAmount } from './components/total-amount';
 import { UserActionsTable } from './components/user-actions-table/user-actions-table';
 import { useLifePayTransactions } from 'core/features/life-pay/use-life-pay-transactions.hook';
+import { useReferralEarnings } from 'core/features/referral-earning/use-referral-earnings.hook';
+import { ReferralEarningsTable } from 'core/features/referral-earning/referral-earnings.table';
 
 const WalletScreen = () => {
+  useReferralEarnings();
   const { fetchTransactions } = useLifePayTransactions();
 
   const styles = useStyles();
@@ -43,6 +46,10 @@ const WalletScreen = () => {
           </View>
 
           <UserActionsTable />
+
+          <View style={{ marginTop: 13 }}>
+            <ReferralEarningsTable />
+          </View>
         </View>
       </View>
     </ScrollView>

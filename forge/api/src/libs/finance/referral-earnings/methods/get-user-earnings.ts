@@ -8,6 +8,7 @@ export async function getUserEarnings({ userId }: Options) {
             id: userId,
           },
         },
+        populate: ['user', 'referrer'],
       });
 
     return earnings;

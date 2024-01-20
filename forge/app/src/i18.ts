@@ -207,6 +207,16 @@ const resources = {
         portfolioValue: 'Portfolio value',
         totalSharesCount: 'Shares count',
       },
+
+      finance: {
+        referralEarnings: {
+          user: 'User',
+          date: 'Date',
+          value: 'Value',
+          getError:
+            'Referral credits could not be retrieved. Please try again later',
+        },
+      },
     },
   },
 
@@ -417,6 +427,16 @@ const resources = {
         totalAmount: 'Сумма всех пополнений',
         portfolioValue: 'Стоимость портфеля',
         totalSharesCount: 'Приобретено долей',
+      },
+
+      finance: {
+        referralEarnings: {
+          date: 'Дата',
+          user: 'Пользователь',
+          value: 'Сумма',
+          getError:
+            'Неу далось получить реферальные начисления. Пожалуйста, попробуйте позже',
+        },
       },
     },
   },

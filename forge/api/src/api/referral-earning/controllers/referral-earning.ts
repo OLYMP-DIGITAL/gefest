@@ -21,7 +21,7 @@ module.exports = createCoreController(
         // Собираем реферальные начисления пользователя
         const earnings = await getUserEarnings({ userId: ctx.state.user.id });
 
-        return { earnings };
+        return earnings;
       } catch (error) {
         console.error(
           '[Произошла ошибка при получении реферальных начислений]',

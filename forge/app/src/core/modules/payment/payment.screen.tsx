@@ -1,8 +1,8 @@
 import { Text, View } from 'react-native';
 import {
-  getTransaction,
-  makeTransaction,
-} from 'core/features/transactions/transactions.api';
+  getYmTransaction,
+  makeYmTransaction,
+} from 'core/features/ym-transaction/transactions.api';
 import React, { useCallback, useMemo, useState } from 'react';
 import { Formik } from 'formik';
 import { useTranslation } from 'react-i18next';
@@ -42,7 +42,7 @@ export const PaymentScreen = () => {
     if (deposit) {
       setLoading(true);
 
-      makeTransaction(deposit)
+      makeYmTransaction(deposit)
         .then((result) => {
           console.log('[makeTransaction] result:', result);
           setTransaction(result);
@@ -59,7 +59,7 @@ export const PaymentScreen = () => {
       (transaction.status === 'pending' ||
         transaction.status === 'waiting_for_capture')
     ) {
-      getTransaction(transaction.payment).then((currentVersion) => {
+      getYmTransaction(transaction.payment).then((currentVersion) => {
         console.log('Goted current version of transaction', currentVersion);
 
         if (transaction.status !== currentVersion.status) {
