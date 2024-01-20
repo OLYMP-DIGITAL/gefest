@@ -19,7 +19,7 @@
       "type": "biginteger",
       "default": "1000000"
     },
-    "referalCommission": {
+    "referralCommission": {
       "type": "float",
       "min": 0,
       "default": 0

@@ -1,6 +1,13 @@
 import { YooCheckout } from '@a2seven/yoo-checkout';
 import { APP_KEY, SHOP_ID } from '../src/api/config/constants';
 import { Strapi } from '@strapi/strapi';
+import {
+  Transaction,
+  TransactionStatus,
+} from '../src/libs/finance/transactions/transaction.types';
+import { ReferralEarning } from '../src/libs/finance/referral-earnings/referral-earnings.types';
+import { UsersUID } from '../src/libs/finance/users/users.types';
+import { calculateReferralValue } from '../src/libs/finance/referral-earnings/methods/calculate-referral-value';
 
 const lifePay = require('../src/libs/life-pay');
 
@@ -11,24 +18,27 @@ export default {
 
       console.log('[CRON JOB => updateLifePayTransactionStatus]');
 
-      // Собираем неоконченные платежи
-      const transactions = await strapi.entityService.findMany(
-        'api::life-pay-transaction.life-pay-transaction',
-        {
-          filters: {
-            $or: [
-              {
-                status: 'open',
-              },
-              {
-                status: 'pending',
-              },
-            ],
-          },
-        }
-      );
-
       try {
+        // Собираем неоконченные платежи
+        const transactions = await strapi
+          .query('api::life-pay-transaction.life-pay-transaction')
+          .findMany({
+            where: {
+              status: TransactionStatus.open,
+
+              $or: [
+                {
+                  status: TransactionStatus.open,
+                },
+                {
+                  status: TransactionStatus.pending,
+                },
+              ],
+            },
+
+            populate: ['user'],
+          });
+
         if (!lifePay.jwt) {
           strapi.log.info('[NEW LIFEPAY CONNECTION]');
           await lifePay.auth();
@@ -43,7 +53,7 @@ export default {
           console.log(transactions);
 
           for (let i = 0; i < (transactions as []).length; i++) {
-            const transaction = transactions[i];
+            const transaction: Transaction = transactions[i];
             console.log('FETCHINB DATA FOR TRANSACTION', transaction);
 
             const responseTransaction = await lifePay.get(
@@ -68,19 +78,66 @@ export default {
               );
 
               // ... то обновляем запись и в нашей базе данных
-              const entry = await strapi.entityService.update(
-                'api::life-pay-transaction.life-pay-transaction',
-                transaction.id,
-                {
+              const entry = await strapi
+                .query('api::life-pay-transaction.life-pay-transaction')
+                .update({
+                  where: { id: transaction.id },
                   data: {
                     ...transaction,
                     status: responseTransaction.status,
                   },
-                }
-              );
+                });
 
               strapi.log.info('Updated life-pay-transaction');
               console.log({ entry });
+
+              // Есть ли пользователя транзакции реферер? Транзакция выполнена?
+              if (
+                transaction.user.referal &&
+                entry.status === TransactionStatus.success
+              ) {
+                const referrerId = +transaction.user.referal;
+
+                const referrer = await strapi.query(UsersUID).findOne({
+                  where: {
+                    id: referrerId,
+                  },
+                });
+
+                // Существует ли реферер?
+                if (referrer) {
+                  strapi.log.info(
+                    `[CRON JOB => updateLifePayTransactionStatus] Начисление реферального процента`
+                  );
+
+                  const referralValue = await calculateReferralValue(
+                    transaction.shareCount * transaction.shareValue
+                  );
+
+                  strapi.log.info(
+                    `[CRON JOB => updateLifePayTransactionStatus] Вычислена реферальная сумма: ${referralValue}`
+                  );
+
+                  const referralEarning = await strapi.db
+                    .query('api::referral-earning.referral-earning')
+                    .create({
+                      data: {
+                        referrer,
+                        transaction,
+                        user: transaction.user,
+                        value: referralValue,
+                      } as ReferralEarning,
+                    });
+
+                  if (!referralEarning) {
+                    throw new Error('Ошибка создания реферального начисления');
+                  }
+
+                  strapi.log.info(
+                    `[CRON JOB => updateLifePayTransactionStatus] Начисление реферального процента `
+                  );
+                }
+              }
             }
           }
         } else {
@@ -90,7 +147,9 @@ export default {
           console.error(transactions);
         }
       } catch (error) {
-        strapi.log.error('[CRON JOB => updateLifePayTransactionStatus]');
+        strapi.log.error(
+          `[CRON JOB => updateLifePayTransactionStatus] => ${error.message}`
+        );
         console.log(error);
       }
     },

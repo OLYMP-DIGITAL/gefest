@@ -4,10 +4,11 @@
   "info": {
     "singularName": "referral-earning",
     "pluralName": "referral-earnings",
-    "displayName": "Реферальные начисления"
+    "displayName": "Реферальные начисления",
+    "description": ""
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
@@ -23,6 +24,11 @@
       "min": 0
     },
     "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "referrer": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "plugin::users-permissions.user"

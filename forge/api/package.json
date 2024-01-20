@@ -15,6 +15,7 @@
     "@strapi/plugin-users-permissions": "4.15.0",
     "@strapi/provider-email-nodemailer": "^4.15.0",
     "@strapi/strapi": "4.15.0",
+    "koa": "^2.13.4",
     "mysql": "^2.18.1"
   },
   "author": {
@@ -27,5 +28,9 @@
     "node": ">=18.0.0 <=20.x.x",
     "npm": ">=6.0.0"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/koa": "^2.14.0"
+  }
 }

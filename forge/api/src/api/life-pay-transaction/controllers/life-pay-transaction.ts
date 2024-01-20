@@ -102,7 +102,7 @@ export default {
       ctx.body = userTransactions;
     } catch (error) {
       console.error('[Произошла ошибка при создании транзакции] ', error);
-      return ctx.badRequest(error.message, error);
+      return ctx.badRequest(error.message);
     }
   },
 
@@ -116,7 +116,7 @@ export default {
       }
 
       // Количество приобретаемых долей
-      const count: number = ctx.request.body.count;
+      const count: number = (ctx.request as any).body.count;
 
       console.log('[LIFE PAY TRANSACTION] Получение курса долара...');
 
@@ -244,7 +244,7 @@ export default {
       ctx.body = result;
     } catch (error) {
       console.error('[Произошла ошибка при создании транзакции] ', error);
-      return ctx.badRequest(error.message, error);
+      return ctx.badRequest(error.message);
     }
   },
 };
