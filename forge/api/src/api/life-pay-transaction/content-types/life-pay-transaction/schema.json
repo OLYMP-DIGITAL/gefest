@@ -59,7 +59,12 @@
       "enum": [
         "RUR",
         "ETH",
-        "USDT"
+        "BNB",
+        "BTC",
+        "LTC",
+        "USDT",
+        "USDT_BSC",
+        "USDT_TRX"
       ]
     }
   }

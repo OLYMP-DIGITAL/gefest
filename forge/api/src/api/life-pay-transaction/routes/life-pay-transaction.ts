@@ -14,6 +14,11 @@ export default {
       handler: 'life-pay-transaction.post',
     },
     {
+      method: 'POST',
+      path: '/life-pay-transaction/crypto',
+      handler: 'life-pay-transaction.crypto',
+    },
+    {
       method: 'GET',
       path: '/life-pay-transaction/user',
       handler: 'life-pay-transaction.user',

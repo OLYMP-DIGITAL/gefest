@@ -50,6 +50,7 @@ export const LifePayCard = ({ fetchTransactions }: Props) => {
   const { stage } = useCurrentStage();
   const transactions = useRecoilValue(lifePayTransactionsAtom);
   const [limit, setLimit] = useState<number>(0);
+  const [isCrypto, setIsCrypto] = useState<boolean>(false);
 
   useEffect(() => {
     if (stage && transactions) {
@@ -57,40 +58,48 @@ export const LifePayCard = ({ fetchTransactions }: Props) => {
     }
   }, [stage, transactions]);
 
-  const onSubmit = useCallback((values: PayForm) => {
-    makeTransaction({
-      count: Number(values.sharesCount),
-    })
-      .then((response: MakeTransactionResponse) => {
-        if (response.error) {
-          throw response.error;
-        }
+  const onSubmit = useCallback(
+    (values: PayForm) => {
+      makeTransaction(
+        {
+          count: Number(values.sharesCount),
+        },
+        isCrypto
+      )
+        .then((response: MakeTransactionResponse) => {
+          if (response.error) {
+            throw response.error;
+          }
 
-        const url = response.link;
+          const url = response.link;
 
-        // Перезапрос транзакций для перерасчёта лимитов
-        fetchTransactions();
+          // Перезапрос транзакций для перерасчёта лимитов
+          fetchTransactions();
 
-        if (url) {
-          Linking.openURL(url)
-            .then(() => console.log('Transaction link opened'))
-            .catch((error) => console.error('Error opening document:', error));
-        }
-      })
-      .catch((error) => {
-        console.error('Ошибка при создании транзакции', error);
+          if (url) {
+            Linking.openURL(url)
+              .then(() => console.log('Transaction link opened'))
+              .catch((error) =>
+                console.error('Error opening document:', error)
+              );
+          }
+        })
+        .catch((error) => {
+          console.error('Ошибка при создании транзакции', error);
 
-        if (error.message) {
-          toast.show(error.message, {
-            type: 'warning',
-          });
-        } else {
-          toast.show(t('lifePay.createInvoiceError'), {
-            type: 'warning',
-          });
-        }
-      });
-  }, []);
+          if (error.message) {
+            toast.show(error.message, {
+              type: 'warning',
+            });
+          } else {
+            toast.show(t('lifePay.createInvoiceError'), {
+              type: 'warning',
+            });
+          }
+        });
+    },
+    [isCrypto]
+  );
 
   const validationSchema = useMemo(
     () =>
@@ -217,15 +226,18 @@ export const LifePayCard = ({ fetchTransactions }: Props) => {
               )}
             </View>
 
-            <View style={styles.actionsWrapper}>
-              {(useDataExists && (
+            {(useDataExists && (
+              <View style={styles.actionsWrapper}>
                 <TouchableOpacity
                   style={[
                     styles.materialButton,
                     Object.keys(errors).length > 0 &&
                       styles.disabledMaterialButton,
                   ]}
-                  onPress={handleSubmit as () => void}
+                  onPress={() => {
+                    setIsCrypto(false);
+                    handleSubmit();
+                  }}
                   disabled={Object.keys(errors).length > 0}
                 >
                   <Text
@@ -238,17 +250,39 @@ export const LifePayCard = ({ fetchTransactions }: Props) => {
                     {t('lifePay.card.pay')}
                   </Text>
                 </TouchableOpacity>
-              )) || (
-                <Button
+                <TouchableOpacity
+                  style={[
+                    styles.materialButton,
+                    Object.keys(errors).length > 0 &&
+                      styles.disabledMaterialButton,
+                  ]}
                   onPress={() => {
-                    navigation.navigate(NavigatorScreensEnum.cabinet as any);
+                    setIsCrypto(true);
+                    handleSubmit();
                   }}
-                  primary
+                  disabled={Object.keys(errors).length > 0}
                 >
-                  {t('lifePay.card.toCabinet')}
-                </Button>
-              )}
-            </View>
+                  <Text
+                    style={[
+                      styles.materialButtonText,
+                      Object.keys(errors).length > 0 &&
+                        styles.disabledMaterialButtonText,
+                    ]}
+                  >
+                    {t('lifePay.card.cryptoPay')}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )) || (
+              <Button
+                onPress={() => {
+                  navigation.navigate(NavigatorScreensEnum.cabinet as any);
+                }}
+                primary
+              >
+                {t('lifePay.card.toCabinet')}
+              </Button>
+            )}
           </View>
         );
       }}
@@ -300,6 +334,9 @@ const useStyles = () => {
           paddingHorizontal: 16,
           minHeight: 52,
           marginTop: 'auto',
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
         },
 
         materialButton: {
