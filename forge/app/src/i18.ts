@@ -173,6 +173,7 @@ const resources = {
       lifePay: {
         card: {
           pay: 'Pay',
+          cryptoPay: 'Crypto Pay',
           title: 'Pay shares',
           amount: 'Amount',
           desc: "To purchase shares, enter the desired quantity and press the 'Pay' button.",
@@ -394,6 +395,7 @@ const resources = {
       lifePay: {
         card: {
           pay: 'Купить',
+          cryptoPay: 'Оплатить криптой',
           desc: 'Чтобы приобрести доли, введие желаемое количество и нажмите кнопку "купить"',
           title: 'Приобретение долей',
           amount: 'Количество',

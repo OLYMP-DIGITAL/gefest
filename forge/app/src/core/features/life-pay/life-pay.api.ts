@@ -6,6 +6,7 @@ export enum LifePayRoutes {
   auth = 'https://api-ecom.life-pay.ru/v1/auth',
   createInvoice = 'https://api-ecom.life-pay.ru/v1/invoices',
   makeTransaction = 'life-pay-transaction',
+  makeCryptoTransaction = 'life-pay-transaction/crypto',
   userTransactions = 'life-pay-transaction/user',
 }
 
@@ -84,10 +85,12 @@ export interface MakeTransactionResponse {
 }
 
 export const makeTransaction = (
-  payload: MakeTransactionPayload
+  payload: MakeTransactionPayload,
+  isCrypto: boolean,
 ): Promise<MakeTransactionResponse> => {
+  const route = isCrypto ? LifePayRoutes.makeCryptoTransaction : LifePayRoutes.makeTransaction
   return api.post<MakeTransactionResponse>(
-    LifePayRoutes.makeTransaction,
+    route,
     payload
   );
 };

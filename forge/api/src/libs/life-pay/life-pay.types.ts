@@ -20,7 +20,14 @@ export enum LifePayInvoiceStatus {
 }
 
 export enum LifePayCurrency {
-  rub = 'RUB',
+  rub = 'RUR',
+  eth = 'ETH',
+  bnb = 'BNB',
+  btc = 'BTC',
+  ltc = 'LTC',
+  usdt = 'USDT',
+  usdtBsc = 'USDT_BSC',
+  usdtTrx = 'USDT_TRX'
 }
 
 export interface LifePayGetTransactionResponse {

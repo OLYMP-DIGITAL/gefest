@@ -11,6 +11,131 @@ import { calculateReferralValue } from '../src/libs/finance/referral-earnings/me
 
 const lifePay = require('../src/libs/life-pay');
 
+const PLISIO_API_KEY = process.env.PLISIO_API_KEY!;
+const PLISIO_OPERATION_DETAILS_URL = 'https://plisio.net/api/v1/operations';
+
+async function updateSingleCryptoTransaction(strapi: Strapi, transaction: any) {
+  async function updateTransactionStatus(status: string) {
+    await strapi.entityService.update(
+      'api::life-pay-transaction.life-pay-transaction',
+      transaction.id,
+      {
+        data: {
+          ...transaction,
+          status,
+        },
+      }
+    );
+  }
+
+  const transactionId = transaction.transactionId;
+  const url = `${PLISIO_OPERATION_DETAILS_URL}/${transactionId}?api_key=${PLISIO_API_KEY}`;
+  console.log(
+    `[CRON JOB => updateLifePayTransactionStatus] Обновляем информацию о Plisio траназакции ${transactionId} по url ${url}`
+  );
+  const rawResponse = await fetch(url);
+  if (!rawResponse.ok) {
+    console.error(
+      `[CRON JOB => updateLifePayTransactionStatus] Получен плохой ответ от Plisio по url ${url} для транзакции ${transactionId}. Cтавим статус транзакции: error`
+    );
+    return await updateTransactionStatus('error');
+  }
+  const output = (await rawResponse.json()) as any;
+
+  if (output.status !== 'success') {
+    throw new Error(`Plisio has returned an error: ${JSON.stringify(output)}`);
+  }
+
+  const plisioStatus = output.data.status;
+  if (plisioStatus === 'new') {
+    console.log(
+      `[CRON JOB => updateLifePayTransactionStatus] Plisio транзакция ${transactionId} все еще ожидает оплаты. Статус: ${plisioStatus}`
+    );
+    return;
+  }
+
+  if (['pending', 'pending internal'].includes(plisioStatus)) {
+    console.error(
+      `[CRON JOB => updateLifePayTransactionStatus] Cтавим статус pending для транзакции ${transactionId}`
+    );
+    return await updateTransactionStatus('pending');
+  }
+
+  if (['cancelled', 'expired'].includes(plisioStatus)) {
+    console.error(
+      `[CRON JOB => updateLifePayTransactionStatus] Cтавим статус blocked (${plisioStatus}) для транзакции ${transactionId}`
+    );
+    return await updateTransactionStatus('blocked');
+  }
+
+  if (plisioStatus === 'cancelled duplicate') {
+    if (output.data.child_ids && output.data.child_ids.length === 1) {
+      const newTransactionId = output.data.child_ids[0];
+      console.log(
+        `[CRON JOB => updateLifePayTransactionStatus] Plisio изменил id транзакции с ${transactionId} на ${newTransactionId}, обновляем id и в нашей БД. Реальный статус транзакции будет узнан в следующем запуске этой cron задачи.`
+      );
+      await strapi.entityService.update(
+        'api::life-pay-transaction.life-pay-transaction',
+        transaction.id,
+        {
+          data: {
+            ...transaction,
+            transactionId: newTransactionId,
+          },
+        }
+      );
+    } else {
+      console.log(
+        `[CRON JOB => updateLifePayTransactionStatus] Получен статус cancelled duplicate от Plisio, но не получен новый id транзакции. Помечаем тразакцию ${transactionId} как error.`
+      );
+      await updateTransactionStatus('error');
+    }
+    return;
+  }
+
+  if (plisioStatus === 'error') {
+    console.error(
+      `[CRON JOB => updateLifePayTransactionStatus] Cтавим статус error для транзакции ${transactionId}`
+    );
+    return await updateTransactionStatus('error');
+  }
+
+  // К этому моменту может оставаться только успех
+  // mismatch - клиент переплатил, но для нас это нестрашно
+  if (!['success', 'completed', 'mismatch'].includes(plisioStatus)) {
+    console.error(
+      `[CRON JOB => updateLifePayTransactionStatus] Неизвестный статус ${plisioStatus} у транзакции ${transactionId}. Plisio url: ${url}`
+    );
+    return await updateTransactionStatus('error');
+  }
+
+  const paidInCurrency = output.data.currency;
+  const rate = output.data.source_rate;
+
+  if (paidInCurrency && rate) {
+    await strapi.entityService.update(
+      'api::life-pay-transaction.life-pay-transaction',
+      transaction.id,
+      {
+        data: {
+          ...transaction,
+          status: 'success',
+          currency: paidInCurrency,
+          dollarRate: parseFloat(rate),
+        },
+      }
+    );
+    console.log(
+      `[CRON JOB => updateLifePayTransactionStatus] Успешно учтановили статус success, rate и currency у crypto / plisio транзакции ${transactionId}!`
+    );
+  } else {
+    console.error(
+      `[CRON JOB => updateLifePayTransactionStatus] Plisio не вернул paidInCurrency или rate. Все равно помечаем транзакцию как выполненную, но не заполняем эти поля. Plisio url: ${url}`
+    );
+    await updateTransactionStatus('success');
+  }
+}
+
 export default {
   updateLifePayTransactionStatus: {
     task: async (options) => {
@@ -25,7 +150,7 @@ export default {
           .findMany({
             where: {
               status: TransactionStatus.open,
-
+              currency: 'RUR',
               $or: [
                 {
                   status: TransactionStatus.open,
@@ -150,6 +275,58 @@ export default {
         strapi.log.error(
           `[CRON JOB => updateLifePayTransactionStatus] => ${error.message}`
         );
+        console.log(error);
+      }
+    },
+    options: {
+      rule: '*/1 * * * *',
+    },
+  },
+
+  updateCryptoTransactionStatus: {
+    task: async (options) => {
+      const strapi: Strapi = options.strapi;
+
+      console.log('[CRON JOB => updateCryptoTransactionStatus]');
+
+      // Собираем неоконченные платежи
+      const transactions = await strapi.entityService.findMany(
+        'api::life-pay-transaction.life-pay-transaction',
+        {
+          filters: {
+            $or: [
+              {
+                status: 'open',
+              },
+              {
+                status: 'pending',
+              },
+            ],
+            currency: null,
+          },
+        }
+      );
+
+      try {
+        if (!transactions || !transactions.length) {
+          console.log(
+            '[CRON JOB => updateCryptoTransactionStatus] Не найдено ни одной крипто транзакции для проверки статуса'
+          );
+          return;
+        }
+        transactions.forEach(async (tx) => {
+          try {
+            await updateSingleCryptoTransaction(strapi, tx);
+          } catch (error) {
+            console.error(
+              '[CRON JOB => updateCryptoTransactionStatus]',
+              tx,
+              error
+            );
+          }
+        });
+      } catch (error) {
+        strapi.log.error('[CRON JOB => updateCryptoTransactionStatus]');
         console.log(error);
       }
     },
