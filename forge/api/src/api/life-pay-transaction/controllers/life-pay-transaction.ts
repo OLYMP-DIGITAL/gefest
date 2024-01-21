@@ -15,7 +15,7 @@ const LIFE_PAY_API_KEY = process.env.LIFE_PAY_API_KEY as string;
 const LIFE_PAY_SERVICE_ID = Number(process.env.LIFE_PAY_SERVICE_ID);
 
 const PLISIO_API_KEY = process.env.PLISIO_API_KEY!;
-const PLISIO_NEW_INVOICE_URL = 'https://plisio.net/api/v1/invoices/new?'
+const PLISIO_NEW_INVOICE_URL = 'https://plisio.net/api/v1/invoices/new?';
 
 // export default factories.createCoreController('api::life-pay-transaction.life-pay-transaction');
 export default {
@@ -113,10 +113,6 @@ export default {
     try {
       console.log('[LIFE PAY TRANSACTION] Поступил запрос на полу');
       const user: User = ctx.state.user;
-
-      if (!user.confirmed) {
-        throw new Error('User is not confirmed');
-      }
 
       // Количество приобретаемых долей
       const count: number = (ctx.request as any).body.count;
@@ -256,10 +252,6 @@ export default {
       console.log('[LIFE PAY TRANSACTION] Поступил запрос на оплату в крипте');
       const user: User = ctx.state.user;
 
-      if (!user.confirmed) {
-        throw new Error('User is not confirmed');
-      }
-
       // Количество приобретаемых долей
       const count: number = ctx.request.body.count;
 
@@ -301,30 +293,42 @@ export default {
       }
 
       const orderId = `order-${generateRandomString(10)}`;
-      console.log('[LIFE PAY TRANSACTION] Подготовка к созданию инвойса в системе Plisio', { orderId });
+      console.log(
+        '[LIFE PAY TRANSACTION] Подготовка к созданию инвойса в системе Plisio',
+        { orderId }
+      );
 
-      const searchParams = new URLSearchParams()
-      searchParams.append('api_key', PLISIO_API_KEY)
-      searchParams.append('source_currency', 'USD')
-      searchParams.append('source_amount', (cents / 100).toFixed(2))
-      searchParams.append('order_number', orderId)
-      searchParams.append('currency', 'USDT_BSC') // валюта, в которой предлагать оплачивать по умолчанию
-      searchParams.append('allowed_psys_cids', 'BTC,LTC,ETH,BNB,USDT_BSC,USDT_TRX,USDT') // все валюты доступные для оплаты
-      searchParams.append('email', user.email)
-      searchParams.append('order_name', `Buy ${count} shares`)
-      searchParams.append('callback_url', 'ethereum.org')
+      const searchParams = new URLSearchParams();
+      searchParams.append('api_key', PLISIO_API_KEY);
+      searchParams.append('source_currency', 'USD');
+      searchParams.append('source_amount', (cents / 100).toFixed(2));
+      searchParams.append('order_number', orderId);
+      searchParams.append('currency', 'USDT_BSC'); // валюта, в которой предлагать оплачивать по умолчанию
+      searchParams.append(
+        'allowed_psys_cids',
+        'BTC,LTC,ETH,BNB,USDT_BSC,USDT_TRX,USDT'
+      ); // все валюты доступные для оплаты
+      searchParams.append('email', user.email);
+      searchParams.append('order_name', `Buy ${count} shares`);
+      searchParams.append('callback_url', 'ethereum.org');
 
-      const plisioMakeInvoiceUrl = PLISIO_NEW_INVOICE_URL + searchParams.toString()
+      const plisioMakeInvoiceUrl =
+        PLISIO_NEW_INVOICE_URL + searchParams.toString();
 
       console.log('[LIFE PAY TRANSACTION] Выполняем запрос к Plisio');
-      const rawResponse = await fetch(plisioMakeInvoiceUrl)
-      const output = await rawResponse.json() as any
+      const rawResponse = await fetch(plisioMakeInvoiceUrl);
+      const output = (await rawResponse.json()) as any;
       if (output.status !== 'success') {
-        throw new Error(`Plisio has returned an error: ${JSON.stringify(output)}`)
+        throw new Error(
+          `Plisio has returned an error: ${JSON.stringify(output)}`
+        );
       }
-      const plisioTransactionId = output.data.txn_id!
-      const plisioInvoiceUrl = output.data.invoice_url!
-      console.log('[LIFE PAY TRANSACTION] получены от Plisio:', { plisioTransactionId, plisioInvoiceUrl })
+      const plisioTransactionId = output.data.txn_id!;
+      const plisioInvoiceUrl = output.data.invoice_url!;
+      console.log('[LIFE PAY TRANSACTION] получены от Plisio:', {
+        plisioTransactionId,
+        plisioInvoiceUrl,
+      });
 
       // ==================== Сохранение данных транзакции в БД ================
       const transactionModel: LifePayEntry = {
@@ -338,14 +342,16 @@ export default {
         transactionLink: plisioInvoiceUrl, // ссылка пока что неизвестна
       };
 
-      console.log('[LIFE PAY TRANSACTION] сохранение Plisio транзакции в БД', { transactionModel })
+      console.log('[LIFE PAY TRANSACTION] сохранение Plisio транзакции в БД', {
+        transactionModel,
+      });
       await strapi.entityService.create(
         'api::life-pay-transaction.life-pay-transaction',
         {
           data: transactionModel,
         }
       );
-      console.log('[LIFE PAY TRANSACTION] транзакция Plisio в БД сохранена')
+      console.log('[LIFE PAY TRANSACTION] транзакция Plisio в БД сохранена');
 
       // ==================== Формирование результата пользователю==============
       const result: LifePayCreateInvoiceResponse = {
@@ -355,9 +361,9 @@ export default {
       ctx.body = result;
     } catch (error) {
       console.error('[Произошла ошибка при создании транзакции] ', error);
-      return ctx.badRequest(error.message, error);
+      return ctx.badRequest(error.message);
     }
-  }
+  },
 };
 
 async function getUserLimit() {
