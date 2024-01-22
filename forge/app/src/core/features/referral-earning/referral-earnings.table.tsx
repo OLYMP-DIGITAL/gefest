@@ -5,6 +5,7 @@
  */
 import { useLanguage } from 'core/hooks/use-language';
 import { useStyles } from 'core/hooks/use-styles.hook';
+import { TextTitle } from 'core/ui/components/typography/text-title';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Platform, View } from 'react-native';
@@ -58,6 +59,8 @@ export const ReferralEarningsTable = () => {
             },
       ]}
     >
+      <TextTitle>{t('finance.referralEarnings.title')}</TextTitle>
+
       <Table>
         <Row
           data={table.tableHead}

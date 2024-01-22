@@ -9,6 +9,8 @@ import { LifePayInvoiceStatus } from 'core/features/life-pay/life-pay.api';
 import { lifePayTransactionsAtom } from 'core/features/life-pay/life-pay.atom';
 import { useLanguage } from 'core/hooks/use-language';
 import { useTheme } from 'core/providers/theme.provider';
+import { TextHeadline } from 'core/ui/components/typography/text-headline';
+import { TextTitle } from 'core/ui/components/typography/text-title';
 import { TFunction } from 'i18next';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -92,7 +94,8 @@ export const UserActionsTable = () => {
             },
       ]}
     >
-      <Table>
+      <TextTitle>{t('lifePay.table.title')}</TextTitle>
+      <Table style={{ zIndex: 1 }}>
         <Row
           data={table.tableHead}
           style={styles.head}

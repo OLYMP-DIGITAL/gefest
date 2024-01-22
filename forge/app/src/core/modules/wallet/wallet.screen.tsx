@@ -12,54 +12,94 @@ import { useTheme } from 'core/providers/theme.provider';
 import { TextDisplay } from 'core/ui/components/typography/text-display';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, View } from 'react-native';
+import { Linking, StyleSheet, View } from 'react-native';
+import AwesomeAlert from 'react-native-awesome-alerts';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useRecoilState } from 'recoil';
 import { LifePayCard } from './components/lfe-pay-card/life-pay-card.component';
 import { PortfolioValue } from './components/portfolio-value';
 import { ShareCount } from './components/share-count';
 import { StepText } from './components/step-text';
 import { TotalAmount } from './components/total-amount';
 import { UserActionsTable } from './components/user-actions-table/user-actions-table';
+import {
+  walletMessageAtom,
+  walletMessageLinkAtom,
+  walletShowMessageAtom,
+} from './wallet.atoms';
+import { useUser } from 'core/features/users/use-user';
 
 const WalletScreen = () => {
   useReferralEarnings();
-  const { fetchTransactions } = useLifePayTransactions();
-
   const styles = useStyles();
   const { t } = useTranslation();
+  const { fetchTransactions } = useLifePayTransactions();
+  const { fetchUser } = useUser();
+
+  const [alertMessage] = useRecoilState(walletMessageAtom);
+  const [showAlert, setShowAlert] = useRecoilState(walletShowMessageAtom);
+  const [messageLink, setMessageLink] = useRecoilState(walletMessageLinkAtom);
 
   return (
-    <ScrollView>
-      <View style={styles.wrapper}>
-        <TextDisplay>{t('wallet.title')}</TextDisplay>
+    <>
+      <ScrollView>
+        <View style={styles.wrapper}>
+          <TextDisplay>{t('wallet.title')}</TextDisplay>
 
-        <View style={{ display: 'flex', flexDirection: 'column' }}>
-          <StepText />
+          <View style={{ display: 'flex', flexDirection: 'column' }}>
+            <StepText />
 
-          <View style={styles.cards}>
-            <LifePayCard fetchTransactions={fetchTransactions} />
+            <View style={styles.cards}>
+              <LifePayCard
+                fetchTransactions={fetchTransactions}
+                fetchUser={fetchUser}
+              />
 
-            <View style={styles.infoCards}>
-              <TotalAmount />
+              <View style={styles.infoCards}>
+                <TotalAmount />
 
-              <View style={styles.mt}>
-                <ShareCount />
-              </View>
+                <View style={styles.mt}>
+                  <ShareCount />
+                </View>
 
-              <View style={styles.mt}>
-                <PortfolioValue />
+                <View style={styles.mt}>
+                  <PortfolioValue />
+                </View>
               </View>
             </View>
-          </View>
 
-          <UserActionsTable />
+            <UserActionsTable />
 
-          <View style={{ marginTop: 13 }}>
-            <ReferralEarningsTable />
+            <View style={{ marginTop: 13 }}>
+              <ReferralEarningsTable />
+            </View>
           </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+
+      <AwesomeAlert
+        show={showAlert}
+        message={alertMessage}
+        overlayStyle={{ overflow: 'hidden' }}
+        closeOnTouchOutside={false}
+        cancelText="Close"
+        confirmText={messageLink ? t('wallet.openLink') : ''}
+        onConfirmPressed={() => {
+          if (messageLink) {
+            Linking.openURL(messageLink);
+          }
+
+          setShowAlert(false);
+          setMessageLink('');
+        }}
+        onCancelPressed={() => {
+          setShowAlert(false);
+          setMessageLink('');
+        }}
+        showConfirmButton={!!messageLink}
+        showCancelButton={true}
+      />
+    </>
   );
 };
 
@@ -87,7 +127,7 @@ const useStyles = () => {
         },
 
         infoCards: {
-          width: 300,
+          width: 380,
           marginLeft: 45,
         },
       }),

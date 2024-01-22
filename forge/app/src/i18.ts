@@ -148,6 +148,7 @@ const resources = {
         toSignIn: 'Sign in',
       },
       wallet: {
+        openLink: 'Click here to go to payment',
         title: 'Wallet',
         step: '1 Step of investment',
         stepLabel: 'Initial Investment Offering',
@@ -189,6 +190,7 @@ const resources = {
           amountOfSharedCounts: 'Amount of selected shares',
           transactionLimit: 'Remaining limit for stock purchase',
           toCabinet: 'To cabinet',
+          pointsCount: 'The number of accumulated points',
 
           needConfirm:
             'Once your information is confirmed, you\'ll be able to purchase shares in the company. To submit personal information for verification, click the link or use the "Personal Cabinet" section in the menu.',
@@ -201,6 +203,7 @@ const resources = {
         },
 
         table: {
+          title: 'List of transactions',
           value: 'Value',
           date: 'Date',
           count: 'Shares count',
@@ -218,10 +221,15 @@ const resources = {
         totalAmount: 'Total amount',
         portfolioValue: 'Portfolio value',
         totalSharesCount: 'Shares count',
+        transactionSuccess: 'Транзакция создана. Ожидание оплаты',
+
+        linkTransactionSuccess:
+          'Transaction created. Waiting for payment. If payment did not open automatically, please proceed to payment using the button below',
       },
 
       finance: {
         referralEarnings: {
+          title: 'List of referral earnings',
           user: 'User',
           date: 'Date',
           value: 'Value',
@@ -374,6 +382,7 @@ const resources = {
         beFirst: 'Будешь первый в курсе всех событий',
       },
       wallet: {
+        openLink: 'Перейти к оплате',
         title: 'Мой кошелёк',
         step: '1 этап инвестиций',
         stepLabel: 'Initial Investment Offering',
@@ -415,6 +424,7 @@ const resources = {
           currentAmount: 'Текущая стоимость доли',
           amountOfSharedCounts: 'Выбрано долей на сумму',
           transactionLimit: 'Оставшийся лимит на покупку долей',
+          pointsCount: 'Количество накопленных баллов',
 
           needConfirm:
             'Как только ваши персональные данные будут подтверждены, вы сможете покупать доли в компании. Для отправки личных данных на проверку, перейдите по ссылке или воспользуйтесь разделом "Личный Кабинет" в меню',
@@ -427,6 +437,7 @@ const resources = {
         },
 
         table: {
+          title: 'Список транзакций',
           value: 'Сумма',
           date: 'Дата',
           count: 'Количество долей',
@@ -444,10 +455,14 @@ const resources = {
         totalAmount: 'Сумма всех пополнений',
         portfolioValue: 'Стоимость портфеля',
         totalSharesCount: 'Приобретено долей',
+        transactionSuccess: 'Транзакция создана. Ожидание оплаты',
+        linkTransactionSuccess:
+          'Транзакция создана. Ожидание оплаты. Если оплата не открылась автоматически, то перейдите к ней по кнопке ниже',
       },
 
       finance: {
         referralEarnings: {
+          title: 'Список реферальных начислений',
           date: 'Дата',
           user: 'Пользователь',
           value: 'Сумма',

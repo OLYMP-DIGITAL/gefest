@@ -1,3 +1,10 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
 import { useCallback } from 'react';
 import { Alert, Linking } from 'react-native';
 import { useSupportEmail } from './use-support-email.hook';

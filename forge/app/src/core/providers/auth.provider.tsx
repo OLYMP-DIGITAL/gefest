@@ -1,3 +1,10 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
 import { fetchMe } from 'core/features/users/users.api';
 import { tokenAtom, userAtom } from 'core/features/users/users.atoms';
 import { User } from 'core/features/users/users.types';

@@ -32,9 +32,14 @@ import {
   View,
 } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import * as yup from 'yup';
+import {
+  walletMessageAtom,
+  walletMessageLinkAtom,
+  walletShowMessageAtom,
+} from '../../wallet.atoms';
 
 const MIN_AMOUNT = 1;
 
@@ -43,10 +48,11 @@ interface PayForm {
 }
 
 interface Props {
+  fetchUser: () => void;
   fetchTransactions: () => void;
 }
 
-export const LifePayCard = ({ fetchTransactions }: Props) => {
+export const LifePayCard = ({ fetchTransactions, fetchUser }: Props) => {
   const { t } = useTranslation();
 
   const user = useRecoilValue(userAtom);
@@ -60,6 +66,12 @@ export const LifePayCard = ({ fetchTransactions }: Props) => {
   const [limit, setLimit] = useState<number>(0);
   const [transactionType, setTransactionType] = useState<TransactionType>();
 
+  // Alert
+  const [alertMessage, setAlertMessage] = useRecoilState(walletMessageAtom);
+  // const [showAlert, setShowAlert] = useRecoilState(walletShowMessage);
+  const [messageLink, setMessageLink] = useRecoilState(walletMessageLinkAtom);
+  const [showAlert, setShowAlert] = useRecoilState(walletShowMessageAtom);
+
   useEffect(() => {
     if (stage && transactions) {
       setLimit(calcLimitOfTransactionValue(transactions, stage.max));
@@ -68,7 +80,21 @@ export const LifePayCard = ({ fetchTransactions }: Props) => {
 
   const onSubmit = useCallback(
     (values: PayForm) => {
-      if (transactionType) {
+      if (transactionType && user && shareAmount) {
+        if (transactionType === TransactionType.points) {
+          const count = values.sharesCount;
+          const points = user.points;
+
+          if (count * shareAmount > points) {
+            setAlertMessage(
+              `Недостаточно баллов для покупки <a href='http://example.com'>http://example.com</a>`
+            );
+            setShowAlert(true);
+
+            return;
+          }
+        }
+
         makeTransaction(
           {
             count: Number(values.sharesCount),
@@ -79,18 +105,25 @@ export const LifePayCard = ({ fetchTransactions }: Props) => {
             if (response.error) {
               throw response.error;
             }
-
             const url = response.link;
 
-            // Перезапрос транзакций для перерасчёта лимитов
+            // Перезапрос транзакций и пользователя для перерасчёта лимитов
             fetchTransactions();
+            fetchUser();
 
             if (url) {
+              setShowAlert(true);
+              setMessageLink(url);
+              setAlertMessage(t('lifePay.linkTransactionSuccess'));
+
               Linking.openURL(url)
                 .then(() => console.log('Transaction link opened'))
                 .catch((error) =>
                   console.error('Error opening document:', error)
                 );
+            } else {
+              setAlertMessage(t('lifePay.transactionSuccess'));
+              setShowAlert(true);
             }
           })
           .catch((error) => {
@@ -115,7 +148,7 @@ export const LifePayCard = ({ fetchTransactions }: Props) => {
         });
       }
     },
-    [transactionType]
+    [transactionType, shareAmount, alertMessage]
   );
 
   const validationSchema = useMemo(
@@ -157,179 +190,192 @@ export const LifePayCard = ({ fetchTransactions }: Props) => {
   );
 
   return (
-    <Formik
-      initialValues={{
-        sharesCount: 0,
-      }}
-      onSubmit={(values, transactionType) => {
-        onSubmit(values, transactionType);
-      }}
-      validationSchema={validationSchema}
-    >
-      {({ handleChange, handleBlur, handleSubmit, values, errors }) => {
-        return (
-          <View
-            style={[
-              styles.wrapper,
-              Platform.OS === 'android'
-                ? { elevation: 5 }
-                : {
-                    shadowColor: 'rgba(0, 0, 0, 0.2)',
-                    shadowOffset: { width: 0, height: 3 },
-                    shadowOpacity: 1,
-                    shadowRadius: 5,
-                  },
-            ]}
-          >
-            <View style={styles.titleWrapper}>
-              <Text style={styles.title}>{t('lifePay.card.title')}</Text>
-            </View>
+    <>
+      <Formik
+        initialValues={{
+          sharesCount: 0,
+        }}
+        onSubmit={onSubmit}
+        validationSchema={validationSchema}
+      >
+        {({ handleChange, handleBlur, handleSubmit, values, errors }) => {
+          return (
+            <View
+              style={[
+                styles.wrapper,
+                Platform.OS === 'android'
+                  ? { elevation: 5 }
+                  : {
+                      shadowColor: 'rgba(0, 0, 0, 0.2)',
+                      shadowOffset: { width: 0, height: 3 },
+                      shadowOpacity: 1,
+                      shadowRadius: 5,
+                    },
+              ]}
+            >
+              <View style={styles.titleWrapper}>
+                <Text style={styles.title}>{t('lifePay.card.title')}</Text>
+              </View>
 
-            <View style={styles.contentWrapper}>
-              <Text>{t('lifePay.card.desc')}</Text>
+              <View style={styles.contentWrapper}>
+                <Text>{t('lifePay.card.desc')}</Text>
 
-              <Text style={styles.marginTop10}>
-                {t('lifePay.card.currentAmount')}: $
-                <Text style={styles.strong}>
-                  {(shareAmount && Number(shareAmount / 100).toFixed(2)) || '0'}
+                <Text style={styles.marginTop10}>
+                  {t('lifePay.card.currentAmount')}: $
+                  <Text style={styles.strong}>
+                    {(shareAmount && Number(shareAmount / 100).toFixed(2)) ||
+                      '0'}
+                  </Text>
                 </Text>
-              </Text>
 
-              <Text style={styles.marginTop10}>
-                {t('lifePay.card.transactionLimit')}: $
-                <Text style={styles.strong}>
-                  {Number(limit / 100).toFixed(0)}
+                <Text style={styles.marginTop10}>
+                  {t('lifePay.card.transactionLimit')}: $
+                  <Text style={styles.strong}>
+                    {Number(limit / 100).toFixed(0)}
+                  </Text>
                 </Text>
-              </Text>
 
-              <Text>
-                {t('lifePay.card.amountOfSharedCounts')}: $
-                <Text style={styles.strong}>
-                  {calcAmountOfShares(values.sharesCount)}
+                {user && (
+                  <Text style={styles.marginTop10}>
+                    {t('lifePay.card.pointsCount')}: $
+                    <Text style={styles.strong}>
+                      {Number(user.points / 100).toFixed(0)}
+                    </Text>
+                  </Text>
+                )}
+
+                <Text>
+                  {t('lifePay.card.amountOfSharedCounts')}: $
+                  <Text style={styles.strong}>
+                    {calcAmountOfShares(values.sharesCount)}
+                  </Text>
                 </Text>
-              </Text>
 
-              <View style={styles.inputWrapper}>
-                <Input
-                  placeholder={t('lifePay.card.amount')}
-                  onChangeText={(e) => {
-                    const currentInput = e.valueOf();
-                    if (
-                      currentInput != null &&
-                      currentInput !== '' &&
-                      !isNaN(Number(currentInput.toString()))
-                    ) {
-                      handleChange('sharesCount')(e);
-                    }
-                    if (currentInput == '') {
-                      handleChange('sharesCount')(e);
-                    }
-                  }}
-                  onBlur={handleBlur('sharesCount')}
-                  value={`${values.sharesCount || ''}`}
-                  keyboardType="numeric"
-                />
-                {errors.sharesCount && (
-                  <Text style={{ color: '#F75555', fontSize: 14 }}>
-                    {errors.sharesCount}
+                <View style={styles.inputWrapper}>
+                  <Input
+                    placeholder={t('lifePay.card.amount')}
+                    onChangeText={(e) => {
+                      const currentInput = e.valueOf();
+                      if (
+                        currentInput != null &&
+                        currentInput !== '' &&
+                        !isNaN(Number(currentInput.toString()))
+                      ) {
+                        handleChange('sharesCount')(e);
+                      }
+                      if (currentInput == '') {
+                        handleChange('sharesCount')(e);
+                      }
+                    }}
+                    onBlur={handleBlur('sharesCount')}
+                    value={`${values.sharesCount || ''}`}
+                    keyboardType="numeric"
+                  />
+                  {errors.sharesCount && (
+                    <Text style={{ color: '#F75555', fontSize: 14 }}>
+                      {errors.sharesCount}
+                    </Text>
+                  )}
+                </View>
+
+                {(user?.passportConfirmed && (
+                  <Text>{t('lifePay.card.warmMessage')}</Text>
+                )) || (
+                  <Text style={styles.warmMessage}>
+                    {t('lifePay.card.needConfirm')}
                   </Text>
                 )}
               </View>
 
-              {(user?.passportConfirmed && (
-                <Text>{t('lifePay.card.warmMessage')}</Text>
+              {(useDataExists && (
+                <View style={styles.actionsWrapper}>
+                  {/* Make Lifepay transaction */}
+                  {/* <TouchableOpacity
+                    style={[
+                      styles.materialButton,
+                      Object.keys(errors).length > 0 &&
+                        styles.disabledMaterialButton,
+                    ]}
+                    onPress={() => {
+                      setTransactionType(TransactionType.lifePay);
+                      handleSubmit();
+                    }}
+                    disabled={Object.keys(errors).length > 0}
+                  >
+                    <Text
+                      style={[
+                        styles.materialButtonText,
+                        Object.keys(errors).length > 0 &&
+                          styles.disabledMaterialButtonText,
+                      ]}
+                    >
+                      {t('lifePay.card.pay')}
+                    </Text>
+                  </TouchableOpacity> */}
+
+                  {/* Make crypto transaction */}
+                  <TouchableOpacity
+                    style={[
+                      styles.materialButton,
+                      Object.keys(errors).length > 0 &&
+                        styles.disabledMaterialButton,
+                    ]}
+                    onPress={() => {
+                      setTransactionType(TransactionType.crypto);
+                      handleSubmit();
+                    }}
+                    disabled={Object.keys(errors).length > 0}
+                  >
+                    <Text
+                      style={[
+                        styles.materialButtonText,
+                        Object.keys(errors).length > 0 &&
+                          styles.disabledMaterialButtonText,
+                      ]}
+                    >
+                      {t('lifePay.card.cryptoPay')}
+                    </Text>
+                  </TouchableOpacity>
+
+                  {/* Make points transaction */}
+                  <TouchableOpacity
+                    style={[
+                      styles.materialButton,
+                      Object.keys(errors).length > 0 &&
+                        styles.disabledMaterialButton,
+                    ]}
+                    onPress={() => {
+                      setTransactionType(TransactionType.points);
+                      handleSubmit();
+                    }}
+                    disabled={Object.keys(errors).length > 0}
+                  >
+                    <Text
+                      style={[
+                        styles.materialButtonText,
+                        Object.keys(errors).length > 0 &&
+                          styles.disabledMaterialButtonText,
+                      ]}
+                    >
+                      {t('lifePay.card.pointsPay')}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               )) || (
-                <Text style={styles.warmMessage}>
-                  {t('lifePay.card.needConfirm')}
-                </Text>
+                <Button
+                  onPress={() => {
+                    navigation.navigate(NavigatorScreensEnum.cabinet as any);
+                  }}
+                  primary
+                >
+                  {t('lifePay.card.toCabinet')}
+                </Button>
               )}
             </View>
-
-            {(useDataExists && (
-              <View style={styles.actionsWrapper}>
-                <TouchableOpacity
-                  style={[
-                    styles.materialButton,
-                    Object.keys(errors).length > 0 &&
-                      styles.disabledMaterialButton,
-                  ]}
-                  onPress={() => {
-                    setTransactionType(TransactionType.lifePay);
-                    handleSubmit();
-                  }}
-                  disabled={Object.keys(errors).length > 0}
-                >
-                  <Text
-                    style={[
-                      styles.materialButtonText,
-                      Object.keys(errors).length > 0 &&
-                        styles.disabledMaterialButtonText,
-                    ]}
-                  >
-                    {t('lifePay.card.pay')}
-                  </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  style={[
-                    styles.materialButton,
-                    Object.keys(errors).length > 0 &&
-                      styles.disabledMaterialButton,
-                  ]}
-                  onPress={() => {
-                    setTransactionType(TransactionType.crypto);
-                    handleSubmit();
-                  }}
-                  disabled={Object.keys(errors).length > 0}
-                >
-                  <Text
-                    style={[
-                      styles.materialButtonText,
-                      Object.keys(errors).length > 0 &&
-                        styles.disabledMaterialButtonText,
-                    ]}
-                  >
-                    {t('lifePay.card.cryptoPay')}
-                  </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  style={[
-                    styles.materialButton,
-                    Object.keys(errors).length > 0 &&
-                      styles.disabledMaterialButton,
-                  ]}
-                  onPress={() => {
-                    setTransactionType(TransactionType.points);
-                    handleSubmit();
-                  }}
-                  disabled={Object.keys(errors).length > 0}
-                >
-                  <Text
-                    style={[
-                      styles.materialButtonText,
-                      Object.keys(errors).length > 0 &&
-                        styles.disabledMaterialButtonText,
-                    ]}
-                  >
-                    {t('lifePay.card.pointsPay')}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            )) || (
-              <Button
-                onPress={() => {
-                  navigation.navigate(NavigatorScreensEnum.cabinet as any);
-                }}
-                primary
-              >
-                {t('lifePay.card.toCabinet')}
-              </Button>
-            )}
-          </View>
-        );
-      }}
-    </Formik>
+          );
+        }}
+      </Formik>
+    </>
   );
 };
 

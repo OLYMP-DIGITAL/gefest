@@ -1,3 +1,10 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
 import {
   LifePayInvoiceStatus,
   getUserTransactions,
@@ -58,7 +65,7 @@ export const PortfolioValue = () => {
         <TextHeadline color={theme.primary}>{`${portfolioValue / 100}$ (${
           portfolioIncreasePercentage > 0
             ? `+${portfolioIncreaseUsd}$ +${portfolioIncreasePercentage}`
-            : `-${portfolioIncreaseUsd}$ -${portfolioIncreasePercentage}`
+            : `${portfolioIncreaseUsd}$ -${portfolioIncreasePercentage}`
         }%)`}</TextHeadline>
       </CardContent>
     </Card>
