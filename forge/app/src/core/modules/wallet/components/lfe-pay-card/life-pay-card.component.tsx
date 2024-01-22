@@ -16,6 +16,7 @@ import { lifePayTransactionsAtom } from 'core/features/life-pay/life-pay.atom';
 import { calcLimitOfTransactionValue } from 'core/features/life-pay/life-pay.helpers';
 import { useShareAmount } from 'core/features/share-amount/user-share-amount.hook';
 import { userAtom } from 'core/features/users/users.atoms';
+import { TransactionType } from 'core/finance/transaction/transaction.types';
 import { useTheme } from 'core/providers/theme.provider';
 import { NavigatorScreensEnum, StackNavigation } from 'core/types/navigation';
 import { Button } from 'core/ui/components/button/button.component';
@@ -57,7 +58,7 @@ export const LifePayCard = ({ fetchTransactions }: Props) => {
   const { stage } = useCurrentStage();
   const transactions = useRecoilValue(lifePayTransactionsAtom);
   const [limit, setLimit] = useState<number>(0);
-  const [isCrypto, setIsCrypto] = useState<boolean>(false);
+  const [transactionType, setTransactionType] = useState<TransactionType>();
 
   useEffect(() => {
     if (stage && transactions) {
@@ -67,45 +68,54 @@ export const LifePayCard = ({ fetchTransactions }: Props) => {
 
   const onSubmit = useCallback(
     (values: PayForm) => {
-      makeTransaction(
-        {
-          count: Number(values.sharesCount),
-        },
-        isCrypto
-      )
-        .then((response: MakeTransactionResponse) => {
-          if (response.error) {
-            throw response.error;
-          }
+      if (transactionType) {
+        makeTransaction(
+          {
+            count: Number(values.sharesCount),
+          },
+          transactionType
+        )
+          .then((response: MakeTransactionResponse) => {
+            if (response.error) {
+              throw response.error;
+            }
 
-          const url = response.link;
+            const url = response.link;
 
-          // Перезапрос транзакций для перерасчёта лимитов
-          fetchTransactions();
+            // Перезапрос транзакций для перерасчёта лимитов
+            fetchTransactions();
 
-          if (url) {
-            Linking.openURL(url)
-              .then(() => console.log('Transaction link opened'))
-              .catch((error) =>
-                console.error('Error opening document:', error)
-              );
-          }
-        })
-        .catch((error) => {
-          console.error('Ошибка при создании транзакции', error);
+            if (url) {
+              Linking.openURL(url)
+                .then(() => console.log('Transaction link opened'))
+                .catch((error) =>
+                  console.error('Error opening document:', error)
+                );
+            }
+          })
+          .catch((error) => {
+            console.error('Ошибка при создании транзакции', error);
 
-          if (error.message) {
-            toast.show(error.message, {
-              type: 'warning',
-            });
-          } else {
-            toast.show(t('lifePay.createInvoiceError'), {
-              type: 'warning',
-            });
-          }
+            if (error.message) {
+              toast.show(error.message, {
+                type: 'warning',
+              });
+            } else {
+              toast.show(t('lifePay.createInvoiceError'), {
+                type: 'warning',
+              });
+            }
+          })
+          .finally(() => {
+            setTransactionType(undefined);
+          });
+      } else {
+        toast.show(t('lifePay.card.transactionTypeError'), {
+          type: 'danger',
         });
+      }
     },
-    [isCrypto]
+    [transactionType]
   );
 
   const validationSchema = useMemo(
@@ -151,7 +161,9 @@ export const LifePayCard = ({ fetchTransactions }: Props) => {
       initialValues={{
         sharesCount: 0,
       }}
-      onSubmit={onSubmit}
+      onSubmit={(values, transactionType) => {
+        onSubmit(values, transactionType);
+      }}
       validationSchema={validationSchema}
     >
       {({ handleChange, handleBlur, handleSubmit, values, errors }) => {
@@ -242,7 +254,7 @@ export const LifePayCard = ({ fetchTransactions }: Props) => {
                       styles.disabledMaterialButton,
                   ]}
                   onPress={() => {
-                    setIsCrypto(false);
+                    setTransactionType(TransactionType.lifePay);
                     handleSubmit();
                   }}
                   disabled={Object.keys(errors).length > 0}
@@ -257,6 +269,7 @@ export const LifePayCard = ({ fetchTransactions }: Props) => {
                     {t('lifePay.card.pay')}
                   </Text>
                 </TouchableOpacity>
+
                 <TouchableOpacity
                   style={[
                     styles.materialButton,
@@ -264,7 +277,7 @@ export const LifePayCard = ({ fetchTransactions }: Props) => {
                       styles.disabledMaterialButton,
                   ]}
                   onPress={() => {
-                    setIsCrypto(true);
+                    setTransactionType(TransactionType.crypto);
                     handleSubmit();
                   }}
                   disabled={Object.keys(errors).length > 0}
@@ -277,6 +290,29 @@ export const LifePayCard = ({ fetchTransactions }: Props) => {
                     ]}
                   >
                     {t('lifePay.card.cryptoPay')}
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={[
+                    styles.materialButton,
+                    Object.keys(errors).length > 0 &&
+                      styles.disabledMaterialButton,
+                  ]}
+                  onPress={() => {
+                    setTransactionType(TransactionType.points);
+                    handleSubmit();
+                  }}
+                  disabled={Object.keys(errors).length > 0}
+                >
+                  <Text
+                    style={[
+                      styles.materialButtonText,
+                      Object.keys(errors).length > 0 &&
+                        styles.disabledMaterialButtonText,
+                    ]}
+                  >
+                    {t('lifePay.card.pointsPay')}
                   </Text>
                 </TouchableOpacity>
               </View>

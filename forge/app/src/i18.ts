@@ -195,6 +195,9 @@ const resources = {
 
           warmMessage:
             'Upon clicking, you will be redirected to the payment page. Ensure that pop-ups are not blocked for the website.',
+
+          transactionTypeError:
+            'An unexpected error occurred. Please try again later or contact customer support',
         },
 
         table: {
@@ -418,6 +421,9 @@ const resources = {
 
           warmMessage:
             'По клику вы будете переадресованы на страницу с оплатой. Убедитесь что у вас не блокируются вслывающие окна для сайта',
+
+          transactionTypeError:
+            'Произошла непредвиденная ошибка. Пожалуйста, попробуйте позже или обратитесь в службу поддержки',
         },
 
         table: {

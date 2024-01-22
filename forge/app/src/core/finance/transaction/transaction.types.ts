@@ -8,6 +8,12 @@
 import { User } from 'core/features/users/users.types';
 import { Currency } from '../currency/currency.types';
 
+export enum TransactionType {
+  crypto = 'crypto',
+  points = 'points',
+  lifePay = 'lifePay',
+}
+
 export enum TransactionStatus {
   open = 'open', // счет открыт
   pending = 'pending', // началась оплата по ссылке, необходимо отобразить лоадер на форме
