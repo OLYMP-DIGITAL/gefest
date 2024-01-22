@@ -1,6 +1,14 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
 import api from 'core/services/api';
 import { LIFE_PAY_API_KEY, LIFE_PAY_SERVICE_ID } from './life-pay.atom';
-import { LifePayTransaction } from 'core/modules/wallet/components/user-actions-table/user-actions-table';
+import { LifePayTransaction } from './life-pay.types';
+// import { LifePayTransaction } from 'core/modules/wallet/components/user-actions-table/user-actions-table';
 
 export enum LifePayRoutes {
   auth = 'https://api-ecom.life-pay.ru/v1/auth',
@@ -86,13 +94,12 @@ export interface MakeTransactionResponse {
 
 export const makeTransaction = (
   payload: MakeTransactionPayload,
-  isCrypto: boolean,
+  isCrypto: boolean
 ): Promise<MakeTransactionResponse> => {
-  const route = isCrypto ? LifePayRoutes.makeCryptoTransaction : LifePayRoutes.makeTransaction
-  return api.post<MakeTransactionResponse>(
-    route,
-    payload
-  );
+  const route = isCrypto
+    ? LifePayRoutes.makeCryptoTransaction
+    : LifePayRoutes.makeTransaction;
+  return api.post<MakeTransactionResponse>(route, payload);
 };
 
 export const getUserTransactions = (): Promise<LifePayTransaction[]> => {

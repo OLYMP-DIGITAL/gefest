@@ -1,3 +1,10 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import env from 'core/services/env';
@@ -174,6 +181,7 @@ const resources = {
         card: {
           pay: 'Pay',
           cryptoPay: 'Crypto Pay',
+          pointsPay: 'Buy with points',
           title: 'Pay shares',
           amount: 'Amount',
           desc: "To purchase shares, enter the desired quantity and press the 'Pay' button.",
@@ -396,6 +404,7 @@ const resources = {
         card: {
           pay: 'Купить',
           cryptoPay: 'Оплатить криптой',
+          pointsPay: 'Оплатить баллами',
           desc: 'Чтобы приобрести доли, введие желаемое количество и нажмите кнопку "купить"',
           title: 'Приобретение долей',
           amount: 'Количество',

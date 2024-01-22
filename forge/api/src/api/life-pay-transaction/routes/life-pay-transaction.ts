@@ -1,3 +1,10 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
 /**
  * life-pay-transaction router
  */
@@ -19,12 +26,17 @@ export default {
       handler: 'life-pay-transaction.crypto',
     },
     {
+      method: 'POST',
+      path: '/life-pay-transaction/points',
+      handler: 'life-pay-transaction.points',
+    },
+    {
       method: 'GET',
       path: '/life-pay-transaction/user',
       handler: 'life-pay-transaction.user',
     },
     {
-      method: 'GET',
+      method: 'POST',
       path: '/life-pay-transaction/test',
       handler: 'life-pay-transaction.test',
     },

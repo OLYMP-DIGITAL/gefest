@@ -1,6 +1,16 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
+import { useLifePayTransactions } from 'core/features/life-pay/use-life-pay-transactions.hook';
+import { ReferralEarningsTable } from 'core/features/referral-earning/referral-earnings.table';
+import { useReferralEarnings } from 'core/features/referral-earning/use-referral-earnings.hook';
 import { useTheme } from 'core/providers/theme.provider';
 import { TextDisplay } from 'core/ui/components/typography/text-display';
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -10,9 +20,6 @@ import { ShareCount } from './components/share-count';
 import { StepText } from './components/step-text';
 import { TotalAmount } from './components/total-amount';
 import { UserActionsTable } from './components/user-actions-table/user-actions-table';
-import { useLifePayTransactions } from 'core/features/life-pay/use-life-pay-transactions.hook';
-import { useReferralEarnings } from 'core/features/referral-earning/use-referral-earnings.hook';
-import { ReferralEarningsTable } from 'core/features/referral-earning/referral-earnings.table';
 
 const WalletScreen = () => {
   useReferralEarnings();

@@ -4,7 +4,7 @@
   "info": {
     "singularName": "life-pay-transaction",
     "pluralName": "life-pay-transactions",
-    "displayName": "Life Pay транзакции",
+    "displayName": "Транзакции",
     "description": ""
   },
   "options": {
@@ -64,7 +64,8 @@
         "LTC",
         "USDT",
         "USDT_BSC",
-        "USDT_TRX"
+        "USDT_TRX",
+        "POINTS"
       ]
     }
   }
