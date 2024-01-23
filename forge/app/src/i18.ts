@@ -196,7 +196,7 @@ const resources = {
           pointsCount: 'The number of accumulated points',
 
           needConfirm:
-            'Once your information is confirmed, you\'ll be able to purchase shares in the company. To submit personal information for verification, click the link or use the "Personal Cabinet" section in the menu.',
+            'To purchase shares, please fill out your personal information in your personal account',
 
           warmMessage:
             'Upon clicking, you will be redirected to the payment page. Ensure that pop-ups are not blocked for the website.',
@@ -440,7 +440,7 @@ const resources = {
           pointsCount: 'Количество накопленных баллов',
 
           needConfirm:
-            'Как только ваши персональные данные будут подтверждены, вы сможете покупать доли в компании. Для отправки личных данных на проверку, перейдите по ссылке или воспользуйтесь разделом "Личный Кабинет" в меню',
+            'Чтобы купить доли заполните персональные данные в личном кабинете',
 
           warmMessage:
             'По клику вы будете переадресованы на страницу с оплатой. Убедитесь что у вас не блокируются вслывающие окна для сайта',
