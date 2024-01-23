@@ -7,21 +7,25 @@
  */
 import { getCurrentStage } from '../../stages/get-current-stage';
 import { Transaction } from '../../transactions/transaction.types';
+import { User } from '../users.types';
 
-export async function getUserLimit(): Promise<number> {
+export async function getUserLimit(user: User): Promise<number> {
   const userTransactions = await strapi.entityService.findMany(
     'api::life-pay-transaction.life-pay-transaction',
     {
       filters: {
-        $or: [
+        $and: [
           {
-            status: 'success',
+            $or: [
+              { status: 'success' },
+              { status: 'open' },
+              { status: 'pending' },
+            ],
           },
           {
-            status: 'open',
-          },
-          {
-            status: 'pending',
+            user: {
+              id: user.id,
+            },
           },
         ],
       },

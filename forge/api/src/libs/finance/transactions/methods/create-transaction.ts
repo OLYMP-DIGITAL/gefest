@@ -51,7 +51,7 @@ export const createTransaction = async ({
     const cents: number = shareValue.value * count;
 
     // ==================== ПОДСЧЁТ ЛИМИТА НА ПОКУПАЕМЫЕ ДОЛИ ================
-    const limit = await getUserLimit();
+    const limit = await getUserLimit(user);
 
     if (cents > limit) {
       throw new Error('Limit of transactions');

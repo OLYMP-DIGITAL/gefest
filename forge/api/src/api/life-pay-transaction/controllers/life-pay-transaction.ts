@@ -134,7 +134,7 @@ export default {
 
       // ==================== ПОДСЧЁТ ЛИМИТА НА ПОКУПАЕМЫЕ ДОЛИ ================
       console.log('[LIFE PAY TRANSACTION] Проверка на лимит покупаемы долей');
-      const limit = await getUserLimit();
+      const limit = await getUserLimit(user);
 
       console.log('[LIFE PAY TRANSACTION] LIMIT', {
         limit,
@@ -255,7 +255,7 @@ export default {
 
       // ==================== ПОДСЧЁТ ЛИМИТА НА ПОКУПАЕМЫЕ ДОЛИ ================
       console.log('[LIFE PAY TRANSACTION] Проверка на лимит покупаемы долей');
-      const limit = await getUserLimit();
+      const limit = await getUserLimit(user);
 
       console.log('[LIFE PAY TRANSACTION] LIMIT', {
         limit,
