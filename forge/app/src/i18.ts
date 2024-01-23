@@ -211,6 +211,7 @@ const resources = {
           date: 'Date',
           count: 'Shares count',
           status: 'Status',
+          currency: 'Currency',
         },
 
         transactionStatus: {
@@ -240,6 +241,10 @@ const resources = {
           value: 'Value',
           getError:
             'Referral credits could not be retrieved. Please try again later',
+        },
+
+        currency: {
+          points: 'Points',
         },
       },
     },
@@ -450,6 +455,7 @@ const resources = {
           date: 'Дата',
           count: 'Количество долей',
           status: 'Статус',
+          currency: 'Валюта',
         },
 
         transactionStatus: {
@@ -478,6 +484,10 @@ const resources = {
           value: 'Сумма',
           getError:
             'Неу далось получить реферальные начисления. Пожалуйста, попробуйте позже',
+        },
+
+        currency: {
+          points: 'Баллы',
         },
       },
     },

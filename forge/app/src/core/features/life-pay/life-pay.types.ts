@@ -5,6 +5,8 @@
  *   intended publication of such source code. The code contains
  *   OLYMP.DIGITAL Confidential Proprietary Information.
  */
+import { Currency } from 'core/finance/currency/currency.types';
+
 export interface LifePayTransaction {
   id: number;
   points: number;
@@ -17,4 +19,5 @@ export interface LifePayTransaction {
   shareValue: string;
   status: string;
   amount: number;
+  currency: Currency;
 }
