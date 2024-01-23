@@ -228,6 +228,8 @@ const resources = {
       },
 
       finance: {
+        noPoints: 'Insufficient points for purchase',
+
         referralEarnings: {
           title: 'List of referral earnings',
           user: 'User',
@@ -461,6 +463,8 @@ const resources = {
       },
 
       finance: {
+        noPoints: 'Недостаточно баллов для совершения покупки',
+
         referralEarnings: {
           title: 'Список реферальных начислений',
           date: 'Дата',

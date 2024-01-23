@@ -86,9 +86,7 @@ export const LifePayCard = ({ fetchTransactions, fetchUser }: Props) => {
           const points = user.points;
 
           if (count * shareAmount > points) {
-            setAlertMessage(
-              `Недостаточно баллов для покупки <a href='http://example.com'>http://example.com</a>`
-            );
+            setAlertMessage(t('finance.noPoints'));
             setShowAlert(true);
 
             return;
