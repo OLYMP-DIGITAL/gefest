@@ -14,6 +14,7 @@ export type SystemLanguage = 'ru' | 'en';
 const resources = {
   en: {
     translation: {
+      emailCoped: "Email's been copied to the clipboard",
       referalLink: 'Copy referal ID',
       companyCost: 'Company cost',
 
@@ -244,6 +245,7 @@ const resources = {
 
   ru: {
     translation: {
+      emailCoped: 'Email скопирован в буффер обмена',
       referalLink: 'Реферальный ID',
       companyCost: 'Стоимость компании',
 

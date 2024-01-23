@@ -1,3 +1,10 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
 import { FaqScreen } from 'core/modules/FAQ';
 import DocumentsScreen from 'core/modules/documents/documents.screen';
 import PartnersScreen from 'core/modules/partners/partners.screen';
