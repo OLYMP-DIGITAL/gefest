@@ -184,6 +184,7 @@ const resources = {
       lifePay: {
         card: {
           pay: 'Pay',
+          selectPayMethod: '',
           cryptoPay: 'Crypto Pay',
           pointsPay: 'Buy with points',
           title: 'Pay shares',
@@ -427,9 +428,10 @@ const resources = {
 
       lifePay: {
         card: {
-          pay: 'Купить',
-          cryptoPay: 'Оплатить криптой',
-          pointsPay: 'Оплатить баллами',
+          pay: 'Оплатить',
+          selectPayMethod: 'Выберите способ оплаты',
+          cryptoPay: 'Криптовалютой',
+          pointsPay: 'Баллами',
           desc: 'Чтобы приобрести доли, введие желаемое количество и нажмите кнопку "купить"',
           title: 'Приобретение долей',
           amount: 'Количество',

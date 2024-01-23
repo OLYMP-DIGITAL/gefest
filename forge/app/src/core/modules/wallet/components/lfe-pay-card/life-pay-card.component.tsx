@@ -40,6 +40,8 @@ import {
   walletMessageLinkAtom,
   walletShowMessageAtom,
 } from '../../wallet.atoms';
+import { TextBody } from 'core/ui/components/typography/text-body';
+import { TextCaption } from 'core/ui/components/typography/text-caption';
 
 const MIN_AMOUNT = 1;
 
@@ -286,9 +288,16 @@ export const LifePayCard = ({ fetchTransactions, fetchUser }: Props) => {
               </View>
 
               {(useDataExists && (
-                <View style={styles.actionsWrapper}>
-                  {/* Make Lifepay transaction */}
-                  {/* <TouchableOpacity
+                <>
+                  <View style={{ marginLeft: 15 }}>
+                    <TextCaption>
+                      {t('lifePay.card.selectPayMethod')}
+                    </TextCaption>
+                  </View>
+
+                  <View style={styles.actionsWrapper}>
+                    {/* Make Lifepay transaction */}
+                    {/* <TouchableOpacity
                     style={[
                       styles.materialButton,
                       Object.keys(errors).length > 0 &&
@@ -311,54 +320,55 @@ export const LifePayCard = ({ fetchTransactions, fetchUser }: Props) => {
                     </Text>
                   </TouchableOpacity> */}
 
-                  {/* Make crypto transaction */}
-                  <TouchableOpacity
-                    style={[
-                      styles.materialButton,
-                      Object.keys(errors).length > 0 &&
-                        styles.disabledMaterialButton,
-                    ]}
-                    onPress={() => {
-                      setTransactionType(TransactionType.crypto);
-                      handleSubmit();
-                    }}
-                    disabled={Object.keys(errors).length > 0}
-                  >
-                    <Text
+                    {/* Make crypto transaction */}
+                    <TouchableOpacity
                       style={[
-                        styles.materialButtonText,
+                        styles.materialButton,
                         Object.keys(errors).length > 0 &&
-                          styles.disabledMaterialButtonText,
+                          styles.disabledMaterialButton,
                       ]}
+                      onPress={() => {
+                        setTransactionType(TransactionType.crypto);
+                        handleSubmit();
+                      }}
+                      disabled={Object.keys(errors).length > 0}
                     >
-                      {t('lifePay.card.cryptoPay')}
-                    </Text>
-                  </TouchableOpacity>
+                      <Text
+                        style={[
+                          styles.materialButtonText,
+                          Object.keys(errors).length > 0 &&
+                            styles.disabledMaterialButtonText,
+                        ]}
+                      >
+                        {t('lifePay.card.cryptoPay')}
+                      </Text>
+                    </TouchableOpacity>
 
-                  {/* Make points transaction */}
-                  <TouchableOpacity
-                    style={[
-                      styles.materialButton,
-                      Object.keys(errors).length > 0 &&
-                        styles.disabledMaterialButton,
-                    ]}
-                    onPress={() => {
-                      setTransactionType(TransactionType.points);
-                      handleSubmit();
-                    }}
-                    disabled={Object.keys(errors).length > 0}
-                  >
-                    <Text
+                    {/* Make points transaction */}
+                    <TouchableOpacity
                       style={[
-                        styles.materialButtonText,
+                        styles.materialButton,
                         Object.keys(errors).length > 0 &&
-                          styles.disabledMaterialButtonText,
+                          styles.disabledMaterialButton,
                       ]}
+                      onPress={() => {
+                        setTransactionType(TransactionType.points);
+                        handleSubmit();
+                      }}
+                      disabled={Object.keys(errors).length > 0}
                     >
-                      {t('lifePay.card.pointsPay')}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
+                      <Text
+                        style={[
+                          styles.materialButtonText,
+                          Object.keys(errors).length > 0 &&
+                            styles.disabledMaterialButtonText,
+                        ]}
+                      >
+                        {t('lifePay.card.pointsPay')}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </>
               )) || (
                 <Button
                   onPress={() => {
