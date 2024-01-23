@@ -7,6 +7,7 @@
  */
 import { InvestmentStage } from 'core/features/investment-stage/investement-sage.types';
 import { useInvestmentStages } from 'core/features/investment-stage/use-investment-stages.hook';
+import { Card } from 'core/ui/components/card';
 import { TextBody } from 'core/ui/components/typography/text-body';
 import { TextHeadline } from 'core/ui/components/typography/text-headline';
 import { TextTitle } from 'core/ui/components/typography/text-title';
@@ -54,10 +55,14 @@ export const StepText = () => {
     return (
       <>
         <TextHeadline>{stage.title}</TextHeadline>
-        <TextBody>{stage.description}</TextBody>
-        <TextTitle>
+
+        <Card style={{ padding: 30, marginVertical: 15 }}>
+          <TextBody>{stage.description}</TextBody>
+        </Card>
+
+        {/* <TextTitle>
           {t('wallet.stagesLimit')}: {stage.max / 100}$
-        </TextTitle>
+        </TextTitle> */}
       </>
     );
   })();
