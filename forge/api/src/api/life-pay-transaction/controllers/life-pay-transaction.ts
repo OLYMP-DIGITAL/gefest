@@ -227,7 +227,7 @@ export default {
       const user: User = ctx.state.user;
 
       // Количество приобретаемых долей
-      const count: number = ctx.request.body.count;
+      const count: number = (ctx.request as any).body.count;
 
       console.log('[LIFE PAY TRANSACTION] Получение стоимости доли...');
 

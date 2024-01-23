@@ -321,7 +321,7 @@ export default {
           );
           return;
         }
-        transactions.forEach(async (tx) => {
+        (transactions as []).forEach(async (tx) => {
           try {
             await updateSingleCryptoTransaction(strapi, tx);
           } catch (error) {
