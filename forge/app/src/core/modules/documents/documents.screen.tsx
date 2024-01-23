@@ -1,6 +1,17 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
 import Button from 'core/components/button';
+import { LangsEnum } from 'core/features/language/language.types';
+import { useLanguage } from 'core/providers/language.provider';
 import env, { envKyes } from 'core/services/env';
-import i18next from 'i18next';
+import { Card } from 'core/ui/components/card';
+import { TextBody } from 'core/ui/components/typography/text-body';
+import { TextDisplay } from 'core/ui/components/typography/text-display';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -15,10 +26,9 @@ import { useRecoilState } from 'recoil';
 import { fetchDocuments } from './documents.api';
 import { documentsAtom } from './documents.atom';
 import { document } from './documents.types';
-import { useLanguage } from 'core/providers/language.provider';
-import { LangsEnum } from 'core/features/language/language.types';
 
 export const DocumentsScreen = () => {
+  const { t } = useTranslation();
   const { lang } = useLanguage();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -70,19 +80,26 @@ export const DocumentsScreen = () => {
           contentInsetAdjustmentBehavior="automatic"
           style={styles.container}
         >
-          {Array.isArray(documents) &&
-            documents.map((document) => (
-              <View key={`document-${document.id}`} style={styles.btnContainer}>
-                <Button
-                  title={
-                    lang === LangsEnum.ru
-                      ? document.ru.toUpperCase()
-                      : document.eng.toUpperCase()
-                  }
-                  onPress={() => handleDownload(document)}
-                />
-              </View>
-            ))}
+          <TextDisplay>{t('documents.title')}</TextDisplay>
+          <Card style={styles.card}>
+            {(Array.isArray(documents) &&
+              documents.length &&
+              documents.map((document) => (
+                <View
+                  key={`document-${document.id}`}
+                  style={styles.btnContainer}
+                >
+                  <Button
+                    title={
+                      lang === LangsEnum.ru
+                        ? document.ru.toUpperCase()
+                        : document.eng.toUpperCase()
+                    }
+                    onPress={() => handleDownload(document)}
+                  />
+                </View>
+              ))) || <TextBody>{t('documents.documentsInWork')}</TextBody>}
+          </Card>
           {/* <View style={styles.line}>
         <Button
           title="Go to parters"
@@ -98,9 +115,14 @@ export const DocumentsScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  card: {
+    padding: 20,
+  },
+
   container: {
     alignSelf: 'center',
-    width: '95%',
+    marginTop: 20,
+    width: '70%',
     ...Platform.select({
       ios: {
         width: '100%',

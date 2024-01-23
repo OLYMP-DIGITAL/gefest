@@ -51,6 +51,8 @@ const resources = {
         confidentiality: 'Confidentiality',
         trust: 'Confidence building',
         risk: 'Risk warning',
+        documentsInWork:
+          'The necessary documents are currently being prepared. Please, check back later',
       },
 
       news: 'News',
@@ -282,6 +284,8 @@ const resources = {
         confidentiality: 'Конфиденциальность',
         trust: 'Укрепление доверия',
         risk: 'Предупреждение о рисках',
+        documentsInWork:
+          'На данный момент ведется подготовка необходимых документов. Пожалуйста, обратитесь к этому разделу позже',
       },
 
       news: 'Новости',
