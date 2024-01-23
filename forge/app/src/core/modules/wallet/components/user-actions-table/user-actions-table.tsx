@@ -106,7 +106,7 @@ export const UserActionsTable = () => {
         <Row
           data={table.tableHead}
           style={styles.head}
-          textStyle={styles.textContent}
+          textStyle={styles.textHead}
         />
         <Rows
           style={styles.head}
@@ -147,7 +147,10 @@ const useUserActionsTableStyels = () => {
 
         textContent: { paddingHorizontal: 20, paddingVertical: 0 },
         textHead: {
-          textAlign: 'center',
+          fontWeight: '600',
+          paddingHorizontal: 20,
+          paddingVertical: 0,
+          // textAlign: 'center',
         },
       }),
     [theme]
