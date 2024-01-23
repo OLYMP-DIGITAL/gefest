@@ -1,3 +1,10 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import env from 'core/services/env';
@@ -7,6 +14,7 @@ export type SystemLanguage = 'ru' | 'en';
 const resources = {
   en: {
     translation: {
+      emailCoped: "Email's been copied to the clipboard",
       referalLink: 'Copy referal ID',
       companyCost: 'Company cost',
 
@@ -43,6 +51,8 @@ const resources = {
         confidentiality: 'Confidentiality',
         trust: 'Confidence building',
         risk: 'Risk warning',
+        documentsInWork:
+          'The necessary documents are currently being prepared. Please, check back later',
       },
 
       news: 'News',
@@ -141,6 +151,7 @@ const resources = {
         toSignIn: 'Sign in',
       },
       wallet: {
+        openLink: 'Click here to go to payment',
         title: 'Wallet',
         step: '1 Step of investment',
         stepLabel: 'Initial Investment Offering',
@@ -174,6 +185,7 @@ const resources = {
         card: {
           pay: 'Pay',
           cryptoPay: 'Crypto Pay',
+          pointsPay: 'Buy with points',
           title: 'Pay shares',
           amount: 'Amount',
           desc: "To purchase shares, enter the desired quantity and press the 'Pay' button.",
@@ -181,19 +193,25 @@ const resources = {
           amountOfSharedCounts: 'Amount of selected shares',
           transactionLimit: 'Remaining limit for stock purchase',
           toCabinet: 'To cabinet',
+          pointsCount: 'The number of accumulated points',
 
           needConfirm:
-            'Once your information is confirmed, you\'ll be able to purchase shares in the company. To submit personal information for verification, click the link or use the "Personal Cabinet" section in the menu.',
+            'To purchase shares, please fill out your personal information in your personal account',
 
           warmMessage:
             'Upon clicking, you will be redirected to the payment page. Ensure that pop-ups are not blocked for the website.',
+
+          transactionTypeError:
+            'An unexpected error occurred. Please try again later or contact customer support',
         },
 
         table: {
+          title: 'List of transactions',
           value: 'Value',
           date: 'Date',
           count: 'Shares count',
           status: 'Status',
+          currency: 'Currency',
         },
 
         transactionStatus: {
@@ -207,15 +225,26 @@ const resources = {
         totalAmount: 'Total amount',
         portfolioValue: 'Portfolio value',
         totalSharesCount: 'Shares count',
+        transactionSuccess: 'Транзакция создана. Ожидание оплаты',
+
+        linkTransactionSuccess:
+          'Transaction created. Waiting for payment. If payment did not open automatically, please proceed to payment using the button below',
       },
 
       finance: {
+        noPoints: 'Insufficient points for purchase',
+
         referralEarnings: {
+          title: 'List of referral earnings',
           user: 'User',
           date: 'Date',
           value: 'Value',
           getError:
             'Referral credits could not be retrieved. Please try again later',
+        },
+
+        currency: {
+          points: 'Points',
         },
       },
     },
@@ -223,6 +252,7 @@ const resources = {
 
   ru: {
     translation: {
+      emailCoped: 'Email скопирован в буффер обмена',
       referalLink: 'Реферальный ID',
       companyCost: 'Стоимость компании',
 
@@ -259,6 +289,8 @@ const resources = {
         confidentiality: 'Конфиденциальность',
         trust: 'Укрепление доверия',
         risk: 'Предупреждение о рисках',
+        documentsInWork:
+          'На данный момент ведется подготовка необходимых документов. Пожалуйста, обратитесь к этому разделу позже',
       },
 
       news: 'Новости',
@@ -363,6 +395,7 @@ const resources = {
         beFirst: 'Будешь первый в курсе всех событий',
       },
       wallet: {
+        openLink: 'Перейти к оплате',
         title: 'Мой кошелёк',
         step: '1 этап инвестиций',
         stepLabel: 'Initial Investment Offering',
@@ -396,6 +429,7 @@ const resources = {
         card: {
           pay: 'Купить',
           cryptoPay: 'Оплатить криптой',
+          pointsPay: 'Оплатить баллами',
           desc: 'Чтобы приобрести доли, введие желаемое количество и нажмите кнопку "купить"',
           title: 'Приобретение долей',
           amount: 'Количество',
@@ -403,19 +437,25 @@ const resources = {
           currentAmount: 'Текущая стоимость доли',
           amountOfSharedCounts: 'Выбрано долей на сумму',
           transactionLimit: 'Оставшийся лимит на покупку долей',
+          pointsCount: 'Количество накопленных баллов',
 
           needConfirm:
-            'Как только ваши персональные данные будут подтверждены, вы сможете покупать доли в компании. Для отправки личных данных на проверку, перейдите по ссылке или воспользуйтесь разделом "Личный Кабинет" в меню',
+            'Чтобы купить доли заполните персональные данные в личном кабинете',
 
           warmMessage:
             'По клику вы будете переадресованы на страницу с оплатой. Убедитесь что у вас не блокируются вслывающие окна для сайта',
+
+          transactionTypeError:
+            'Произошла непредвиденная ошибка. Пожалуйста, попробуйте позже или обратитесь в службу поддержки',
         },
 
         table: {
+          title: 'Список транзакций',
           value: 'Сумма',
           date: 'Дата',
           count: 'Количество долей',
           status: 'Статус',
+          currency: 'Валюта',
         },
 
         transactionStatus: {
@@ -429,15 +469,25 @@ const resources = {
         totalAmount: 'Сумма всех пополнений',
         portfolioValue: 'Стоимость портфеля',
         totalSharesCount: 'Приобретено долей',
+        transactionSuccess: 'Транзакция создана. Ожидание оплаты',
+        linkTransactionSuccess:
+          'Транзакция создана. Ожидание оплаты. Если оплата не открылась автоматически, то перейдите к ней по кнопке ниже',
       },
 
       finance: {
+        noPoints: 'Недостаточно баллов для совершения покупки',
+
         referralEarnings: {
+          title: 'Список реферальных начислений',
           date: 'Дата',
           user: 'Пользователь',
           value: 'Сумма',
           getError:
             'Неу далось получить реферальные начисления. Пожалуйста, попробуйте позже',
+        },
+
+        currency: {
+          points: 'Баллы',
         },
       },
     },

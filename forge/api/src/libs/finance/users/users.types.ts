@@ -1,7 +1,15 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
 export const UsersUID = 'plugin::users-permissions.user';
 
 export interface User {
   id: number;
+  points: number;
   username: string;
   email: string;
   provider: string;

@@ -1,6 +1,11 @@
-import { FaqScreen } from 'core/modules/FAQ';
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
 import DocumentsScreen from 'core/modules/documents/documents.screen';
-import PartnersScreen from 'core/modules/partners/partners.screen';
 import WalletScreen from 'core/modules/wallet/wallet.screen';
 import { AppNavigator } from 'core/navigators/app-navigator/app.navigator';
 import { AuthNavigator } from 'core/navigators/auth.navigator';
@@ -79,11 +84,11 @@ export function Navigator() {
                 //   component: GrowthChartScreen,
                 //   iconSrc: require('assets/growth-icon.png'),
                 // },
-                {
-                  name: NavigatorScreensEnum.partners,
-                  component: PartnersScreen,
-                  iconSrc: require('assets/partners-icon.png'),
-                },
+                // {
+                //   name: NavigatorScreensEnum.partners,
+                //   component: PartnersScreen,
+                //   iconSrc: require('assets/partners-icon.png'),
+                // },
                 {
                   name: NavigatorScreensEnum.documents,
                   component: DocumentsScreen,
@@ -94,11 +99,11 @@ export function Navigator() {
                 //   component: NewsScreen,
                 //   iconSrc: require('assets/news-icon.png'),
                 // },
-                {
-                  name: NavigatorScreensEnum.faq,
-                  component: FaqScreen,
-                  iconSrc: require('assets/faq-icon.png'),
-                },
+                // {
+                //   name: NavigatorScreensEnum.faq,
+                //   component: FaqScreen,
+                //   iconSrc: require('assets/faq-icon.png'),
+                // },
                 // {
                 //   name: NavigatorScreensEnum.payment,
                 //   component: PaymentScreen,

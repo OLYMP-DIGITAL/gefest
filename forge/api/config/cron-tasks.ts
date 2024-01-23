@@ -1,3 +1,10 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
 import { YooCheckout } from '@a2seven/yoo-checkout';
 import { APP_KEY, SHOP_ID } from '../src/api/config/constants';
 import { Strapi } from '@strapi/strapi';
@@ -9,7 +16,7 @@ import { ReferralEarning } from '../src/libs/finance/referral-earnings/referral-
 import { UsersUID } from '../src/libs/finance/users/users.types';
 import { calculateReferralValue } from '../src/libs/finance/referral-earnings/methods/calculate-referral-value';
 
-const lifePay = require('../src/libs/life-pay');
+const lifePay = require('../src/libs/finance/payment-systems/life-pay');
 
 const PLISIO_API_KEY = process.env.PLISIO_API_KEY!;
 const PLISIO_OPERATION_DETAILS_URL = 'https://plisio.net/api/v1/operations';

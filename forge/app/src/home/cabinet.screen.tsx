@@ -1,3 +1,10 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { Input } from 'core/components/input';
 import RoundedButton from 'core/components/rounded-button';
@@ -7,15 +14,17 @@ import { useCallback, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { H1Text } from 'core/components/text/h1.text';
-import { H3Text } from 'core/components/text/h3.text';
-import { H4Text } from 'core/components/text/h4.text';
 import { fetchMe, update } from 'core/features/users/users.api';
 import { userAtom } from 'core/features/users/users.atoms';
 import { UserPayload } from 'core/features/users/users.types';
 import { useLanguage } from 'core/hooks/use-language';
 import { useTheme } from 'core/providers/theme.provider';
 import api from 'core/services/api';
+import { Card } from 'core/ui/components/card';
+import { TextBody } from 'core/ui/components/typography/text-body';
+import { TextDisplay } from 'core/ui/components/typography/text-display';
+import { TextHeadline } from 'core/ui/components/typography/text-headline';
+import { TextTitle } from 'core/ui/components/typography/text-title';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useToast } from 'react-native-toast-notifications';
 import { useRecoilState } from 'recoil';
@@ -28,7 +37,7 @@ const WaitCheck = () => {
 
   return (
     <View style={{ marginVertical: 10 }}>
-      <Text style={{ fontSize: 17 }}>{t('cabinetPage.waitCheck')}</Text>
+      <TextBody>{t('cabinetPage.waitCheck')}</TextBody>
     </View>
   );
 };
@@ -206,179 +215,188 @@ export function CabinetScreen({
         >
           {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
             <View style={{ width: '70%' }}>
-              <H1Text text={t('cabinet')} />
+              <TextDisplay>{t('cabinet')}</TextDisplay>
 
               <View style={{ marginVertical: 10 }}>
-                <H3Text text={t('cabinetPage.personal')} />
+                <TextHeadline>{t('cabinetPage.personal')}</TextHeadline>
               </View>
 
-              <View style={{ marginVertical: 10, marginTop: 20 }}>
-                <Input
-                  placeholder={t('user.name')}
-                  editable={!user?.passportConfirmed}
-                  onChangeText={handleChange('name')}
-                  onBlur={handleBlur('name')}
-                  value={values.name}
-                />
-                {!user?.passportConfirmed && errors.name && (
-                  <Text style={{ color: theme.error }}>{errors.name}</Text>
-                )}
-              </View>
-
-              <View style={{ marginVertical: 10 }}>
-                <Input
-                  placeholder={t('user.lastname')}
-                  editable={!user?.passportConfirmed}
-                  onChangeText={handleChange('lastname')}
-                  onBlur={handleBlur('lastname')}
-                  value={values.lastname}
-                />
-                {!user?.passportConfirmed && errors.lastname && (
-                  <Text style={{ color: theme.error }}>{errors.lastname}</Text>
-                )}
-              </View>
-
-              <View style={{ marginVertical: 10 }}>
-                <Input
-                  placeholder={t('user.middlename')}
-                  editable={!user?.passportConfirmed}
-                  onChangeText={handleChange('middlename')}
-                  onBlur={handleBlur('middlename')}
-                  value={values.middlename}
-                />
-                {!user?.passportConfirmed && errors.middlename && (
-                  <Text style={{ color: theme.error }}>
-                    {errors.middlename}
-                  </Text>
-                )}
-              </View>
-
-              <View style={{ marginVertical: 10 }}>
-                <Input
-                  placeholder={t('user.email')}
-                  editable={false}
-                  onChangeText={handleChange('email')}
-                  onBlur={handleBlur('email')}
-                  value={values.email}
-                />
-                {!user?.passportConfirmed && errors.email && (
-                  <Text style={{ color: theme.error }}>{errors.email}</Text>
-                )}
-              </View>
-
-              <View style={{ marginVertical: 10 }}>
-                <Input
-                  placeholder={t('user.passportNumber')}
-                  editable={!user?.passportConfirmed}
-                  onChangeText={handleChange('passportNumber')}
-                  onBlur={handleBlur('passportNumber')}
-                  value={values.passportNumber}
-                />
-                {!user?.passportConfirmed && errors.passportNumber && (
-                  <Text style={{ color: theme.error }}>
-                    {errors.passportNumber}
-                  </Text>
-                )}
-              </View>
-
-              <View style={{ marginVertical: 10 }}>
-                <Input
-                  placeholder={t('user.registeredAddress')}
-                  editable={!user?.passportConfirmed}
-                  onChangeText={handleChange('registeredAddress')}
-                  onBlur={handleBlur('registeredAddress')}
-                  value={values.registeredAddress}
-                />
-                {!user?.passportConfirmed && errors.registeredAddress && (
-                  <Text style={{ color: theme.error }}>
-                    {errors.registeredAddress}
-                  </Text>
-                )}
-              </View>
-
-              <View style={{ marginVertical: 10, marginTop: 20 }}>
-                <Input
-                  textContentType={'telephoneNumber'}
-                  placeholder={t('user.phone')}
-                  editable={!user?.passportConfirmed}
-                  onChangeText={handleChange('phone')}
-                  onBlur={handleBlur('phone')}
-                  value={values.phone}
-                />
-
-                {!user?.passportConfirmed && errors.phone && (
-                  <Text style={{ color: theme.error }}>{errors.phone}</Text>
-                )}
-              </View>
-
-              {!user?.passportConfirmed && (
-                <View style={{ marginVertical: 20, width: 200 }}>
-                  <RoundedButton
-                    title={t('buttons.save')}
-                    onPress={handleSubmit as () => void}
-                    disabled={Object.keys(errors).length > 0}
+              <Card style={{ padding: 20 }}>
+                <View style={{ marginVertical: 10, marginTop: 20 }}>
+                  <Input
+                    placeholder={t('user.name')}
+                    editable={!user?.passportConfirmed}
+                    onChangeText={handleChange('name')}
+                    onBlur={handleBlur('name')}
+                    value={values.name}
                   />
+                  {!user?.passportConfirmed && errors.name && (
+                    <Text style={{ color: theme.error }}>{errors.name}</Text>
+                  )}
                 </View>
-              )}
 
-              <View style={{ marginVertical: 10 }}>
-                <H3Text text={t('cabinetPage.passport')} />
+                <View style={{ marginVertical: 10 }}>
+                  <Input
+                    placeholder={t('user.lastname')}
+                    editable={!user?.passportConfirmed}
+                    onChangeText={handleChange('lastname')}
+                    onBlur={handleBlur('lastname')}
+                    value={values.lastname}
+                  />
+                  {!user?.passportConfirmed && errors.lastname && (
+                    <Text style={{ color: theme.error }}>
+                      {errors.lastname}
+                    </Text>
+                  )}
+                </View>
+
+                <View style={{ marginVertical: 10 }}>
+                  <Input
+                    placeholder={t('user.middlename')}
+                    editable={!user?.passportConfirmed}
+                    onChangeText={handleChange('middlename')}
+                    onBlur={handleBlur('middlename')}
+                    value={values.middlename}
+                  />
+                  {!user?.passportConfirmed && errors.middlename && (
+                    <Text style={{ color: theme.error }}>
+                      {errors.middlename}
+                    </Text>
+                  )}
+                </View>
+
+                <View style={{ marginVertical: 10 }}>
+                  <Input
+                    placeholder={t('user.email')}
+                    editable={false}
+                    onChangeText={handleChange('email')}
+                    onBlur={handleBlur('email')}
+                    value={values.email}
+                  />
+                  {!user?.passportConfirmed && errors.email && (
+                    <Text style={{ color: theme.error }}>{errors.email}</Text>
+                  )}
+                </View>
+
+                <View style={{ marginVertical: 10 }}>
+                  <Input
+                    placeholder={t('user.passportNumber')}
+                    editable={!user?.passportConfirmed}
+                    onChangeText={handleChange('passportNumber')}
+                    onBlur={handleBlur('passportNumber')}
+                    value={values.passportNumber}
+                  />
+                  {!user?.passportConfirmed && errors.passportNumber && (
+                    <Text style={{ color: theme.error }}>
+                      {errors.passportNumber}
+                    </Text>
+                  )}
+                </View>
+
+                <View style={{ marginVertical: 10 }}>
+                  <Input
+                    placeholder={t('user.registeredAddress')}
+                    editable={!user?.passportConfirmed}
+                    onChangeText={handleChange('registeredAddress')}
+                    onBlur={handleBlur('registeredAddress')}
+                    value={values.registeredAddress}
+                  />
+                  {!user?.passportConfirmed && errors.registeredAddress && (
+                    <Text style={{ color: theme.error }}>
+                      {errors.registeredAddress}
+                    </Text>
+                  )}
+                </View>
+
+                <View style={{ marginVertical: 10, marginTop: 20 }}>
+                  <Input
+                    textContentType={'telephoneNumber'}
+                    placeholder={t('user.phone')}
+                    editable={!user?.passportConfirmed}
+                    onChangeText={handleChange('phone')}
+                    onBlur={handleBlur('phone')}
+                    value={values.phone}
+                  />
+
+                  {!user?.passportConfirmed && errors.phone && (
+                    <Text style={{ color: theme.error }}>{errors.phone}</Text>
+                  )}
+                </View>
+
+                {!user?.passportConfirmed && (
+                  <View style={{ marginVertical: 20, width: 200 }}>
+                    <RoundedButton
+                      title={t('buttons.save')}
+                      onPress={handleSubmit as () => void}
+                      disabled={Object.keys(errors).length > 0}
+                    />
+                  </View>
+                )}
+              </Card>
+
+              <View style={{ marginVertical: 10, marginTop: 20 }}>
+                <TextHeadline>{t('cabinetPage.passport')}</TextHeadline>
+                {/* <H3Text text={t('cabinetPage.passport')} /> */}
               </View>
 
-              {(user?.passportConfirmed && <Confirmed />) || (
-                <>
-                  <View style={{ marginVertical: 10, marginTop: 20 }}>
-                    <H4Text text={t('cabinetPage.passportFacePage')} />
+              <Card style={{ padding: 20, marginBottom: 20 }}>
+                {(user?.passportConfirmed && <Confirmed />) || (
+                  <>
+                    <View style={{ marginVertical: 10, marginTop: 20 }}>
+                      <TextTitle>{t('cabinetPage.passportFacePage')}</TextTitle>
 
-                    {(!user?.passportConfirmed && !user?.passportFace && (
-                      <input
-                        style={{ overflow: 'hidden', width: '90px' }}
-                        ref={passportFaceRef}
-                        type="file"
-                        accept="image/*"
-                        onChange={() =>
-                          uploadImage(passportFaceRef, 'passportFace')
-                        }
-                      />
-                    )) || <WaitCheck />}
-                  </View>
-                  <View style={{ marginVertical: 10, marginTop: 20 }}>
-                    <H4Text text={t('cabinetPage.passportRegistrationPage')} />
-
-                    {(!user?.passportConfirmed &&
-                      !user?.passportRegistration && (
+                      {(!user?.passportConfirmed && !user?.passportFace && (
                         <input
                           style={{ overflow: 'hidden', width: '90px' }}
-                          ref={passportRegistrationRef}
+                          ref={passportFaceRef}
                           type="file"
                           accept="image/*"
                           onChange={() =>
-                            uploadImage(
-                              passportRegistrationRef,
-                              'passportRegistration'
-                            )
+                            uploadImage(passportFaceRef, 'passportFace')
                           }
                         />
                       )) || <WaitCheck />}
-                  </View>
+                    </View>
+                    <View style={{ marginVertical: 10, marginTop: 20 }}>
+                      <TextTitle>
+                        {t('cabinetPage.passportRegistrationPage')}
+                      </TextTitle>
 
-                  <View style={{ marginVertical: 10, marginTop: 20 }}>
-                    <H4Text text={t('cabinetPage.faceWithPassport')} />
+                      {(!user?.passportConfirmed &&
+                        !user?.passportRegistration && (
+                          <input
+                            style={{ overflow: 'hidden', width: '90px' }}
+                            ref={passportRegistrationRef}
+                            type="file"
+                            accept="image/*"
+                            onChange={() =>
+                              uploadImage(
+                                passportRegistrationRef,
+                                'passportRegistration'
+                              )
+                            }
+                          />
+                        )) || <WaitCheck />}
+                    </View>
 
-                    {(!user?.passportConfirmed && !user?.faceWithPassport && (
-                      <input
-                        style={{ overflow: 'hidden', width: '90px' }}
-                        ref={faceWithPassportRef}
-                        type="file"
-                        accept="image/*"
-                        onChange={() =>
-                          uploadImage(faceWithPassportRef, 'faceWithPassport')
-                        }
-                      />
-                    )) || <WaitCheck />}
-                  </View>
-                </>
-              )}
+                    <View style={{ marginVertical: 10, marginTop: 20 }}>
+                      <TextTitle>{t('cabinetPage.faceWithPassport')}</TextTitle>
+
+                      {(!user?.passportConfirmed && !user?.faceWithPassport && (
+                        <input
+                          style={{ overflow: 'hidden', width: '90px' }}
+                          ref={faceWithPassportRef}
+                          type="file"
+                          accept="image/*"
+                          onChange={() =>
+                            uploadImage(faceWithPassportRef, 'faceWithPassport')
+                          }
+                        />
+                      )) || <WaitCheck />}
+                    </View>
+                  </>
+                )}
+              </Card>
             </View>
           )}
         </Formik>

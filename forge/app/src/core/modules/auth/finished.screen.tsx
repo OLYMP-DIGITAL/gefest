@@ -1,3 +1,10 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
 import RoundedButton from 'core/components/rounded-button';
 import { BodyXlRegular } from 'core/components/text/body-xl-regular.text';
 import { H3Text } from 'core/components/text/h3.text';

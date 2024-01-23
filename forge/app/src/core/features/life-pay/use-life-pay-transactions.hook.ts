@@ -1,8 +1,14 @@
-import { LifePayTransaction } from './life-pay.types';
-import { getUserTransactions } from './life-pay.api';
-import { useCallback, useEffect, useState } from 'react';
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
+import { useCallback, useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { userAtom } from '../users/users.atoms';
+import { getUserTransactions } from './life-pay.api';
 import { lifePayTransactionsAtom } from './life-pay.atom';
 
 export const useLifePayTransactions = () => {

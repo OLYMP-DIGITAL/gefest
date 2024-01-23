@@ -1,7 +1,15 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
 import { LifePayInvoiceStatus } from 'core/features/life-pay/life-pay.api';
 import { lifePayTransactionsAtom } from 'core/features/life-pay/life-pay.atom';
 import { useLanguage } from 'core/hooks/use-language';
 import { useTheme } from 'core/providers/theme.provider';
+import { TextTitle } from 'core/ui/components/typography/text-title';
 import { TFunction } from 'i18next';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -25,6 +33,7 @@ interface TableData {
   date: string;
   count: number;
   status: string;
+  // currency: string;
 }
 
 export const UserActionsTable = () => {
@@ -36,14 +45,18 @@ export const UserActionsTable = () => {
   const table = useMemo(() => {
     return {
       tableHead: [
-        `${t('lifePay.table.value')} ($)`,
+        `${t('lifePay.table.value')}`,
+        // t('lifePay.table.currency'),
         t('lifePay.table.date'),
         t('lifePay.table.count'),
         t('lifePay.table.status'),
       ],
       tableData: [
         ...userTransactions.map((action) => [
-          action.value,
+          `${action.value}$`,
+          // action.currency === Currency.points
+          //   ? t('finance.currency.points')
+          //   : action.currency,
           (() => {
             const inputDate = action.date;
 
@@ -51,6 +64,8 @@ export const UserActionsTable = () => {
               year: 'numeric',
               month: 'numeric',
               day: 'numeric',
+              hour: '2-digit',
+              minute: 'numeric',
             });
           })(),
           action.count,
@@ -67,6 +82,7 @@ export const UserActionsTable = () => {
         count: transaction.shareCount,
         date: transaction.createdAt,
         status: transaction.status,
+        currency: transaction.currency,
       }))
     );
   }, [transactions]);
@@ -85,11 +101,12 @@ export const UserActionsTable = () => {
             },
       ]}
     >
-      <Table>
+      <TextTitle>{t('lifePay.table.title')}</TextTitle>
+      <Table style={{ zIndex: 1 }}>
         <Row
           data={table.tableHead}
           style={styles.head}
-          textStyle={styles.textContent}
+          textStyle={styles.textHead}
         />
         <Rows
           style={styles.head}
@@ -128,9 +145,12 @@ const useUserActionsTableStyels = () => {
           borderBottomColor: '#e0e0e0',
         },
 
-        textContent: { paddingHorizontal: 56, paddingVertical: 0 },
+        textContent: { paddingHorizontal: 20, paddingVertical: 0 },
         textHead: {
-          textAlign: 'center',
+          fontWeight: '600',
+          paddingHorizontal: 20,
+          paddingVertical: 0,
+          // textAlign: 'center',
         },
       }),
     [theme]

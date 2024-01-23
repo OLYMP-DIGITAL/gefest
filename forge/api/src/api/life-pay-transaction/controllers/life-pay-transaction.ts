@@ -1,3 +1,10 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
 /**
  * life-pay-transaction controller
  */
@@ -5,8 +12,13 @@
 // import { factories } from '@strapi/strapi'
 // import { Strapi, RequestContext } from '@strapi/strapi';
 import { Context } from 'koa';
-import { LifePayTransaction } from '../../../libs/life-pay/life-pay.types';
-import { getCurrentStage } from '../../../libs/stages/helpers/get-current-stage';
+import { Currency } from '../../../libs/finance/currency/currency.types';
+import { getUSDRateFromCBR } from '../../../libs/finance/currency/helpers/get-usd-rate-from-cbr';
+import { generateRandomString } from '../../../libs/finance/helpers/gerate-random-string';
+import { ShareCost } from '../../../libs/finance/shares/shares.types';
+import { getUserLimit } from '../../../libs/finance/users/methods/get-user-limit';
+import { User } from '../../../libs/finance/users/users.types';
+import { makePointTransaction } from '../../../libs/finance/payment-systems/points/make-point-transaction';
 
 const LIFE_PAY_AUTH_URL = 'https://api-ecom.life-pay.ru/v1/auth';
 const LIFE_PAY_CREATE_INVOICE_URL = 'https://api-ecom.life-pay.ru/v1/invoices';
@@ -20,59 +32,21 @@ const PLISIO_NEW_INVOICE_URL = 'https://plisio.net/api/v1/invoices/new?';
 // export default factories.createCoreController('api::life-pay-transaction.life-pay-transaction');
 export default {
   async test(ctx: Context) {
-    const userTransactions = await strapi.entityService.findMany(
-      'api::life-pay-transaction.life-pay-transaction',
-      {
-        filters: {
-          $or: [
-            {
-              status: 'success',
-            },
-            {
-              status: 'open',
-            },
-            {
-              status: 'pending',
-            },
-          ],
-        },
-      }
-    );
+    try {
+      const user: User = ctx.state.user;
 
-    const stages = await strapi.entityService.findMany(
-      'api::investment-stage.investment-stage'
-    );
+      // Количество приобретаемых долей
+      const count: number = (ctx.request as any).body.count;
 
-    const currentStage = getCurrentStage(stages as any);
+      const transaction = await makePointTransaction(user, count);
 
-    let limit = 0;
-    if (userTransactions) {
-      limit = calcLimitOfTransactionValue(
-        userTransactions as any,
-        currentStage.max
+      return { user, count, transaction };
+    } catch (error) {
+      strapi.log.error(
+        `Произошла ошибка при покупке долей за баллы: ${error.message}`
       );
-    }
 
-    ctx.body = {
-      limit: limit / 100,
-      nearestStage: currentStage,
-      userTransactions,
-      stages,
-    };
-
-    function calcLimitOfTransactionValue(
-      userTransactions: LifePayTransaction[],
-      stageLimit: number
-    ): number {
-      let summOfUserTransactions = 0;
-
-      for (let index = 0; index < userTransactions.length; index++) {
-        const transaction = userTransactions[index];
-
-        summOfUserTransactions += Number(transaction.amount);
-      }
-
-      return stageLimit - summOfUserTransactions;
+      return ctx.badRequest(error.message);
     }
   },
 
@@ -364,59 +338,26 @@ export default {
       return ctx.badRequest(error.message);
     }
   },
+
+  async points(ctx: Context) {
+    const user: User = ctx.state.user;
+
+    try {
+      // Количество приобретаемых долей
+      const count: number = (ctx.request as any).body.count;
+
+      const transaction = await makePointTransaction(user, count);
+
+      return { user, count, transaction };
+    } catch (error) {
+      strapi.log.error(
+        `Произошла ошибка при покупке долей за баллы (user: ${user.id}): ${error.message}`
+      );
+
+      return ctx.badRequest(error.message);
+    }
+  },
 };
-
-async function getUserLimit() {
-  const userTransactions = await strapi.entityService.findMany(
-    'api::life-pay-transaction.life-pay-transaction',
-    {
-      filters: {
-        $or: [
-          {
-            status: 'success',
-          },
-          {
-            status: 'open',
-          },
-          {
-            status: 'pending',
-          },
-        ],
-      },
-    }
-  );
-
-  const stages = await strapi.entityService.findMany(
-    'api::investment-stage.investment-stage'
-  );
-
-  const currentStage = getCurrentStage(stages as any);
-
-  let limit = 0;
-  if (userTransactions) {
-    limit = calcLimitOfTransactionValue(
-      userTransactions as any,
-      currentStage.max
-    );
-  }
-
-  function calcLimitOfTransactionValue(
-    userTransactions: LifePayTransaction[],
-    stageLimit: number
-  ): number {
-    let summOfUserTransactions = 0;
-
-    for (let index = 0; index < userTransactions.length; index++) {
-      const transaction = userTransactions[index];
-
-      summOfUserTransactions += Number(transaction.amount);
-    }
-
-    return stageLimit - summOfUserTransactions;
-  }
-
-  return limit;
-}
 
 async function makeLifepPayInvoice({
   amount,
@@ -474,39 +415,6 @@ async function authOnLifePay() {
   );
 }
 
-async function getUSDRateFromCBR() {
-  try {
-    const response = await fetch('https://www.cbr-xml-daily.ru/daily_json.js');
-
-    if (!response.ok) {
-      console.error('Ошибка получения данных от Центрального банка России.');
-      return null;
-    }
-
-    const data: any = await response.json();
-
-    const usdRateInRubles = Math.trunc(data.Valute.USD.Value * 100); // Возвращаем результат в копейках
-    console.log(`Текущий курс доллара к рублю: ${usdRateInRubles} коп.`);
-
-    return usdRateInRubles;
-  } catch (error) {
-    console.error('Произошла ошибка при отправке запроса:', error.message);
-    return null;
-  }
-}
-
-function generateRandomString(length) {
-  const characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  let result = '';
-
-  for (let i = 0; i < length; i++) {
-    const randomIndex = Math.floor(Math.random() * characters.length);
-    result += characters.charAt(randomIndex);
-  }
-
-  return result;
-}
-
 interface LifePayEntry {
   user: any;
   amount: number;
@@ -516,43 +424,6 @@ interface LifePayEntry {
   orderId: string;
   transactionId: string;
   transactionLink: string;
-}
-interface ShareCost {
-  id: number;
-  value: number;
-  news: string;
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string | null;
-  locale: string;
-}
-
-interface User {
-  id: number;
-  username: string;
-  email: string;
-  provider: string;
-  password: string;
-  resetPasswordToken: null;
-  confirmationToken: null;
-  confirmed: true;
-  blocked: false;
-  createdAt: string;
-  updatedAt: string;
-  name: string;
-  phone: string;
-  passportConfirmed: true;
-  lastname: string;
-  middlename: string;
-  referal: number;
-  role: {
-    id: number;
-    name: string;
-    description: string;
-    type: string;
-    createdAt: string;
-    updatedAt: string;
-  };
 }
 
 interface LifePayCreateInvoiceResponse {
@@ -570,9 +441,6 @@ interface LifePayAuthResponse {
 }
 
 // ================================ INVOICES ===================================
-enum Currency {
-  rub = 'RUB',
-}
 interface LifePayCreateInvoicePayload {
   order_id: string;
   amount: number;

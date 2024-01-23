@@ -1,5 +1,18 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
 import { User } from 'core/features/users/users.types';
 import { Currency } from '../currency/currency.types';
+
+export enum TransactionType {
+  crypto = 'crypto',
+  points = 'points',
+  lifePay = 'lifePay',
+}
 
 export enum TransactionStatus {
   open = 'open', // счет открыт

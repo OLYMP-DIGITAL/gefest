@@ -4,7 +4,7 @@
   "info": {
     "singularName": "transaction",
     "pluralName": "transactions",
-    "displayName": "Транзакции",
+    "displayName": "Транзакции (DEV)",
     "description": ""
   },
   "options": {

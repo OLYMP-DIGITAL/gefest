@@ -1,0 +1,40 @@
+{
+  "kind": "singleType",
+  "collectionName": "payment_systems",
+  "info": {
+    "singularName": "payment-system",
+    "pluralName": "payment-systems",
+    "displayName": "Платёжные системы",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "lifePay": {
+      "type": "boolean",
+      "default": false
+    },
+    "plisio": {
+      "type": "boolean",
+      "default": false
+    },
+    "yoomoney": {
+      "type": "boolean",
+      "default": false
+    },
+    "lifePayApiKey": {
+      "type": "string",
+      "private": true
+    },
+    "plisioApiKey": {
+      "type": "string",
+      "private": true
+    },
+    "lifePayServiceId": {
+      "type": "string",
+      "private": true
+    }
+  }
+}

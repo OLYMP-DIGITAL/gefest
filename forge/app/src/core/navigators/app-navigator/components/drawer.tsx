@@ -1,14 +1,22 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
 import { Entypo } from '@expo/vector-icons';
 import {
   DrawerContentScrollView,
   DrawerItem,
   DrawerItemList,
 } from '@react-navigation/drawer';
+import { CopySupportEmail } from 'core/features/support/copy-support-eamil.component';
 import { SupportEmailLink } from 'core/features/support/support-email-link.component';
 import { useAuth } from 'core/providers/auth.provider';
 import { useWindowSize } from 'core/providers/theme.provider';
 import { useTranslation } from 'react-i18next';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
 import { useCopyToClipboard } from 'usehooks-ts';
 
@@ -55,7 +63,10 @@ export function Drawer(props: any) {
 
         <DrawerItemList state={newState} {...rest} />
 
-        <SupportEmailLink />
+        <View style={styles.supportEmail}>
+          <SupportEmailLink />
+          <CopySupportEmail />
+        </View>
       </DrawerContentScrollView>
     </View>
     // </ImageBackground>
@@ -63,6 +74,9 @@ export function Drawer(props: any) {
 }
 
 const styles = StyleSheet.create({
+  supportEmail: {
+    alignContent: 'flex-start',
+  },
   sidebarInfo: {
     fontSize: 14,
     color: '#fff',

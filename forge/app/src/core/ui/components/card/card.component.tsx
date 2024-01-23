@@ -1,4 +1,11 @@
-import { useStyles } from 'core/hooks/use-styles.hook';
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
+import { NativeStyles, useStyles } from 'core/hooks/use-styles.hook';
 import { shadows } from 'core/ui/styles/shadows.styles';
 import React from 'react';
 import { View } from 'react-native';
@@ -12,6 +19,7 @@ import { View } from 'react-native';
 
 interface Props {
   children: React.ReactNode;
+  style?: NativeStyles;
 }
 
 export const Card = (props: Props) => {
@@ -22,5 +30,9 @@ export const Card = (props: Props) => {
     },
   }));
 
-  return <View style={[shadows[0], styles.wrapper]}>{props.children}</View>;
+  return (
+    <View style={[shadows[0], styles.wrapper, props.style]}>
+      {props.children}
+    </View>
+  );
 };

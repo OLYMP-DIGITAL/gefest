@@ -1,0 +1,31 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
+import { useCallback, useEffect } from 'react';
+import { useRecoilState } from 'recoil';
+import { userAtom } from '../users/users.atoms';
+import { fetchMe } from './users.api';
+
+export const useUser = () => {
+  const [user, setUser] = useRecoilState(userAtom);
+
+  const fetchUser = useCallback(() => {
+    fetchMe()
+      .then((response) => {
+        if (response) {
+          setUser(response);
+        }
+      })
+      .catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
+  return { user, fetchUser };
+};

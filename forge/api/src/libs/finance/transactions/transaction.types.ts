@@ -1,5 +1,16 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
 import { Currency } from '../currency/currency.types';
 import { User } from '../users/users.types';
+
+export interface MakeTransactionFunction {
+  (user: User, count: number): Promise<void>;
+}
 
 export enum TransactionStatus {
   open = 'open', // счет открыт
@@ -10,14 +21,14 @@ export enum TransactionStatus {
 }
 
 export interface Transaction {
-  id: number;
+  id?: number;
   user: User;
-  amount: number;
-  status: TransactionStatus;
-  currency: Currency;
-  shareValue: number;
-  shareCount: number;
-  dollarRate: number;
-  transactionId: string;
-  transactionLink: string;
+  amount: number; // Сумма транзакции в центах
+  status: TransactionStatus; // Статус транзакции
+  currency: Currency; // Валюта транзакции
+  shareValue: number; // Стоимость акции в момент попкупки акции
+  shareCount: number; // Количество приобретаемых акций
+  dollarRate: number; // Курс доллара в момент покупки акций
+  transactionId: string; // Идентификатор транзакции платёжной системы
+  transactionLink: string; // Ссылка на которую редиректить пользователя для оплаты
 }

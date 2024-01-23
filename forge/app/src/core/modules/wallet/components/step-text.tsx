@@ -1,3 +1,10 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
 import { InvestmentStage } from 'core/features/investment-stage/investement-sage.types';
 import { useInvestmentStages } from 'core/features/investment-stage/use-investment-stages.hook';
 import { TextBody } from 'core/ui/components/typography/text-body';
