@@ -262,7 +262,7 @@ const resources = {
       partners: 'Партнёры',
 
       screens: {
-        wallet: 'Мой кошелёк',
+        wallet: 'Кошелёк',
         cabinet: 'Личный кабинет',
         grpahGrow: 'График роста',
         partners: 'Партнёры',
@@ -397,7 +397,7 @@ const resources = {
       },
       wallet: {
         openLink: 'Перейти к оплате',
-        title: 'Мой кошелёк',
+        title: 'Кошелёк',
         step: '1 этап инвестиций',
         stepLabel: 'Initial Investment Offering',
         desc: 'Уникальные условия в связи с началом формирования первоначального капитала адресного инвестиционного проекта.',

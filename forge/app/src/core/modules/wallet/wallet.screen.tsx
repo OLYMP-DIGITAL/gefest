@@ -8,14 +8,16 @@
 import { useLifePayTransactions } from 'core/features/life-pay/use-life-pay-transactions.hook';
 import { ReferralEarningsTable } from 'core/features/referral-earning/referral-earnings.table';
 import { useReferralEarnings } from 'core/features/referral-earning/use-referral-earnings.hook';
+import { useUser } from 'core/features/users/use-user';
 import { useTheme } from 'core/providers/theme.provider';
+import { ScreenLayout } from 'core/ui/components/screen-layout';
 import { TextDisplay } from 'core/ui/components/typography/text-display';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Linking, StyleSheet, View } from 'react-native';
 import AwesomeAlert from 'react-native-awesome-alerts';
-import { ScrollView } from 'react-native-gesture-handler';
 import { useRecoilState } from 'recoil';
+import { HeaderStage } from './components/header-stage';
 import { LifePayCard } from './components/lfe-pay-card/life-pay-card.component';
 import { PortfolioValue } from './components/portfolio-value';
 import { ShareCount } from './components/share-count';
@@ -27,7 +29,6 @@ import {
   walletMessageLinkAtom,
   walletShowMessageAtom,
 } from './wallet.atoms';
-import { useUser } from 'core/features/users/use-user';
 
 const WalletScreen = () => {
   useReferralEarnings();
@@ -42,8 +43,10 @@ const WalletScreen = () => {
 
   return (
     <>
-      <ScrollView>
-        <View style={styles.wrapper}>
+      <ScreenLayout>
+        <HeaderStage />
+
+        <View>
           <TextDisplay>{t('wallet.title')}</TextDisplay>
 
           <View style={{ display: 'flex', flexDirection: 'column' }}>
@@ -75,7 +78,7 @@ const WalletScreen = () => {
             </View>
           </View>
         </View>
-      </ScrollView>
+      </ScreenLayout>
 
       <AwesomeAlert
         show={showAlert}
@@ -109,6 +112,8 @@ const useStyles = () => {
   const styles = useMemo(
     () =>
       StyleSheet.create({
+        headerStage: {},
+
         wrapper: {
           flex: 1,
           alignItems: 'center',

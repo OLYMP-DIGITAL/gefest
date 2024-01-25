@@ -19,8 +19,12 @@ import { useAuth } from 'core/providers/auth.provider';
 import { NavigatorScreensEnum } from 'core/types/navigation';
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
+import { useInit } from 'core/hooks/use-init';
 
 export function Navigator() {
+  // Загружаем стартовые данные
+  useInit();
+
   const { isLoading } = useAuth();
   const user = useRecoilValue(userAtom);
 

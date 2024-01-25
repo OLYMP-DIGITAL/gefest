@@ -158,8 +158,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 5,
 
-    borderBottomWidth: 1,
-    borderBottomColor: '#737373',
+    // borderBottomWidth: 1,
+    // borderBottomColor: '#737373',
   },
 
   backgroundImage: {
