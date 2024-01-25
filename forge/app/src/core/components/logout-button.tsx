@@ -1,3 +1,10 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { tokenAtom, userAtom } from 'core/features/users/users.atoms';
 import { saveToken } from 'core/services/token';
@@ -35,7 +42,7 @@ export const LogoutButton = () => {
 
         rnRestart.Restart();
       })
-      .catch((err) => console.log('Clear storage error', err));
+      .catch((err) => console.error('Clear storage error', err));
   };
 
   return (

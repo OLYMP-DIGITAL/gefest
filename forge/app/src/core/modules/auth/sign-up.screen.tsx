@@ -1,3 +1,10 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
 import { H3Text } from 'core/components/text/h3.text';
 import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
@@ -126,7 +133,6 @@ export const SignUpScreen = ({
         navigation.navigate(AuthScreensEnum.finished as any);
       })
       .catch((error) => {
-        console.log('An error occurred:', error);
         toast.show(t('messages.requestFailed'));
       });
   };

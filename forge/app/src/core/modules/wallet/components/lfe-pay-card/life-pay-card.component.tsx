@@ -7,7 +7,6 @@
  */
 import { useNavigation } from '@react-navigation/native';
 import { Input } from 'core/components/input';
-import { useCurrentStage } from 'core/features/investment-stage/use-current-stage';
 import {
   MakeTransactionResponse,
   makeTransaction,
@@ -34,14 +33,14 @@ import {
 import { useToast } from 'react-native-toast-notifications';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
+import { useCurrentStage } from 'core/finance/investment-stage/use-current-stage';
+import { TextCaption } from 'core/ui/components/typography/text-caption';
 import * as yup from 'yup';
 import {
   walletMessageAtom,
   walletMessageLinkAtom,
   walletShowMessageAtom,
 } from '../../wallet.atoms';
-import { TextBody } from 'core/ui/components/typography/text-body';
-import { TextCaption } from 'core/ui/components/typography/text-caption';
 
 const MIN_AMOUNT = 1;
 
@@ -60,10 +59,10 @@ export const LifePayCard = ({ fetchTransactions, fetchUser }: Props) => {
   const user = useRecoilValue(userAtom);
   const toast = useToast();
   const styles = useStyles();
-  const shareAmount = useShareAmount();
   const navigation = useNavigation<StackNavigation>();
+  const shareAmount = useShareAmount();
 
-  const { stage } = useCurrentStage();
+  const currentStage = useCurrentStage();
   const transactions = useRecoilValue(lifePayTransactionsAtom);
   const [limit, setLimit] = useState<number>(0);
   const [transactionType, setTransactionType] = useState<TransactionType>();
@@ -75,10 +74,10 @@ export const LifePayCard = ({ fetchTransactions, fetchUser }: Props) => {
   const [showAlert, setShowAlert] = useRecoilState(walletShowMessageAtom);
 
   useEffect(() => {
-    if (stage && transactions) {
-      setLimit(calcLimitOfTransactionValue(transactions, stage.max));
+    if (currentStage && transactions) {
+      setLimit(calcLimitOfTransactionValue(transactions, currentStage.max));
     }
-  }, [stage, transactions]);
+  }, [currentStage, transactions]);
 
   const onSubmit = useCallback(
     (values: PayForm) => {
@@ -116,11 +115,9 @@ export const LifePayCard = ({ fetchTransactions, fetchUser }: Props) => {
               setMessageLink(url);
               setAlertMessage(t('lifePay.linkTransactionSuccess'));
 
-              Linking.openURL(url)
-                .then(() => console.log('Transaction link opened'))
-                .catch((error) =>
-                  console.error('Error opening document:', error)
-                );
+              Linking.openURL(url).catch((error) =>
+                console.error('Error opening document:', error)
+              );
             } else {
               setAlertMessage(t('lifePay.transactionSuccess'));
               setShowAlert(true);

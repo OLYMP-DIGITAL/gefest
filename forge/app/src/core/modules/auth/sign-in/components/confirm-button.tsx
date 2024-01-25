@@ -1,3 +1,10 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
 import { View } from 'react-native';
 import { useInterval } from 'usehooks-ts';
 import { useTranslation } from 'react-i18next';
@@ -56,8 +63,6 @@ export function ConfirmButton({ email }: Props) {
     setState(States.timer);
     sendComfirm(email)
       .then((response) => {
-        console.log('[ConfirmButton] Send confirm response:', response);
-
         if (response.sent) {
           toast.show(t('messages.requestSuccess'), {
             type: 'success',

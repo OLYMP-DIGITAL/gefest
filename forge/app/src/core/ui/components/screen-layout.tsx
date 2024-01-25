@@ -34,8 +34,6 @@ export const ScreenLayout = ({ children }: Props) => {
 const useScreenLayoutStyles = () => {
   const { sizeType } = useWindowSize();
 
-  console.log('SIZE TYPE', sizeType);
-
   return useStyles(
     (theme) => ({
       container: {

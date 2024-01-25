@@ -18,8 +18,6 @@ export const useBrand = () => {
   useEffect(() => {
     if (!brand.headImage) {
       getBrand().then((response) => {
-        console.log('Brand is fetched', response);
-
         setBrand({
           headImage: `${getEnv(envKyes.apiHost)}${
             response.data.attributes.headImage.data.attributes.formats.large.url

@@ -119,8 +119,6 @@ export function CabinetScreen({
     (values: UserPayload) => {
       if (user) {
         update(values, user.id).then((response) => {
-          console.log('Rsponse', response);
-
           if ((response as any).error) {
             toast.show((response as any).error.message, {
               type: 'danger',
@@ -177,14 +175,13 @@ export function CabinetScreen({
       api
         .post('upload', formdata)
         .then((result) => {
-          console.log('Passport result upload', result);
           toast.show(t('messages.requestSuccess'), {
             type: 'success',
           });
 
           refetchMe();
         })
-        .catch((error) => console.log('error', error));
+        .catch((error) => console.error('Upload image request error:', error));
     },
     [user]
   );

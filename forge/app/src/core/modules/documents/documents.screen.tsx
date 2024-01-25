@@ -65,9 +65,9 @@ export const DocumentsScreen = () => {
     const url = `${env[envKyes.apiHost]}${document.link}`;
 
     if (url) {
-      Linking.openURL(url)
-        .then(() => console.log('Document opened'))
-        .catch((error) => console.error('Error opening document:', error));
+      Linking.openURL(url).catch((error) =>
+        console.error('Error opening document:', error)
+      );
     }
   };
 

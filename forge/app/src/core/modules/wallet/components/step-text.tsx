@@ -5,8 +5,8 @@
  *   intended publication of such source code. The code contains
  *   OLYMP.DIGITAL Confidential Proprietary Information.
  */
-import { InvestmentStage } from 'core/features/investment-stage/investement-sage.types';
-import { useInvestmentStages } from 'core/features/investment-stage/use-investment-stages.hook';
+import { InvestmentStage } from 'core/finance/investment-stage/investment-sage.types';
+import { useInvestmentStages } from 'core/finance/investment-stage/use-investment-stages.hook';
 import { Card } from 'core/ui/components/card';
 import { TextBody } from 'core/ui/components/typography/text-body';
 import { TextHeadline } from 'core/ui/components/typography/text-headline';

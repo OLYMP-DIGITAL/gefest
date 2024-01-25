@@ -54,7 +54,7 @@ export const FinishedScreen = ({
         setSocials(response.data);
       });
     } catch (e) {
-      console.log('Error on fetch socials', e);
+      console.error('Error on fetch socials', e);
     }
   }, []);
 
@@ -124,11 +124,9 @@ export const FinishedScreen = ({
               style={styles.socialImage}
               onPress={() => {
                 const url = social.attributes.link;
-                Linking.openURL(url)
-                  .then(() => console.log(`Открыт URL: ${url}`))
-                  .catch((err) =>
-                    console.error('Ошибка при открытии URL: ', err)
-                  );
+                Linking.openURL(url).catch((err) =>
+                  console.error('Ошибка при открытии URL: ', err)
+                );
               }}
             >
               <Image

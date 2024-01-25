@@ -21,12 +21,10 @@ class Api {
       },
     })
       .then((response) => {
-        console.log(response);
         return response.json();
       })
       .then((data) => {
         // Обработка данных защищенного ресурса
-        console.log('Response data!', data);
         return data as T;
       })
       .catch((error) => {
@@ -64,12 +62,10 @@ class Api {
       requestOptions as any
     )
       .then((response) => {
-        console.log(response);
         return response.json();
       })
       .then((data) => {
         // Обработка данных защищенного ресурса
-        console.log('Response data!', data);
         return data as T;
       })
       .catch((error) => {
@@ -98,12 +94,10 @@ class Api {
 
     return fetch(`${env[envKyes.apiHost]}/api/${route}`, requestOptions as any)
       .then((response) => {
-        console.log(response);
         return response.json();
       })
       .then((data) => {
         // Обработка данных защищенного ресурса
-        console.log('Response data!', data);
         return data as T;
       })
       .catch((error) => {
