@@ -19,7 +19,10 @@ import { useAuth } from 'core/providers/auth.provider';
 import { NavigatorScreensEnum } from 'core/types/navigation';
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import { useInit } from 'core/hooks/use-init';
+import { useInit } from 'core/hooks/use-public-init';
+import { View } from 'react-native';
+import { ProgressBar } from 'core/ui/components/progress-bar';
+import { appLoadingAtom } from 'core/atoms/app-loading.atom';
 
 export function Navigator() {
   // Загружаем стартовые данные
@@ -27,6 +30,7 @@ export function Navigator() {
 
   const { isLoading } = useAuth();
   const user = useRecoilValue(userAtom);
+  const loading = useRecoilValue(appLoadingAtom);
 
   const [restoredState, setRestoredState] = useState();
 
@@ -68,6 +72,20 @@ export function Navigator() {
       initialState={restoredState}
       onStateChange={(state) => persistNavigationState(state)}
     >
+      {loading && (
+        <View
+          id="app-progress-bar"
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: 20,
+            top: 0,
+            zIndex: 1,
+          }}
+        >
+          <ProgressBar />
+        </View>
+      )}
       {(() => {
         if (user) {
           return (

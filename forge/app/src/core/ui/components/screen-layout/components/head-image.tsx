@@ -9,14 +9,15 @@ import { ImageBackground, View } from 'react-native';
 
 interface Props {
   src: string;
+  height?: number;
 }
 
-export const HeadImage = ({ src }: Props) => {
+export const HeadImage = ({ src, height = 200 }: Props) => {
   return (
     <View
       style={{
         width: '100%',
-        height: 280,
+        height: height,
         position: 'absolute',
         backgroundColor: '#fff',
       }}

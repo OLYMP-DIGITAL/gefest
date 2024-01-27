@@ -5,112 +5,47 @@
  *   intended publication of such source code. The code contains
  *   OLYMP.DIGITAL Confidential Proprietary Information.
  */
-import { InvestmentStage } from 'core/finance/investment-stage/investment-sage.types';
-import { useInvestmentStages } from 'core/finance/investment-stage/use-investment-stages.hook';
-import { Card } from 'core/ui/components/card';
 import { TextBody } from 'core/ui/components/typography/text-body';
-import { TextHeadline } from 'core/ui/components/typography/text-headline';
 import { TextTitle } from 'core/ui/components/typography/text-title';
-import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useCurrentStage } from 'core/finance/investment-stage/use-current-stage';
+import { View } from 'react-native';
+import { useStyles } from 'core/hooks/use-styles.hook';
 
 export const StepText = () => {
   const { t } = useTranslation();
-  const stages = useInvestmentStages();
-  const [loading, setLoading] = useState<boolean>(true);
-  const [stage, setStage] = useState<InvestmentStage | null>(null);
-
-  useEffect(() => {
-    if (Array.isArray(stages)) {
-      const startDates: [string, string][] = stages.map((stage) => [
-        stage.start,
-        stage.end,
-      ]);
-      // const closesDate: Date | null = findClosestDate(startDates);
-      const closesDate = getCurrentPeriod(startDates);
-
-      if (closesDate) {
-        setStage(
-          stages.find(
-            (stage) =>
-              new Date(stage.start).getDate() ===
-              new Date(closesDate[0]).getDate()
-          ) || null
-        );
-      }
-
-      setLoading(false);
-    }
-  }, [stages]);
+  const stage = useCurrentStage();
+  const styles = useCurrentStyles();
 
   return (() => {
-    if (loading) {
-      return <TextBody>{t('wallet.stagesLoading')}</TextBody>;
-    }
-
     if (!stage) {
-      return <TextTitle>{t('wallet.stagesIsFinished')}</TextTitle>;
+      return <TextBody style={styles.title}>Loading...</TextBody>;
     }
 
     return (
-      <>
-        <TextHeadline>{stage.title}</TextHeadline>
-
-        <Card style={{ padding: 30, marginVertical: 15 }}>
-          <TextBody>{stage.description}</TextBody>
-        </Card>
-
-        {/* <TextTitle>
-          {t('wallet.stagesLimit')}: {stage.max / 100}$
-        </TextTitle> */}
-      </>
+      <View style={styles.wrapper}>
+        <TextBody style={styles.title}>{stage.title}</TextBody>
+        <TextBody style={styles.description}>{stage.description}</TextBody>
+      </View>
     );
   })();
-  // <H3Text text={t('wallet.stepLabel')} />
 };
 
-function findClosestDate(dates: string[]): Date | null {
-  const currentDate = new Date();
+const useCurrentStyles = () => {
+  return useStyles(() => ({
+    wrapper: {
+      padding: 15,
+    },
 
-  // Функция для вычисления разницы между датами
-  function dateDiffInMilliseconds(a: Date, b: Date): number {
-    return Math.abs(a.getTime() - b.getTime());
-  }
+    title: {
+      color: '#fff',
+      textAlign: 'center',
+    },
 
-  // Инициализируем переменную для хранения ближайшей даты
-  let closestDate: Date | null = null;
-
-  // Инициализируем переменную для хранения минимальной разницы в миллисекундах
-  let minDifference = Infinity;
-
-  // Проходим по каждой дате в массиве и находим ближайшую к текущей
-  for (const dateStr of dates) {
-    const date = new Date(dateStr);
-    const difference = dateDiffInMilliseconds(currentDate, date);
-
-    // Если разница меньше текущей минимальной разницы, обновляем значения
-    if (difference < minDifference) {
-      minDifference = difference;
-      closestDate = date;
-    }
-  }
-
-  return closestDate;
-}
-
-function getCurrentPeriod(
-  datesArray: [string, string][]
-): [string, string] | null {
-  const currentDate = new Date();
-
-  for (const [startDate, endDate] of datesArray) {
-    const startDateTime = new Date(startDate);
-    const endDateTime = new Date(endDate);
-
-    if (currentDate >= startDateTime && currentDate <= endDateTime) {
-      return [startDate, endDate];
-    }
-  }
-
-  return null;
-}
+    description: {
+      color: '#fff',
+      textAlign: 'center',
+      marginTop: 10,
+    },
+  }));
+};

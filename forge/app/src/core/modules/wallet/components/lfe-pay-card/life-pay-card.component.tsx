@@ -31,7 +31,7 @@ import {
   View,
 } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 import { useCurrentStage } from 'core/finance/investment-stage/use-current-stage';
 import { TextCaption } from 'core/ui/components/typography/text-caption';
@@ -41,6 +41,8 @@ import {
   walletMessageLinkAtom,
   walletShowMessageAtom,
 } from '../../wallet.atoms';
+import { appLoadingAtom } from 'core/atoms/app-loading.atom';
+import { useBrand } from 'core/features/brand/use-brand';
 
 const MIN_AMOUNT = 1;
 
@@ -57,21 +59,22 @@ export const LifePayCard = ({ fetchTransactions, fetchUser }: Props) => {
   const { t } = useTranslation();
 
   const user = useRecoilValue(userAtom);
+  const brand = useBrand();
   const toast = useToast();
   const styles = useStyles();
   const navigation = useNavigation<StackNavigation>();
   const shareAmount = useShareAmount();
 
+  const setLoading = useSetRecoilState(appLoadingAtom);
   const currentStage = useCurrentStage();
   const transactions = useRecoilValue(lifePayTransactionsAtom);
   const [limit, setLimit] = useState<number>(0);
   const [transactionType, setTransactionType] = useState<TransactionType>();
 
   // Alert
+  const setShowAlert = useSetRecoilState(walletShowMessageAtom);
+  const setMessageLink = useSetRecoilState(walletMessageLinkAtom);
   const [alertMessage, setAlertMessage] = useRecoilState(walletMessageAtom);
-  // const [showAlert, setShowAlert] = useRecoilState(walletShowMessage);
-  const [messageLink, setMessageLink] = useRecoilState(walletMessageLinkAtom);
-  const [showAlert, setShowAlert] = useRecoilState(walletShowMessageAtom);
 
   useEffect(() => {
     if (currentStage && transactions) {
@@ -93,6 +96,8 @@ export const LifePayCard = ({ fetchTransactions, fetchUser }: Props) => {
             return;
           }
         }
+
+        setLoading(true);
 
         makeTransaction(
           {
@@ -137,6 +142,7 @@ export const LifePayCard = ({ fetchTransactions, fetchUser }: Props) => {
             }
           })
           .finally(() => {
+            setLoading(false);
             setTransactionType(undefined);
           });
       } else {
@@ -210,13 +216,41 @@ export const LifePayCard = ({ fetchTransactions, fetchUser }: Props) => {
                     },
               ]}
             >
-              <View style={styles.titleWrapper}>
-                <Text style={styles.title}>{t('lifePay.card.title')}</Text>
+              <View style={styles.inputWrapper}>
+                <Input
+                  placeholder={t('lifePay.card.amount')}
+                  onChangeText={(e) => {
+                    const currentInput = e.valueOf();
+                    if (
+                      currentInput != null &&
+                      currentInput !== '' &&
+                      !isNaN(Number(currentInput.toString()))
+                    ) {
+                      handleChange('sharesCount')(e);
+                    }
+                    if (currentInput == '') {
+                      handleChange('sharesCount')(e);
+                    }
+                  }}
+                  onBlur={handleBlur('sharesCount')}
+                  value={`${values.sharesCount || ''}`}
+                  keyboardType="numeric"
+                  style={{}}
+                />
+                {errors.sharesCount && (
+                  <Text
+                    style={{
+                      color: brand.primaryColor,
+                      fontSize: 14,
+                      marginVertical: 5,
+                    }}
+                  >
+                    {errors.sharesCount}
+                  </Text>
+                )}
               </View>
 
               <View style={styles.contentWrapper}>
-                <Text>{t('lifePay.card.desc')}</Text>
-
                 <Text style={styles.marginTop10}>
                   {t('lifePay.card.currentAmount')}: $
                   <Text style={styles.strong}>
@@ -232,48 +266,12 @@ export const LifePayCard = ({ fetchTransactions, fetchUser }: Props) => {
                   </Text>
                 </Text>
 
-                {user && (
-                  <Text style={styles.marginTop10}>
-                    {t('lifePay.card.pointsCount')}: $
-                    <Text style={styles.strong}>
-                      {Number(user.points / 100).toFixed(0)}
-                    </Text>
-                  </Text>
-                )}
-
                 <Text>
                   {t('lifePay.card.amountOfSharedCounts')}: $
                   <Text style={styles.strong}>
                     {calcAmountOfShares(values.sharesCount)}
                   </Text>
                 </Text>
-
-                <View style={styles.inputWrapper}>
-                  <Input
-                    placeholder={t('lifePay.card.amount')}
-                    onChangeText={(e) => {
-                      const currentInput = e.valueOf();
-                      if (
-                        currentInput != null &&
-                        currentInput !== '' &&
-                        !isNaN(Number(currentInput.toString()))
-                      ) {
-                        handleChange('sharesCount')(e);
-                      }
-                      if (currentInput == '') {
-                        handleChange('sharesCount')(e);
-                      }
-                    }}
-                    onBlur={handleBlur('sharesCount')}
-                    value={`${values.sharesCount || ''}`}
-                    keyboardType="numeric"
-                  />
-                  {errors.sharesCount && (
-                    <Text style={{ color: '#F75555', fontSize: 14 }}>
-                      {errors.sharesCount}
-                    </Text>
-                  )}
-                </View>
 
                 {(user?.passportConfirmed && (
                   <Text>{t('lifePay.card.warmMessage')}</Text>
@@ -286,12 +284,6 @@ export const LifePayCard = ({ fetchTransactions, fetchUser }: Props) => {
 
               {(useDataExists && (
                 <>
-                  <View style={{ marginLeft: 15 }}>
-                    <TextCaption>
-                      {t('lifePay.card.selectPayMethod')}
-                    </TextCaption>
-                  </View>
-
                   <View style={styles.actionsWrapper}>
                     {/* Make Lifepay transaction */}
                     {/* <TouchableOpacity
@@ -385,6 +377,7 @@ export const LifePayCard = ({ fetchTransactions, fetchUser }: Props) => {
 };
 
 const useStyles = () => {
+  const brand = useBrand();
   const { theme } = useTheme();
 
   const styles = useMemo(
@@ -399,7 +392,7 @@ const useStyles = () => {
         },
 
         wrapper: {
-          maxWidth: 350,
+          width: '100%',
           backgroundColor: '#fff',
         },
 
@@ -454,6 +447,13 @@ const useStyles = () => {
 
         inputWrapper: {
           marginVertical: 13,
+          marginHorizontal: 13,
+
+          borderTopColor: brand.primaryColor,
+          borderTopWidth: 2,
+
+          borderBottomColor: brand.primaryColor,
+          borderBottomWidth: 2,
         },
 
         warmMessage: {

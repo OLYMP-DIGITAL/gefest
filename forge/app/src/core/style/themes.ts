@@ -1,3 +1,10 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
 // themes.ts
 
 export const lightTheme = {
@@ -17,7 +24,7 @@ export const lightTheme = {
   error: '#FF3C41',
 
   // Typography
-  fontDisplay: '#757575',
+  fontDisplay: '#F1F2F6',
   fontTitle: '#212121',
   fontBody: '#212121',
   fontCaption: '#757575',
@@ -40,7 +47,7 @@ export const darkTheme: typeof lightTheme = {
   error: '#FF3C41',
 
   // Typography
-  fontDisplay: '#757575',
+  fontDisplay: '#F1F2F6',
   fontTitle: '#212121',
   fontBody: '#212121',
   fontCaption: '#757575',

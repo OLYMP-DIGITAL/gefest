@@ -18,7 +18,6 @@ export const TextHeadline = ({ children, color }: Props) => {
     text: {
       color: color || theme.fontTitle,
       fontSize: 28,
-      letterSpacing: '0.005rem',
       fontWeight: '400',
     } as NativeStyles,
   }));

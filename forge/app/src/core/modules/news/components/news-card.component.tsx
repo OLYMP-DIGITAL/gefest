@@ -1,3 +1,10 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
 import {
   ScreenSize,
   useTheme,
@@ -39,13 +46,13 @@ export const NewsCard = ({ data, details }: Props) => {
 
           ...(sizeType !== ScreenSize.small
             ? {
-              width: '90%',
-              maxWidth: '90%',
-            }
+                width: '90%',
+                maxWidth: '90%',
+              }
             : {
-              width: '90%',
-              maxWidth: 300,
-            }),
+                width: '90%',
+                maxWidth: 300,
+              }),
         },
         cardWrapper: {
           display: 'flex',
@@ -53,11 +60,11 @@ export const NewsCard = ({ data, details }: Props) => {
 
           ...(sizeType !== ScreenSize.small
             ? {
-              flexDirection: 'row',
-            }
+                flexDirection: 'row',
+              }
             : {
-              flexDirection: 'column',
-            }),
+                flexDirection: 'column',
+              }),
         },
         infoWrapper: {
           display: 'flex',
@@ -68,23 +75,23 @@ export const NewsCard = ({ data, details }: Props) => {
 
           ...(sizeType === ScreenSize.small || !data.imageUrl
             ? {
-              height: 'auto',
-            }
+                height: 'auto',
+              }
             : {
-              height: '100%',
-              paddingRight: 320,
-            }),
+                height: '100%',
+                paddingRight: 320,
+              }),
         },
         imageWrapper: {
           ...(sizeType !== ScreenSize.small
             ? {
-              width: 300,
-              height: 'auto',
-            }
+                width: 300,
+                height: 'auto',
+              }
             : {
-              width: '100%',
-              height: 200,
-            }),
+                width: '100%',
+                height: 200,
+              }),
         },
         textWrapper: {
           width: '100%',

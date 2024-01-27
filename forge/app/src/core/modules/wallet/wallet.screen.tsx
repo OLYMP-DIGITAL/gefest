@@ -9,15 +9,13 @@ import { useLifePayTransactions } from 'core/features/life-pay/use-life-pay-tran
 import { ReferralEarningsTable } from 'core/features/referral-earning/referral-earnings.table';
 import { useReferralEarnings } from 'core/features/referral-earning/use-referral-earnings.hook';
 import { useUser } from 'core/features/users/use-user';
-import { useTheme } from 'core/providers/theme.provider';
-import { ScreenLayout } from 'core/ui/components/screen-layout';
-import { TextDisplay } from 'core/ui/components/typography/text-display';
-import React, { useMemo } from 'react';
+import { useStyles } from 'core/hooks/use-styles.hook';
+import { ScreenLayout } from 'core/ui/components/screen-layout/screen-layout';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Linking, StyleSheet, View } from 'react-native';
+import { Linking, View } from 'react-native';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import { useRecoilState } from 'recoil';
-import { HeaderStage } from './components/header-stage';
 import { LifePayCard } from './components/lfe-pay-card/life-pay-card.component';
 import { PortfolioValue } from './components/portfolio-value';
 import { ShareCount } from './components/share-count';
@@ -29,10 +27,17 @@ import {
   walletMessageLinkAtom,
   walletShowMessageAtom,
 } from './wallet.atoms';
+import { TextHeadline } from 'core/ui/components/typography/text-headline';
+import { TextBody } from 'core/ui/components/typography/text-body';
+import { Row } from 'core/ui/components/screen-layout/row';
+import { Col } from 'core/ui/components/screen-layout/col';
+import { useBrand } from 'core/features/brand/use-brand';
+import { useCurrentStage } from 'core/finance/investment-stage/use-current-stage';
 
 const WalletScreen = () => {
   useReferralEarnings();
-  const styles = useStyles();
+  const stage = useCurrentStage();
+  const styles = useScreenStyles();
   const { t } = useTranslation();
   const { fetchTransactions } = useLifePayTransactions();
   const { fetchUser } = useUser();
@@ -43,39 +48,49 @@ const WalletScreen = () => {
 
   return (
     <>
-      <ScreenLayout>
-        <HeaderStage />
+      <ScreenLayout title={t('wallet.title')} redBookmark={<StepText />}>
+        <View style={styles.title}>
+          <TextHeadline>{t('wallet.takeShares')}</TextHeadline>
+        </View>
 
-        <View>
-          <TextDisplay>{t('wallet.title')}</TextDisplay>
+        <Col between>
+          <Row large={'45%'} small={'100%'} medium={'100%'}>
+            <View>
+              <TextBody>{t('wallet.description')}</TextBody>
+            </View>
 
-          <View style={{ display: 'flex', flexDirection: 'column' }}>
-            <StepText />
+            <TextBody style={styles.limit}>
+              {t('wallet.stagesLimit')} {stage && Math.floor(stage?.max / 100)}$
+            </TextBody>
+          </Row>
 
-            <View style={styles.cards}>
-              <LifePayCard
-                fetchTransactions={fetchTransactions}
-                fetchUser={fetchUser}
-              />
+          <Row large={'45%'} small={'100%'} medium={'100%'}>
+            <LifePayCard
+              fetchTransactions={fetchTransactions}
+              fetchUser={fetchUser}
+            />
+          </Row>
+        </Col>
 
-              <View style={styles.infoCards}>
-                <TotalAmount />
+        <View style={{ display: 'flex', flexDirection: 'column' }}>
+          <View style={styles.cards}>
+            <View style={styles.infoCards}>
+              <TotalAmount />
 
-                <View style={styles.mt}>
-                  <ShareCount />
-                </View>
+              <View style={styles.mt}>
+                <ShareCount />
+              </View>
 
-                <View style={styles.mt}>
-                  <PortfolioValue />
-                </View>
+              <View style={styles.mt}>
+                <PortfolioValue />
               </View>
             </View>
+          </View>
 
-            <UserActionsTable />
+          <UserActionsTable />
 
-            <View style={{ marginTop: 13 }}>
-              <ReferralEarningsTable />
-            </View>
+          <View style={{ marginTop: 13 }}>
+            <ReferralEarningsTable />
           </View>
         </View>
       </ScreenLayout>
@@ -106,40 +121,35 @@ const WalletScreen = () => {
   );
 };
 
-const useStyles = () => {
-  const { theme } = useTheme();
+const useScreenStyles = () => {
+  const brand = useBrand();
 
-  const styles = useMemo(
-    () =>
-      StyleSheet.create({
-        headerStage: {},
+  return useStyles((theme) => ({
+    limit: {
+      color: brand.primaryColor,
+      marginTop: 50,
+    },
 
-        wrapper: {
-          flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: 30,
-        },
+    title: {
+      marginTop: 40,
+      marginBottom: 50,
+    },
 
-        mt: {
-          marginTop: 13,
-        },
+    mt: {
+      marginTop: 13,
+    },
 
-        cards: {
-          display: 'flex',
-          marginVertical: 30,
-          flexDirection: 'row',
-        },
+    cards: {
+      display: 'flex',
+      marginVertical: 30,
+      flexDirection: 'row',
+    },
 
-        infoCards: {
-          width: 380,
-          marginLeft: 45,
-        },
-      }),
-    [theme]
-  );
-
-  return styles;
+    infoCards: {
+      width: 380,
+      marginLeft: 45,
+    },
+  }));
 };
 
 export default WalletScreen;

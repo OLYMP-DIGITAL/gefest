@@ -1,3 +1,10 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
 import { NativeStyles, useStyles } from 'core/hooks/use-styles.hook';
 import { Text } from 'react-native';
 
@@ -10,9 +17,6 @@ export const TextTitle = ({ children }: Props) => {
     text: {
       color: theme.fontTitle,
       fontSize: 23,
-      // fontSize: '2rem',
-      // lineHeight: '2.8rem',
-      letterSpacing: '0.005rem',
       fontWeight: '400',
     } as NativeStyles,
   }));

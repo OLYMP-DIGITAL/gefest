@@ -6,22 +6,20 @@
  *   OLYMP.DIGITAL Confidential Proprietary Information.
  */
 import { NativeStyles, useStyles } from 'core/hooks/use-styles.hook';
-import { Text } from 'react-native';
+import { Text, TextProps } from 'react-native';
 
-interface Props {
+interface Props extends TextProps {
   children: React.ReactNode;
 }
 
-export const TextBody = ({ children }: Props) => {
+export const TextBody = ({ children, ...rest }: Props) => {
   const styles = useStyles((theme) => ({
     text: {
       color: theme.fontBody,
       fontSize: 15,
-      lineHeight: '2rem',
-      letterSpacing: '0.01rem',
       fontWeight: '300',
     } as NativeStyles,
   }));
 
-  return <Text style={styles.text}>{children}</Text>;
+  return <Text style={[styles.text, rest.style]}>{children}</Text>;
 };

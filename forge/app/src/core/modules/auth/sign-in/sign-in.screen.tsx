@@ -1,3 +1,10 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
 import { Input } from 'core/components/input';
 import RoundedButton from 'core/components/rounded-button';
 import { SupportEmailLink } from 'core/features/support/support-email-link.component';
@@ -19,6 +26,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import { useSetRecoilState } from 'recoil';
 import * as yup from 'yup';
 import { ConfirmButton } from './components/confirm-button';
+import { envKyes, getEnv } from 'core/services/env';
 
 interface SignInUser {
   email: string;
@@ -203,6 +211,7 @@ function SignInScreen() {
       >
         {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
           <View style={{ width: '70%' }}>
+            <Text>{getEnv(envKyes.apiHost)}</Text>
             <View style={{ marginVertical: 10 }}>
               <Input
                 placeholder={t('user.emailOrLogin')}

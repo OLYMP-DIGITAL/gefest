@@ -7,17 +7,19 @@
  */
 import { brandAtom } from 'core/features/brand/brand.atoms';
 import { useStyles } from 'core/hooks/use-styles.hook';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { useRecoilValue } from 'recoil';
 
-export const HeaderStage = () => {
+interface Props {
+  children: React.ReactNode;
+}
+
+export const RedBookmark = ({ children }: Props) => {
   const styles = useComponentStyles();
 
   return (
     <View style={styles.container}>
-      <View style={styles.block}>
-        <Text style={styles.text}>test</Text>
-      </View>
+      <View style={styles.block}>{children}</View>
     </View>
   );
 };
@@ -35,6 +37,9 @@ const useComponentStyles = () => {
 
     container: {
       display: 'flex',
+      top: 0,
+      right: 0,
+      position: 'absolute',
       alignItems: 'flex-end',
     },
 

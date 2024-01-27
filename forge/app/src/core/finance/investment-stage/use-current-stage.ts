@@ -5,9 +5,7 @@
  *   intended publication of such source code. The code contains
  *   OLYMP.DIGITAL Confidential Proprietary Information.
  */
-import { useEffect, useState } from 'react';
-import { InvestmentStage } from './investment-sage.types';
-import { getInvestmentStages } from './investment-stage.api';
+import { useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import {
   currentInvestmentStageAtom,
