@@ -251,6 +251,13 @@ export const LifePayCard = ({ fetchTransactions, fetchUser }: Props) => {
               </View>
 
               <View style={styles.contentWrapper}>
+                <Text style={styles.selectedCount}>
+                  {t('lifePay.card.amountOfSharedCounts')}: $
+                  <Text style={[styles.strong]}>
+                    {calcAmountOfShares(values.sharesCount)}
+                  </Text>
+                </Text>
+
                 <Text style={styles.marginTop10}>
                   {t('lifePay.card.currentAmount')}: $
                   <Text style={styles.strong}>
@@ -265,21 +272,6 @@ export const LifePayCard = ({ fetchTransactions, fetchUser }: Props) => {
                     {Number(limit / 100).toFixed(0)}
                   </Text>
                 </Text>
-
-                <Text>
-                  {t('lifePay.card.amountOfSharedCounts')}: $
-                  <Text style={styles.strong}>
-                    {calcAmountOfShares(values.sharesCount)}
-                  </Text>
-                </Text>
-
-                {(user?.passportConfirmed && (
-                  <Text>{t('lifePay.card.warmMessage')}</Text>
-                )) || (
-                  <Text style={styles.warmMessage}>
-                    {t('lifePay.card.needConfirm')}
-                  </Text>
-                )}
               </View>
 
               {(useDataExists && (
@@ -383,6 +375,10 @@ const useStyles = () => {
   const styles = useMemo(
     () =>
       StyleSheet.create({
+        selectedCount: {
+          color: brand.primaryColor,
+        },
+
         strong: {
           fontWeight: '600',
         },

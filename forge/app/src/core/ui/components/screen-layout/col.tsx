@@ -6,9 +6,9 @@
  *   OLYMP.DIGITAL Confidential Proprietary Information.
  */
 import { useStyles } from 'core/hooks/use-styles.hook';
-import { View } from 'react-native';
+import { View, ViewProps } from 'react-native';
 
-interface StylesProps {
+interface StylesProps extends ViewProps {
   between?: boolean;
 }
 
@@ -16,10 +16,10 @@ interface Props extends StylesProps {
   children: React.ReactNode;
 }
 
-export const Col = ({ children, between }: Props) => {
+export const Col = ({ children, between, ...rest }: Props) => {
   const styles = useRowStyles({ between });
 
-  return <View style={styles.container}>{children}</View>;
+  return <View style={[styles.container, rest.style]}>{children}</View>;
 };
 
 const useRowStyles = ({ between }: StylesProps) => {

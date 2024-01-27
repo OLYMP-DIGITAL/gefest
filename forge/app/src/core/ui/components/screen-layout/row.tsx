@@ -8,9 +8,9 @@
 import { useStyles } from 'core/hooks/use-styles.hook';
 import { ScreenSize, useWindowSize } from 'core/providers/theme.provider';
 import React, { useEffect, useState } from 'react';
-import { DimensionValue, View } from 'react-native';
+import { DimensionValue, View, ViewProps } from 'react-native';
 
-interface Props {
+interface Props extends ViewProps {
   children: React.ReactNode;
 
   small?: DimensionValue;
@@ -18,7 +18,7 @@ interface Props {
   medium?: DimensionValue;
 }
 
-export const Row = ({ children, large, medium, small }: Props) => {
+export const Row = ({ children, large, medium, small, ...rest }: Props) => {
   const styles = useRowStyles();
   const { sizeType } = useWindowSize();
 
@@ -36,6 +36,8 @@ export const Row = ({ children, large, medium, small }: Props) => {
         sizeType === ScreenSize.small && large !== undefined
           ? { width: small }
           : {},
+
+        rest.style,
       ]}
     >
       {React.Children.map(children, (child) => child)}

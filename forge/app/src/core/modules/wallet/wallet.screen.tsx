@@ -33,6 +33,7 @@ import { Row } from 'core/ui/components/screen-layout/row';
 import { Col } from 'core/ui/components/screen-layout/col';
 import { useBrand } from 'core/features/brand/use-brand';
 import { useCurrentStage } from 'core/finance/investment-stage/use-current-stage';
+import { PointsCount } from './components/points-count';
 
 const WalletScreen = () => {
   useReferralEarnings();
@@ -55,13 +56,14 @@ const WalletScreen = () => {
 
         <Col between>
           <Row large={'45%'} small={'100%'} medium={'100%'}>
-            <View>
+            <View style={{ height: '100%', justifyContent: 'center' }}>
               <TextBody>{t('wallet.description')}</TextBody>
-            </View>
 
-            <TextBody style={styles.limit}>
-              {t('wallet.stagesLimit')} {stage && Math.floor(stage?.max / 100)}$
-            </TextBody>
+              <TextBody style={styles.limit}>
+                {t('wallet.stagesLimit')}{' '}
+                {stage && Math.floor(stage?.max / 100)}$
+              </TextBody>
+            </View>
           </Row>
 
           <Row large={'45%'} small={'100%'} medium={'100%'}>
@@ -72,26 +74,48 @@ const WalletScreen = () => {
           </Row>
         </Col>
 
-        <View style={{ display: 'flex', flexDirection: 'column' }}>
-          <View style={styles.cards}>
-            <View style={styles.infoCards}>
-              <TotalAmount />
+        <View style={styles.title}>
+          <TextHeadline>{t('wallet.portfolio')}</TextHeadline>
+        </View>
 
-              <View style={styles.mt}>
+        <Col between>
+          <Row large={'55%'}>
+            <Col between>
+              <Row large={'45%'}>
                 <ShareCount />
-              </View>
+              </Row>
 
-              <View style={styles.mt}>
-                <PortfolioValue />
-              </View>
-            </View>
+              <Row large={'45%'}>
+                <TotalAmount />
+              </Row>
+            </Col>
+
+            <View style={{ height: 20 }} />
+
+            <Col between>
+              <Row large={'45%'}>
+                <PointsCount />
+              </Row>
+            </Col>
+          </Row>
+
+          <Row large={'40%'}>
+            <PortfolioValue />
+          </Row>
+        </Col>
+
+        <View style={{ display: 'flex', flexDirection: 'column' }}>
+          <View style={styles.title}>
+            <TextHeadline>{t('lifePay.table.title')}</TextHeadline>
           </View>
 
           <UserActionsTable />
 
-          <View style={{ marginTop: 13 }}>
-            <ReferralEarningsTable />
+          <View style={styles.title}>
+            <TextHeadline>{t('finance.referralEarnings.title')}</TextHeadline>
           </View>
+
+          <ReferralEarningsTable />
         </View>
       </ScreenLayout>
 
@@ -132,7 +156,7 @@ const useScreenStyles = () => {
 
     title: {
       marginTop: 40,
-      marginBottom: 50,
+      marginBottom: 30,
     },
 
     mt: {

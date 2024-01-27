@@ -1,9 +1,17 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
 import { Link } from 'core/components/link';
 import RoundedButton from 'core/components/rounded-button';
 import { AuthScreensEnum, NavigationStack } from 'core/types/navigation';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useTranslation } from 'react-i18next';
 import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
+import { ScreenLayout } from 'core/ui/components/screen-layout/screen-layout';
 
 const { width, height } = Dimensions.get('window');
 
@@ -15,21 +23,29 @@ function WelcomeScreen({
   const { t } = useTranslation();
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Image
+    <ScreenLayout title={t('welcome.title')}>
+      <View
         style={{
-          width: width * 0.8, // 50% от ширины экрана
-          height: height * 0.3, // 30% от высоты экрана
+          flex: 1,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginTop: '15%',
         }}
-        resizeMode="contain"
-        source={require('assets/welcome.png')}
-      />
+      >
+        <Image
+          style={{
+            // width: width * 0.8, // 50% от ширины экрана
+            // height: height * 0.3, // 30% от высоты экрана
+            width: 175,
+            height: 235,
+            marginBottom: 40,
+          }}
+          resizeMode="contain"
+          source={require('assets/welcome.png')}
+        />
 
-      <View style={styles.welcomeWrapper}>
-        <Text style={styles.title}>{t('welcome.title')}</Text>
-      </View>
-
-      {/* <View style={styles.buttonsWrapper}>
+        {/* <View style={styles.buttonsWrapper}>
         <Button title={t('welcome.emailContinue')} />
       </View>
 
@@ -37,24 +53,27 @@ function WelcomeScreen({
         <Text>------------- or -------------</Text>
       </View> */}
 
-      <View style={styles.sides}>
-        {/* <View>
+        <View style={styles.sides}>
+          {/* <View>
           <BodySmallMediumText text={t('welcome.registered')} />
         </View> */}
-        <View>
-          <RoundedButton
-            title={t('welcome.signIn')}
-            onPress={() => navigation.navigate(AuthScreensEnum.signIn as any)}
-          />
-          <View style={styles.signUpWrapper}>
-            <Link
-              title={t('welcome.signUp')}
-              onPress={() => navigation.navigate(AuthScreensEnum.signUp as any)}
+          <View>
+            <RoundedButton
+              title={t('welcome.signIn')}
+              onPress={() => navigation.navigate(AuthScreensEnum.signIn as any)}
             />
+            <View style={styles.signUpWrapper}>
+              <Link
+                title={t('welcome.signUp')}
+                onPress={() =>
+                  navigation.navigate(AuthScreensEnum.signUp as any)
+                }
+              />
+            </View>
           </View>
         </View>
       </View>
-    </View>
+    </ScreenLayout>
   );
 }
 
@@ -69,11 +88,11 @@ const styles = StyleSheet.create({
   },
 
   orWrapper: {
-    marginVertical: 15,
+    // marginVertical: 15,
   },
 
   welcomeWrapper: {
-    marginVertical: 15,
+    // marginVertical: 15,
   },
 
   sides: {

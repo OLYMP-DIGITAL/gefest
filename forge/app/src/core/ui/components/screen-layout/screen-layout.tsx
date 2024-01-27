@@ -64,6 +64,8 @@ const useScreenLayoutStyles = () => {
       headContent: {
         display: 'flex',
         flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
         width: (sizeType === ScreenSize.large && 1000) || '100%',
       },
 

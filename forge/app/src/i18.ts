@@ -133,6 +133,7 @@ const resources = {
       },
       signIn: {
         text: '',
+        title: 'Sign in',
         timerText: 'You can resend the code via',
         resendEmail: 'Send confirmation by email',
         checkEmail:
@@ -152,6 +153,7 @@ const resources = {
         toSignIn: 'Sign in',
       },
       wallet: {
+        portfolio: 'Investment Portfolio',
         takeShares: 'Acquisition of company shares',
         description:
           'To acquire shares, enter the desired quantity and press the "buy" button. Currently, shares can only be purchased online using cryptocurrency. If you are interested in an alternative method of funding, please write to the email address info@sfcglobal.dk, and we will propose an alternative solution to the issue',
@@ -166,6 +168,10 @@ const resources = {
         stagesIsFinished: 'Stages is finished',
         stagesLoading: 'Stages loading...',
         stagesDates: 'Stage period',
+        pointsCount: 'Count of points',
+
+        profitIncrease: 'Profit Increase Percentage',
+        increaseValue: 'Increase in Value',
       },
       month: {
         '01': 'january',
@@ -385,6 +391,7 @@ const resources = {
         setNameMessage: 'Укажите ФИО именно так, как написано в паспорте',
       },
       signIn: {
+        title: 'Вход',
         timerText: 'Отправить код повторно можно будет через',
         resendEmail: 'Отправить подтверждение на почту',
         checkEmail:
@@ -400,6 +407,7 @@ const resources = {
         beFirst: 'Будешь первый в курсе всех событий',
       },
       wallet: {
+        portfolio: 'Инвестиционный портфель',
         takeShares: 'Приобретение долей',
         description:
           'Чтобы приобрести доли, введите желаемое количество и нажмите кнопку «купить». На данный момент приобрести доли онлайн можно только с помощью крипто валюты. Если вас интересует другой способ пополнения, напишите пожалуйста на почту info@sfcglobal.dk, и мы прездлжим альтернативное решение вопроса',
@@ -414,6 +422,10 @@ const resources = {
         stagesIsFinished: 'Все этапы закончены',
         stagesLoading: 'Загрузка этапов...',
         stagesDates: 'Период этапа',
+        pointsCount: 'баланс баллов по реферальной программе',
+
+        increaseValue: 'Прирост стоимости',
+        profitIncrease: 'Прирост прибыли в %',
       },
       month: {
         '01': 'января',

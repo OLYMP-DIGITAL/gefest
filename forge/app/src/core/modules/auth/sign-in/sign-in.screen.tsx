@@ -27,6 +27,7 @@ import { useSetRecoilState } from 'recoil';
 import * as yup from 'yup';
 import { ConfirmButton } from './components/confirm-button';
 import { envKyes, getEnv } from 'core/services/env';
+import { ScreenLayout } from 'core/ui/components/screen-layout/screen-layout';
 
 interface SignInUser {
   email: string;
@@ -198,115 +199,123 @@ function SignInScreen() {
   }, [supportEmail]);
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Formik
-        initialValues={{
-          // email: 'paveltretyakov.ru@gmail.com',
-          // password: '123456',
-          email: '',
-          password: '',
+    <ScreenLayout title={t('signIn.title')}>
+      <View
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginTop: '15%',
         }}
-        onSubmit={onSubmit}
-        validationSchema={validationSchema}
       >
-        {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
-          <View style={{ width: '70%' }}>
-            <Text>{getEnv(envKyes.apiHost)}</Text>
-            <View style={{ marginVertical: 10 }}>
-              <Input
-                placeholder={t('user.emailOrLogin')}
-                onChangeText={handleChange('email')}
-                onBlur={handleBlur('email')}
-                value={values.email}
-              />
-
-              {errors.email && (
-                <Text style={{ color: 'red' }}>{errors.email}</Text>
-              )}
-            </View>
-
-            <View style={{ marginVertical: 10 }}>
-              <View style={styles.passwordContainer}>
+        <Formik
+          initialValues={{
+            // email: 'paveltretyakov.ru@gmail.com',
+            // password: '123456',
+            email: '',
+            password: '',
+          }}
+          onSubmit={onSubmit}
+          validationSchema={validationSchema}
+        >
+          {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
+            <View style={{ width: '70%' }}>
+              <View style={{ marginVertical: 10 }}>
                 <Input
-                  secureTextEntry={hidePassword}
-                  placeholder={t('user.password')}
-                  onChangeText={handleChange('password')}
-                  onBlur={handleBlur('password')}
-                  value={values.password}
-                  style={styles.passwordInput}
-                />
-                <Icon
-                  name={hidePassword ? 'eye-off' : 'eye'}
-                  size={20}
-                  style={styles.icon}
-                  color={
-                    !values.password ? theme.greyscale500 : theme.primaryText
-                  }
-                  onPress={() => setHidePassword(!hidePassword)}
-                />
-              </View>
-              {errors.password && (
-                <Text style={{ color: 'red' }}>{errors.password}</Text>
-              )}
-            </View>
-
-            <View style={{ marginVertical: 20 }}>
-              <RoundedButton
-                title={t('buttons.continue')}
-                onPress={handleSubmit as () => void}
-                disabled={Object.keys(errors).length > 0}
-              />
-            </View>
-
-            {showResendEmail && <ConfirmButton email={values.email} />}
-          </View>
-        )}
-      </Formik>
-
-      <SupportEmailLink />
-
-      {/* <TouchableOpacity onPress={toggleModal}>
-        <Text style={styles.forgotPasswordLink}>Forgot Password?</Text>
-      </TouchableOpacity> */}
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={isModalVisible}
-        onRequestClose={toggleModal}
-      >
-        <View style={styles.modalContainer}>
-          <Formik
-            initialValues={{
-              email: '',
-            }}
-            onSubmit={(values) => sendEmail(values.email)}
-          >
-            {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
-              <View style={styles.modalContent}>
-                <Input
-                  placeholder={'email'}
+                  placeholder={t('user.emailOrLogin')}
                   onChangeText={handleChange('email')}
                   onBlur={handleBlur('email')}
                   value={values.email}
                 />
-                <View style={styles.buttonContainer}>
-                  <RoundedButton
-                    title={t('buttons.continue')}
-                    onPress={handleSubmit as () => void}
-                  />
-                </View>
-                <View style={styles.buttonContainer}>
-                  <RoundedButton
-                    title={t('buttons.close')}
-                    onPress={toggleModal}
-                  />
-                </View>
+
+                {errors.email && (
+                  <Text style={{ color: 'red' }}>{errors.email}</Text>
+                )}
               </View>
-            )}
-          </Formik>
-        </View>
-      </Modal>
-    </View>
+
+              <View style={{ marginVertical: 10 }}>
+                <View style={styles.passwordContainer}>
+                  <Input
+                    secureTextEntry={hidePassword}
+                    placeholder={t('user.password')}
+                    onChangeText={handleChange('password')}
+                    onBlur={handleBlur('password')}
+                    value={values.password}
+                    style={styles.passwordInput}
+                  />
+                  <Icon
+                    name={hidePassword ? 'eye-off' : 'eye'}
+                    size={20}
+                    style={styles.icon}
+                    color={
+                      !values.password ? theme.greyscale500 : theme.primaryText
+                    }
+                    onPress={() => setHidePassword(!hidePassword)}
+                  />
+                </View>
+                {errors.password && (
+                  <Text style={{ color: 'red' }}>{errors.password}</Text>
+                )}
+              </View>
+
+              <View style={{ marginVertical: 20 }}>
+                <RoundedButton
+                  title={t('buttons.continue')}
+                  onPress={handleSubmit as () => void}
+                  disabled={Object.keys(errors).length > 0}
+                />
+              </View>
+
+              {showResendEmail && <ConfirmButton email={values.email} />}
+            </View>
+          )}
+        </Formik>
+
+        <SupportEmailLink />
+
+        {/* <TouchableOpacity onPress={toggleModal}>
+        <Text style={styles.forgotPasswordLink}>Forgot Password?</Text>
+      </TouchableOpacity> */}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={isModalVisible}
+          onRequestClose={toggleModal}
+        >
+          <View style={styles.modalContainer}>
+            <Formik
+              initialValues={{
+                email: '',
+              }}
+              onSubmit={(values) => sendEmail(values.email)}
+            >
+              {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
+                <View style={styles.modalContent}>
+                  <Input
+                    placeholder={'email'}
+                    onChangeText={handleChange('email')}
+                    onBlur={handleBlur('email')}
+                    value={values.email}
+                  />
+                  <View style={styles.buttonContainer}>
+                    <RoundedButton
+                      title={t('buttons.continue')}
+                      onPress={handleSubmit as () => void}
+                    />
+                  </View>
+                  <View style={styles.buttonContainer}>
+                    <RoundedButton
+                      title={t('buttons.close')}
+                      onPress={toggleModal}
+                    />
+                  </View>
+                </View>
+              )}
+            </Formik>
+          </View>
+        </Modal>
+      </View>
+    </ScreenLayout>
   );
 }
 
