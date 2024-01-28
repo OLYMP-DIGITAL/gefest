@@ -111,8 +111,8 @@ const styles = StyleSheet.create({
   menuItems: {
     color: 'white',
     fontSize: 16,
-    wordWrap: 'break-word',
-    textWrap: 'wrap',
+    // wordWrap: 'break-word',
+    // textWrap: 'wrap',
     letterSpacing: 0.2,
     textTransform: 'uppercase',
   },

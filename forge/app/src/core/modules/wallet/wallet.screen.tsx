@@ -5,18 +5,25 @@
  *   intended publication of such source code. The code contains
  *   OLYMP.DIGITAL Confidential Proprietary Information.
  */
+import { useBrand } from 'core/features/brand/use-brand';
 import { useLifePayTransactions } from 'core/features/life-pay/use-life-pay-transactions.hook';
 import { ReferralEarningsTable } from 'core/features/referral-earning/referral-earnings.table';
 import { useReferralEarnings } from 'core/features/referral-earning/use-referral-earnings.hook';
 import { useUser } from 'core/features/users/use-user';
+import { useCurrentStage } from 'core/finance/investment-stage/use-current-stage';
 import { useStyles } from 'core/hooks/use-styles.hook';
+import { Col } from 'core/ui/components/screen-layout/col';
+import { Row } from 'core/ui/components/screen-layout/row';
 import { ScreenLayout } from 'core/ui/components/screen-layout/screen-layout';
+import { TextBody } from 'core/ui/components/typography/text-body';
+import { TextHeadline } from 'core/ui/components/typography/text-headline';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Linking, View } from 'react-native';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import { useRecoilState } from 'recoil';
 import { LifePayCard } from './components/lfe-pay-card/life-pay-card.component';
+import { PointsCount } from './components/points-count';
 import { PortfolioValue } from './components/portfolio-value';
 import { ShareCount } from './components/share-count';
 import { StepText } from './components/step-text';
@@ -27,13 +34,6 @@ import {
   walletMessageLinkAtom,
   walletShowMessageAtom,
 } from './wallet.atoms';
-import { TextHeadline } from 'core/ui/components/typography/text-headline';
-import { TextBody } from 'core/ui/components/typography/text-body';
-import { Row } from 'core/ui/components/screen-layout/row';
-import { Col } from 'core/ui/components/screen-layout/col';
-import { useBrand } from 'core/features/brand/use-brand';
-import { useCurrentStage } from 'core/finance/investment-stage/use-current-stage';
-import { PointsCount } from './components/points-count';
 
 const WalletScreen = () => {
   useReferralEarnings();
@@ -56,14 +56,11 @@ const WalletScreen = () => {
 
         <Col between>
           <Row large={'45%'} small={'100%'} medium={'100%'}>
-            <View style={{ height: '100%', justifyContent: 'center' }}>
-              <TextBody>{t('wallet.description')}</TextBody>
+            <TextBody>{t('wallet.description')}</TextBody>
 
-              <TextBody style={styles.limit}>
-                {t('wallet.stagesLimit')}{' '}
-                {stage && Math.floor(stage?.max / 100)}$
-              </TextBody>
-            </View>
+            <TextBody style={styles.limit}>
+              {t('wallet.stagesLimit')} {stage && Math.floor(stage?.max / 100)}$
+            </TextBody>
           </Row>
 
           <Row large={'45%'} small={'100%'} medium={'100%'}>
@@ -79,27 +76,25 @@ const WalletScreen = () => {
         </View>
 
         <Col between>
-          <Row large={'55%'}>
+          <Row large={'55%'} small={'100%'}>
             <Col between>
-              <Row large={'45%'}>
+              <Row large={'45%'} small={'100%'} style={{ marginTop: 20 }}>
                 <ShareCount />
               </Row>
 
-              <Row large={'45%'}>
+              <Row large={'45%'} small={'100%'} style={{ marginTop: 20 }}>
                 <TotalAmount />
               </Row>
             </Col>
 
-            <View style={{ height: 20 }} />
-
             <Col between>
-              <Row large={'45%'}>
+              <Row large={'45%'} small={'100%'} style={{ marginTop: 20 }}>
                 <PointsCount />
               </Row>
             </Col>
           </Row>
 
-          <Row large={'40%'}>
+          <Row large={'40%'} small={'100%'} style={{ marginTop: 20 }}>
             <PortfolioValue />
           </Row>
         </Col>
