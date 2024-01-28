@@ -1,3 +1,10 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
 import env, { envKyes } from './env';
 
 const BEARER = 'Bearer';
@@ -14,12 +21,10 @@ class Api {
       },
     })
       .then((response) => {
-        console.log(response);
         return response.json();
       })
       .then((data) => {
         // Обработка данных защищенного ресурса
-        console.log('Response data!', data);
         return data as T;
       })
       .catch((error) => {
@@ -57,12 +62,10 @@ class Api {
       requestOptions as any
     )
       .then((response) => {
-        console.log(response);
         return response.json();
       })
       .then((data) => {
         // Обработка данных защищенного ресурса
-        console.log('Response data!', data);
         return data as T;
       })
       .catch((error) => {
@@ -91,12 +94,10 @@ class Api {
 
     return fetch(`${env[envKyes.apiHost]}/api/${route}`, requestOptions as any)
       .then((response) => {
-        console.log(response);
         return response.json();
       })
       .then((data) => {
         // Обработка данных защищенного ресурса
-        console.log('Response data!', data);
         return data as T;
       })
       .catch((error) => {

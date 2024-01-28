@@ -19,8 +19,6 @@ export const useLifePayTransactions = () => {
 
   useEffect(() => {
     if (user) {
-      console.log('USER UPDATED', user?.email);
-
       getUserTransactions().then((trs) => {
         if (Array.isArray(trs)) {
           setTransactions(trs);

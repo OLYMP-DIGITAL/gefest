@@ -5,18 +5,25 @@
  *   intended publication of such source code. The code contains
  *   OLYMP.DIGITAL Confidential Proprietary Information.
  */
+import { useBrand } from 'core/features/brand/use-brand';
 import { useLifePayTransactions } from 'core/features/life-pay/use-life-pay-transactions.hook';
 import { ReferralEarningsTable } from 'core/features/referral-earning/referral-earnings.table';
 import { useReferralEarnings } from 'core/features/referral-earning/use-referral-earnings.hook';
-import { useTheme } from 'core/providers/theme.provider';
-import { TextDisplay } from 'core/ui/components/typography/text-display';
-import React, { useMemo } from 'react';
+import { useUser } from 'core/features/users/use-user';
+import { useCurrentStage } from 'core/finance/investment-stage/use-current-stage';
+import { useStyles } from 'core/hooks/use-styles.hook';
+import { Col } from 'core/ui/components/screen-layout/col';
+import { Row } from 'core/ui/components/screen-layout/row';
+import { ScreenLayout } from 'core/ui/components/screen-layout/screen-layout';
+import { TextBody } from 'core/ui/components/typography/text-body';
+import { TextHeadline } from 'core/ui/components/typography/text-headline';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Linking, StyleSheet, View } from 'react-native';
+import { Linking, View } from 'react-native';
 import AwesomeAlert from 'react-native-awesome-alerts';
-import { ScrollView } from 'react-native-gesture-handler';
 import { useRecoilState } from 'recoil';
 import { LifePayCard } from './components/lfe-pay-card/life-pay-card.component';
+import { PointsCount } from './components/points-count';
 import { PortfolioValue } from './components/portfolio-value';
 import { ShareCount } from './components/share-count';
 import { StepText } from './components/step-text';
@@ -27,11 +34,11 @@ import {
   walletMessageLinkAtom,
   walletShowMessageAtom,
 } from './wallet.atoms';
-import { useUser } from 'core/features/users/use-user';
 
 const WalletScreen = () => {
   useReferralEarnings();
-  const styles = useStyles();
+  const stage = useCurrentStage();
+  const styles = useScreenStyles();
   const { t } = useTranslation();
   const { fetchTransactions } = useLifePayTransactions();
   const { fetchUser } = useUser();
@@ -42,40 +49,70 @@ const WalletScreen = () => {
 
   return (
     <>
-      <ScrollView>
-        <View style={styles.wrapper}>
-          <TextDisplay>{t('wallet.title')}</TextDisplay>
-
-          <View style={{ display: 'flex', flexDirection: 'column' }}>
-            <StepText />
-
-            <View style={styles.cards}>
-              <LifePayCard
-                fetchTransactions={fetchTransactions}
-                fetchUser={fetchUser}
-              />
-
-              <View style={styles.infoCards}>
-                <TotalAmount />
-
-                <View style={styles.mt}>
-                  <ShareCount />
-                </View>
-
-                <View style={styles.mt}>
-                  <PortfolioValue />
-                </View>
-              </View>
-            </View>
-
-            <UserActionsTable />
-
-            <View style={{ marginTop: 13 }}>
-              <ReferralEarningsTable />
-            </View>
-          </View>
+      <ScreenLayout title={t('wallet.title')} redBookmark={<StepText />}>
+        <View style={styles.title}>
+          <TextHeadline>{t('wallet.takeShares')}</TextHeadline>
         </View>
-      </ScrollView>
+
+        <Col between>
+          <Row large={'45%'} small={'100%'} medium={'100%'}>
+            <TextBody>{t('wallet.description')}</TextBody>
+
+            <TextBody style={styles.limit}>
+              {t('wallet.stagesLimit')} {stage && Math.floor(stage?.max / 100)}$
+            </TextBody>
+          </Row>
+
+          <Row large={'45%'} small={'100%'} medium={'100%'}>
+            <LifePayCard
+              fetchTransactions={fetchTransactions}
+              fetchUser={fetchUser}
+            />
+          </Row>
+        </Col>
+
+        <View style={styles.title}>
+          <TextHeadline>{t('wallet.portfolio')}</TextHeadline>
+        </View>
+
+        <Col between>
+          <Row large={'55%'} small={'100%'}>
+            <Col between>
+              <Row large={'45%'} small={'100%'} style={{ marginTop: 20 }}>
+                <ShareCount />
+              </Row>
+
+              <Row large={'45%'} small={'100%'} style={{ marginTop: 20 }}>
+                <TotalAmount />
+              </Row>
+            </Col>
+
+            <Col between>
+              <Row large={'45%'} small={'100%'} style={{ marginTop: 20 }}>
+                <PointsCount />
+              </Row>
+            </Col>
+          </Row>
+
+          <Row large={'40%'} small={'100%'} style={{ marginTop: 20 }}>
+            <PortfolioValue />
+          </Row>
+        </Col>
+
+        <View style={{ display: 'flex', flexDirection: 'column' }}>
+          <View style={styles.title}>
+            <TextHeadline>{t('lifePay.table.title')}</TextHeadline>
+          </View>
+
+          <UserActionsTable />
+
+          <View style={styles.title}>
+            <TextHeadline>{t('finance.referralEarnings.title')}</TextHeadline>
+          </View>
+
+          <ReferralEarningsTable />
+        </View>
+      </ScreenLayout>
 
       <AwesomeAlert
         show={showAlert}
@@ -103,38 +140,35 @@ const WalletScreen = () => {
   );
 };
 
-const useStyles = () => {
-  const { theme } = useTheme();
+const useScreenStyles = () => {
+  const brand = useBrand();
 
-  const styles = useMemo(
-    () =>
-      StyleSheet.create({
-        wrapper: {
-          flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: 30,
-        },
+  return useStyles((theme) => ({
+    limit: {
+      color: brand.primaryColor,
+      marginTop: 50,
+    },
 
-        mt: {
-          marginTop: 13,
-        },
+    title: {
+      marginTop: 40,
+      marginBottom: 30,
+    },
 
-        cards: {
-          display: 'flex',
-          marginVertical: 30,
-          flexDirection: 'row',
-        },
+    mt: {
+      marginTop: 13,
+    },
 
-        infoCards: {
-          width: 380,
-          marginLeft: 45,
-        },
-      }),
-    [theme]
-  );
+    cards: {
+      display: 'flex',
+      marginVertical: 30,
+      flexDirection: 'row',
+    },
 
-  return styles;
+    infoCards: {
+      width: 380,
+      marginLeft: 45,
+    },
+  }));
 };
 
 export default WalletScreen;

@@ -1,3 +1,10 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
 import {
   LifePayInvoiceStatus,
   getUserTransactions,
@@ -7,9 +14,11 @@ import { LifePayTransaction } from 'core/features/life-pay/life-pay.types';
 import { useTheme } from 'core/providers/theme.provider';
 import { Card, CardTitle } from 'core/ui/components/card';
 import { CardContent } from 'core/ui/components/card/card-content';
+import { TextBody } from 'core/ui/components/typography/text-body';
 import { TextHeadline } from 'core/ui/components/typography/text-headline';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { View } from 'react-native';
 import { useRecoilValue } from 'recoil';
 
 export const ShareCount = () => {
@@ -34,10 +43,12 @@ export const ShareCount = () => {
 
   return (
     <Card>
-      <CardTitle title={t('lifePay.totalSharesCount')} />
-      <CardContent>
+      <View style={{ paddingVertical: 20, paddingHorizontal: 20 }}>
+        <TextBody style={{ fontWeight: '600' }}>
+          {t('lifePay.totalSharesCount')}
+        </TextBody>
         <TextHeadline color={theme.primary}>{`${value}`}</TextHeadline>
-      </CardContent>
+      </View>
     </Card>
   );
 };

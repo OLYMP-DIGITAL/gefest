@@ -1,22 +1,29 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
+import { Formik } from 'formik';
+import React, { useCallback, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
+
+import { Input } from 'core/components/input';
+import { Loader } from 'core/components/loader';
+import RoundedButton from 'core/components/rounded-button';
+import { BodyXlRegular } from 'core/components/text/body-xl-regular.text';
+import { H1Text } from 'core/components/text/h1.text';
+import { UrlButton } from 'core/components/url-button';
 import {
   getYmTransaction,
   makeYmTransaction,
-} from 'core/features/ym-transaction/transactions.api';
-import React, { useCallback, useMemo, useState } from 'react';
-import { Formik } from 'formik';
-import { useTranslation } from 'react-i18next';
-
-import * as yup from 'yup';
-import { Input } from 'core/components/input';
-import RoundedButton from 'core/components/rounded-button';
-import { H1Text } from 'core/components/text/h1.text';
-import { Loader } from 'core/components/loader';
-import { BodyXlRegular } from 'core/components/text/body-xl-regular.text';
-import { Transaction } from 'core/features/transactions/transactions.types';
-import { UrlButton } from 'core/components/url-button';
-import { TransactionTable } from './components/transaction-table';
+} from 'core/features/ym-transaction/ym-transaction.api';
+import { Transaction } from 'core/features/ym-transaction/ym-transactions.types';
 import { useInterval } from 'usehooks-ts';
+import * as yup from 'yup';
+import { TransactionTable } from './components/transaction-table';
 
 interface PaymentForm {
   deposit: number | null;
@@ -44,7 +51,6 @@ export const PaymentScreen = () => {
 
       makeYmTransaction(deposit)
         .then((result) => {
-          console.log('[makeTransaction] result:', result);
           setTransaction(result);
         })
         .finally(() => {
@@ -60,8 +66,6 @@ export const PaymentScreen = () => {
         transaction.status === 'waiting_for_capture')
     ) {
       getYmTransaction(transaction.payment).then((currentVersion) => {
-        console.log('Goted current version of transaction', currentVersion);
-
         if (transaction.status !== currentVersion.status) {
           setTransaction(currentVersion);
         }

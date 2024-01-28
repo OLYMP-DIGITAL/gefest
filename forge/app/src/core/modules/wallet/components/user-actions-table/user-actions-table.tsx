@@ -101,7 +101,7 @@ export const UserActionsTable = () => {
             },
       ]}
     >
-      <TextTitle>{t('lifePay.table.title')}</TextTitle>
+      {/* <TextTitle>{t('lifePay.table.title')}</TextTitle> */}
       <Table style={{ zIndex: 1 }}>
         <Row
           data={table.tableHead}

@@ -1,3 +1,10 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
 import { NativeStyles, useStyles } from 'core/hooks/use-styles.hook';
 import { Text } from 'react-native';
 
@@ -10,7 +17,6 @@ export const TextDisplay = ({ children }: Props) => {
     text: {
       color: theme.fontDisplay,
       fontSize: 40,
-      lineHeight: '4rem',
       letterSpacing: 0,
       fontWeight: '300',
     } as NativeStyles,

@@ -120,6 +120,7 @@ const resources = {
         isInteger: 'The value must be an integer',
         minString: 'Minimum length',
         maxString: 'Maximum length',
+        fileUploadStarted: 'Image loading started',
       },
 
       welcome: {
@@ -132,6 +133,7 @@ const resources = {
       },
       signIn: {
         text: '',
+        title: 'Sign in',
         timerText: 'You can resend the code via',
         resendEmail: 'Send confirmation by email',
         checkEmail:
@@ -151,6 +153,13 @@ const resources = {
         toSignIn: 'Sign in',
       },
       wallet: {
+        portfolio: 'Investment Portfolio',
+        takeShares: 'Acquisition of company shares',
+        description:
+          'To acquire shares, enter the desired quantity and press the "buy" button. Currently, shares can only be purchased online using cryptocurrency. If you are interested in an alternative method of funding, please write to the email address info@sfcglobal.dk, and we will propose an alternative solution to the issue',
+        stagesLimit:
+          'At this stage of the project, the volume of individual investments is limited.',
+
         openLink: 'Click here to go to payment',
         title: 'Wallet',
         step: '1 Step of investment',
@@ -158,9 +167,11 @@ const resources = {
         desc: 'Unique conditions in connection with the beginning of the formation of the initial capital of a targeted investment project.',
         stagesIsFinished: 'Stages is finished',
         stagesLoading: 'Stages loading...',
-        stagesLimit:
-          'At this stage of the project, the volume of individual investments is limited.',
         stagesDates: 'Stage period',
+        pointsCount: 'Count of points',
+
+        profitIncrease: 'Profit Increase Percentage',
+        increaseValue: 'Increase in Value',
       },
       month: {
         '01': 'january',
@@ -185,11 +196,9 @@ const resources = {
         card: {
           pay: 'Pay',
           selectPayMethod: '',
-          cryptoPay: 'Crypto Pay',
+          cryptoPay: 'Buy with crypto',
           pointsPay: 'Buy with points',
-          title: 'Pay shares',
-          amount: 'Amount',
-          desc: "To purchase shares, enter the desired quantity and press the 'Pay' button.",
+          amount: 'Enter the number of company shares',
           currentAmount: 'Current share value',
           amountOfSharedCounts: 'Amount of selected shares',
           transactionLimit: 'Remaining limit for stock purchase',
@@ -262,7 +271,7 @@ const resources = {
       partners: 'Партнёры',
 
       screens: {
-        wallet: 'Мой кошелёк',
+        wallet: 'Кошелёк',
         cabinet: 'Личный кабинет',
         grpahGrow: 'График роста',
         partners: 'Партнёры',
@@ -363,6 +372,7 @@ const resources = {
         isPositive: 'Значение должно быть позитивным числом',
         minString: 'Минимальное количество символов',
         maxString: 'Максимальное количество символов',
+        fileUploadStarted: 'Загрузка изображения началась',
       },
 
       welcome: {
@@ -381,6 +391,7 @@ const resources = {
         setNameMessage: 'Укажите ФИО именно так, как написано в паспорте',
       },
       signIn: {
+        title: 'Вход',
         timerText: 'Отправить код повторно можно будет через',
         resendEmail: 'Отправить подтверждение на почту',
         checkEmail:
@@ -396,16 +407,25 @@ const resources = {
         beFirst: 'Будешь первый в курсе всех событий',
       },
       wallet: {
+        portfolio: 'Инвестиционный портфель',
+        takeShares: 'Приобретение долей',
+        description:
+          'Чтобы приобрести доли, введите желаемое количество и нажмите кнопку «купить». На данный момент приобрести доли онлайн можно только с помощью крипто валюты. Если вас интересует другой способ пополнения, напишите пожалуйста на почту info@sfcglobal.dk, и мы прездлжим альтернативное решение вопроса',
+        stagesLimit:
+          'На данном этапе проекта объём индивидуальных инвестиций ограничен',
+
         openLink: 'Перейти к оплате',
-        title: 'Мой кошелёк',
+        title: 'Кошелёк',
         step: '1 этап инвестиций',
         stepLabel: 'Initial Investment Offering',
         desc: 'Уникальные условия в связи с началом формирования первоначального капитала адресного инвестиционного проекта.',
         stagesIsFinished: 'Все этапы закончены',
         stagesLoading: 'Загрузка этапов...',
-        stagesLimit:
-          'На данном этапе проекта объём индивидуальных инвестиций ограничен',
         stagesDates: 'Период этапа',
+        pointsCount: 'баланс баллов по реферальной программе',
+
+        increaseValue: 'Прирост стоимости',
+        profitIncrease: 'Прирост прибыли в %',
       },
       month: {
         '01': 'января',
@@ -432,9 +452,7 @@ const resources = {
           selectPayMethod: 'Выберите способ оплаты',
           cryptoPay: 'Криптовалютой',
           pointsPay: 'Баллами',
-          desc: 'Чтобы приобрести доли, введие желаемое количество и нажмите кнопку "купить"',
-          title: 'Приобретение долей',
-          amount: 'Количество',
+          amount: 'Введите количество долей',
           toCabinet: 'Перейти в личный кабинет',
           currentAmount: 'Текущая стоимость доли',
           amountOfSharedCounts: 'Выбрано долей на сумму',

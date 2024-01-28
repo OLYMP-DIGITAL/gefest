@@ -17,6 +17,7 @@ import { useEffect } from 'react';
 import { Image, StyleSheet } from 'react-native';
 import { useSetRecoilState } from 'recoil';
 import { useTranslation } from 'react-i18next';
+import { useAuthInit } from 'core/hooks/use-auth-init';
 
 const initialRoute = 'wallet';
 interface AppNavigatorScreen {
@@ -42,6 +43,9 @@ interface Props {
 const DrawerNavigatorInstance = createDrawerNavigator();
 
 export function AppNavigator({ screens }: Props) {
+  // Загружаем данные доступные аутентифицированному пользователю
+  useAuthInit();
+
   const { t } = useTranslation();
 
   const setConfig = useSetRecoilState(configAtom);
@@ -98,8 +102,8 @@ const styles = StyleSheet.create({
   menuItems: {
     color: 'white',
     fontSize: 16,
-    textWrap: 'wrap',
-    wordWrap: 'break-word',
+    // textWrap: 'wrap',
+    // wordWrap: 'break-word',
     letterSpacing: 0.2,
     textTransform: 'uppercase',
   },

@@ -1,10 +1,17 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
 import { useTheme } from 'core/providers/theme.provider';
 import { useMemo } from 'react';
 import { StyleSheet, Text, TextInput, TextInputProps } from 'react-native';
 
 interface Props extends TextInputProps {}
 
-export const Input = ({ ...rest }: Props) => {
+export const Input = ({ style, ...rest }: Props) => {
   const { theme } = useTheme();
 
   const styles = useMemo(
@@ -31,7 +38,7 @@ export const Input = ({ ...rest }: Props) => {
     <TextInput
       {...rest}
       editable={rest.editable}
-      style={{ ...styles.body }}
+      style={[{ ...styles.body }, style]}
       placeholderTextColor={theme.greyscale500}
       // onChangeText={handleInputChange}
       // value={text}

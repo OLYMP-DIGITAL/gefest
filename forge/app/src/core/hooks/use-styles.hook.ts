@@ -38,13 +38,14 @@ export type TypedStylesPack<T> = {
 };
 
 export function useStyles<T>(
-  makeStyles: (t: Theme) => TypedStylesPack<T>
+  makeStyles: (t: Theme) => TypedStylesPack<T>,
+  watch: any[] = []
 ): TypedStylesPack<T> {
   const theme = useTheme();
 
   const styles: any = useMemo(
     () => StyleSheet.create(makeStyles(theme.theme)),
-    [theme]
+    [theme, ...watch]
   );
 
   return styles;

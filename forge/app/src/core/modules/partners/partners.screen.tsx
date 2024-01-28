@@ -1,3 +1,10 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
 import { useEffect, useState } from 'react';
 import {
   Button,
@@ -30,7 +37,7 @@ export const PartnersScreen = ({
         setPartners(result.data || []);
       });
     } catch (e) {
-      console.log('Error on downloading partners', e);
+      console.error('Error on downloading partners', e);
     }
   };
 
@@ -100,7 +107,7 @@ export const PartnersScreen = ({
                       Linking.canOpenURL(image.link)
                         .then((supported) => {
                           if (!supported) {
-                            console.log("Can't handle url: " + image.link);
+                            console.error("Can't handle url: " + image.link);
                           } else {
                             return Linking.openURL(image.link);
                           }
@@ -112,7 +119,7 @@ export const PartnersScreen = ({
                       Linking.canOpenURL(`${env[envKyes.apiHost]}${image.url}`)
                         .then((supported) => {
                           if (!supported) {
-                            console.log("Can't handle url: " + image.url);
+                            console.error("Can't handle url: " + image.url);
                           } else {
                             return Linking.openURL(
                               `${env[envKyes.apiHost]}${image.url}`
@@ -124,7 +131,7 @@ export const PartnersScreen = ({
                         );
                     }
                   }}
-                // style={{ flex: 1 }}
+                  // style={{ flex: 1 }}
                 >
                   <View key={`image-${image.name}`} style={{ margin: 10 }}>
                     <Image

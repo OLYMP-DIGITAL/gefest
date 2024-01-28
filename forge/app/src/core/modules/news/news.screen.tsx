@@ -1,3 +1,10 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { fetchNews } from 'core/features/news/news.api';
@@ -18,28 +25,19 @@ export const NewsScreen = () => {
       const response: any = await fetchNews(lang);
 
       if (response && response.data) {
-        setNews(response.data)
+        setNews(response.data);
       } else {
-        setNews([])
+        setNews([]);
       }
     } catch (error) {
-      console.log(error)
+      console.error('Fetch news response error', error);
     }
-  }
+  };
 
   useEffect(() => {
     getNews();
     setArticle(null);
   }, [lang]);
 
-
-  return (
-    <>
-      {!article
-        ? <NewsView news={news || []} />
-        : <ArticleView />
-      }
-    </>
-  );
+  return <>{!article ? <NewsView news={news || []} /> : <ArticleView />}</>;
 };
-
