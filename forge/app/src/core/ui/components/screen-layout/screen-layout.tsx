@@ -6,9 +6,8 @@
  *   OLYMP.DIGITAL Confidential Proprietary Information.
  */
 import { useStyles } from 'core/hooks/use-styles.hook';
-import { View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { useBrand } from 'core/features/brand/use-brand';
-import { ScrollView } from 'react-native-gesture-handler';
 import { ScreenSize, useWindowSize } from 'core/providers/theme.provider';
 import { TextDisplay } from '../typography/text-display';
 import { RedBookmark } from './components/red-bookmark';
@@ -34,7 +33,7 @@ export const ScreenLayout = ({ children, redBookmark, title = '' }: Props) => {
       <View style={[styles.headContent]}>
         {title && (
           <View style={styles.title}>
-            <TextDisplay>{title}</TextDisplay>
+            <TextDisplay style={styles.titleText}>{title}</TextDisplay>
           </View>
         )}
 
@@ -52,9 +51,12 @@ const useScreenLayoutStyles = () => {
   return useStyles(
     (theme) => ({
       title: {
+        flex: 1,
         height: HEAD_HEIGHT,
-        justifyContent: 'center',
+        justifyContent: sizeType === ScreenSize.small ? 'flex-end' : 'center',
       },
+
+      titleText: { textAlign: 'center', marginBottom: 20 },
 
       container: {
         flexGrow: 1,

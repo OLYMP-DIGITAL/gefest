@@ -12,6 +12,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { useTranslation } from 'react-i18next';
 import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
 import { ScreenLayout } from 'core/ui/components/screen-layout/screen-layout';
+import { ButtonContained } from 'core/ui/components/button/button-contained';
 
 const { width, height } = Dimensions.get('window');
 
@@ -58,10 +59,11 @@ function WelcomeScreen({
           <BodySmallMediumText text={t('welcome.registered')} />
         </View> */}
           <View>
-            <RoundedButton
-              title={t('welcome.signIn')}
+            <ButtonContained
               onPress={() => navigation.navigate(AuthScreensEnum.signIn as any)}
-            />
+            >
+              {t('welcome.signIn')}
+            </ButtonContained>
             <View style={styles.signUpWrapper}>
               <Link
                 title={t('welcome.signUp')}

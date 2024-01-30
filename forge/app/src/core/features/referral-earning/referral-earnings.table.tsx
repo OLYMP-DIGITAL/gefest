@@ -11,6 +11,7 @@ import { Platform, View } from 'react-native';
 import { Row, Rows, Table } from 'react-native-table-component';
 import { useRecoilValue } from 'recoil';
 import { referralEarningsAtom } from './referral-earning.atoms';
+import { ScreenSize, useWindowSize } from 'core/providers/theme.provider';
 
 export const ReferralEarningsTable = () => {
   const { t } = useTranslation();
@@ -77,6 +78,8 @@ export const ReferralEarningsTable = () => {
 };
 
 const useComponentStyles = () => {
+  const { sizeType } = useWindowSize();
+
   const styles = useStyles((theme) => ({
     container: {
       backgroundColor: '#fff',
@@ -99,9 +102,16 @@ const useComponentStyles = () => {
       borderBottomColor: '#e0e0e0',
     },
 
-    textContent: { paddingHorizontal: 56, paddingVertical: 0 },
+    textContent: {
+      // paddingHorizontal: 56,
+      paddingVertical: 0,
+      fontSize:
+        sizeType === ScreenSize.small || sizeType === undefined ? 12 : 20,
+    },
     textHead: {
       textAlign: 'center',
+      fontSize:
+        sizeType === ScreenSize.small || sizeType === undefined ? 12 : 20,
     },
   }));
 

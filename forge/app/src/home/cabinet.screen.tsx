@@ -333,11 +333,12 @@ export function CabinetScreen({
 
               {!user?.passportConfirmed && (
                 <View style={{ marginVertical: 20, width: 200 }}>
-                  <RoundedButton
-                    title={t('buttons.save')}
+                  <ButtonContained
                     onPress={handleSubmit as () => void}
                     disabled={Object.keys(errors).length > 0}
-                  />
+                  >
+                    {t('buttons.save')}
+                  </ButtonContained>
                 </View>
               )}
             </Card>

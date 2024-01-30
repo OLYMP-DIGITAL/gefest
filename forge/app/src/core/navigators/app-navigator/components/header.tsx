@@ -9,10 +9,9 @@ import { Entypo } from '@expo/vector-icons';
 import { DrawerItem } from '@react-navigation/drawer';
 import { LangSwitcher } from 'core/components/lang-switcher';
 import { LogoutButton } from 'core/components/logout-button';
-import { useWindowSize } from 'core/providers/theme.provider';
+import { ScreenSize, useWindowSize } from 'core/providers/theme.provider';
 import { useCallback } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
 import { useRecoilValue } from 'recoil';
 import { useCopyToClipboard } from 'usehooks-ts';
@@ -72,12 +71,16 @@ export const Header: React.FC<Props> = ({ title, navigation }) => {
         <View style={styles.rowBlock}>
           <Image
             style={styles[`${sizeType}Logo` as logoStyles]}
-            source={require('assets/logo.png')}
+            source={
+              sizeType === ScreenSize.small
+                ? require('assets/logo-short.png')
+                : require('assets/logo.png')
+            }
           />
         </View>
       </View>
 
-      <View style={styles.rowBlock}>
+      <View style={[styles.rowBlock, styles.pr25]}>
         <View style={styles.userReferal}>
           <TouchableOpacity
             style={styles.userReferalButton}
@@ -87,10 +90,12 @@ export const Header: React.FC<Props> = ({ title, navigation }) => {
             <Text style={styles.userNameLabel}>Referal ID: {user?.id}</Text>
           </TouchableOpacity>
         </View>
+
         <View style={styles.langContainer}>
           <LangSwitcher />
         </View>
-        {!smallSize && <LogoutButton />}
+
+        <LogoutButton />
       </View>
     </View>
     // </ImageBackground>
@@ -98,6 +103,10 @@ export const Header: React.FC<Props> = ({ title, navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  pr25: {
+    paddingRight: 25,
+  },
+
   langContainer: {
     color: 'white',
     alignItems: 'center',
@@ -168,8 +177,8 @@ const styles = StyleSheet.create({
   },
 
   smallLogo: {
-    width: 140,
-    height: 28,
+    width: 24,
+    height: 31,
     marginRight: 10,
     marginLeft: -20,
   },

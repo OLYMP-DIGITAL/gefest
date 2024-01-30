@@ -8,7 +8,12 @@
 import { LifePayInvoiceStatus } from 'core/features/life-pay/life-pay.api';
 import { lifePayTransactionsAtom } from 'core/features/life-pay/life-pay.atom';
 import { useLanguage } from 'core/hooks/use-language';
-import { useTheme } from 'core/providers/theme.provider';
+import { useStyles } from 'core/hooks/use-styles.hook';
+import {
+  ScreenSize,
+  useTheme,
+  useWindowSize,
+} from 'core/providers/theme.provider';
 import { TextTitle } from 'core/ui/components/typography/text-title';
 import { TFunction } from 'i18next';
 import { useEffect, useMemo, useState } from 'react';
@@ -42,6 +47,8 @@ export const UserActionsTable = () => {
   const [userTransactions, setUserTransactions] = useState<TableData[]>([]);
   const { t } = useTranslation();
   const styles = useUserActionsTableStyels();
+  const { sizeType } = useWindowSize();
+
   const table = useMemo(() => {
     return {
       tableHead: [
@@ -61,8 +68,8 @@ export const UserActionsTable = () => {
             const inputDate = action.date;
 
             return new Date(inputDate).toLocaleDateString('ru-RU', {
-              year: 'numeric',
-              month: 'numeric',
+              year: '2-digit',
+              month: '2-digit',
               day: 'numeric',
               hour: '2-digit',
               minute: 'numeric',
@@ -73,7 +80,7 @@ export const UserActionsTable = () => {
         ]),
       ],
     };
-  }, [userTransactions, language]);
+  }, [userTransactions, language, sizeType]);
 
   useEffect(() => {
     setUserTransactions(
@@ -102,59 +109,64 @@ export const UserActionsTable = () => {
       ]}
     >
       {/* <TextTitle>{t('lifePay.table.title')}</TextTitle> */}
-      <Table style={{ zIndex: 1 }}>
-        <Row
-          data={table.tableHead}
-          style={styles.head}
-          textStyle={styles.textHead}
-        />
-        <Rows
-          style={styles.head}
-          data={table.tableData}
-          textStyle={styles.textContent}
-        />
-      </Table>
+      {sizeType && (
+        <Table style={{ zIndex: 1 }}>
+          <Row
+            data={table.tableHead}
+            style={styles.head}
+            textStyle={styles.textHead}
+          />
+          <Rows
+            style={styles.head}
+            data={table.tableData}
+            textStyle={styles.textContent}
+          />
+        </Table>
+      )}
     </View>
   );
 };
 
 const useUserActionsTableStyels = () => {
-  const { theme } = useTheme();
+  const { sizeType } = useWindowSize();
 
-  const styles = useMemo(
-    () =>
-      StyleSheet.create({
-        container: {
-          backgroundColor: '#fff',
-          borderWidth: 0,
-          borderRadius: 2,
-          padding: 16, // Если нужен внутренний отступ
-          width: 'auto', // 'auto' по умолчанию в React Native
-          shadowColor: '#000',
-          shadowOffset: { width: 0, height: 1 },
-          shadowOpacity: 0.12,
-          shadowRadius: 3,
-          elevation: 2, // Для имитации box-shadow на Android
-          fontFamily: 'Roboto',
-          fontSize: 13,
-          fontWeight: '400',
-        },
-        head: {
-          height: 40,
-          borderBottomWidth: 1,
-          borderBottomColor: '#e0e0e0',
-        },
+  console.log('SIZE TYPE', sizeType);
 
-        textContent: { paddingHorizontal: 20, paddingVertical: 0 },
-        textHead: {
-          fontWeight: '600',
-          paddingHorizontal: 20,
-          paddingVertical: 0,
-          // textAlign: 'center',
-        },
-      }),
-    [theme]
-  );
+  return useStyles((theme) => ({
+    container: {
+      backgroundColor: '#fff',
+      borderWidth: 0,
+      borderRadius: 2,
+      padding: 16, // Если нужен внутренний отступ
+      width: 'auto', // 'auto' по умолчанию в React Native
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 1 },
+      shadowOpacity: 0.12,
+      shadowRadius: 3,
+      elevation: 2, // Для имитации box-shadow на Android
+      fontFamily: 'Roboto',
+      fontSize: 13,
+      fontWeight: '400',
+    },
+    head: {
+      height: 40,
+      borderBottomWidth: 1,
+      borderBottomColor: '#e0e0e0',
+    },
 
-  return styles;
+    textContent: {
+      paddingHorizontal: 0,
+      paddingVertical: 0,
+      fontSize:
+        sizeType === ScreenSize.small || sizeType === undefined ? 12 : 20,
+    },
+    textHead: {
+      fontWeight: '600',
+      paddingHorizontal: 0,
+      paddingVertical: 0,
+      fontSize:
+        sizeType === ScreenSize.small || sizeType === undefined ? 12 : 20,
+      // textAlign: 'center',
+    },
+  }));
 };

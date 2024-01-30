@@ -12,9 +12,8 @@ import {
 } from 'core/providers/theme.provider';
 import env, { envKyes } from 'core/services/env';
 import { useMemo } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { NewsData } from '../news.types';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSetRecoilState } from 'recoil';
 import { articleAtom } from 'core/features/news/news.atoms';
 import { H4Text } from 'core/components/text/h4.text';
