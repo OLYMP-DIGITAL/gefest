@@ -36,13 +36,12 @@ export const DocumentsScreen = () => {
 
   const fetchDocumentList = async () => {
     try {
-      const response = await fetchDocuments();
+      const response = await fetchDocuments(lang);
 
       if (response && response.data && response.data.length !== 0) {
         let cleanedData: document[] = response.data.map((value) => ({
           id: value.id,
-          ru: value.attributes.ru,
-          eng: value.attributes.eng,
+          title: value.attributes.title,
           link: value.attributes.document.data.attributes.url,
           name: value.attributes.document.data.attributes.name,
         }));
@@ -90,11 +89,7 @@ export const DocumentsScreen = () => {
                   style={styles.btnContainer}
                 >
                   <Button
-                    title={
-                      lang === LangsEnum.ru
-                        ? document.ru.toUpperCase()
-                        : document.eng.toUpperCase()
-                    }
+                    title={document.title}
                     onPress={() => handleDownload(document)}
                   />
                 </View>
