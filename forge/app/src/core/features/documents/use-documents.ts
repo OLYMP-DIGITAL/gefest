@@ -6,17 +6,18 @@
  *   OLYMP.DIGITAL Confidential Proprietary Information.
  */
 
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { documentsAtom } from './documents.atom';
-import { useEffect } from 'react';
 import { appLoadingAtom } from 'core/atoms/app-loading.atom';
-import { fetchDocuments } from './documents.api';
 import { useLanguage } from 'core/hooks/use-language';
+import { useEffect, useState } from 'react';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { fetchDocuments } from './documents.api';
+import { documentsAtom } from './documents.atom';
 import { Document } from './documents.types';
 
 export const useDocuments = () => {
   const { language } = useLanguage();
   const setLoading = useSetRecoilState(appLoadingAtom);
+  const [currentLanguage, setCurrentLanguage] = useState<string>(language);
   const [documents, setDocuments] = useRecoilState(documentsAtom);
 
   const fetchDocumentList = async () => {
@@ -31,6 +32,7 @@ export const useDocuments = () => {
           title: value.attributes.title,
           link: value.attributes.document.data.attributes.url,
           name: value.attributes.document.data.attributes.name,
+          agreement: value.attributes.agreement,
         }));
 
         setDocuments(cleanedData);
@@ -41,14 +43,15 @@ export const useDocuments = () => {
       console.error('Error fetching documents', e);
     } finally {
       setLoading(false);
+      setCurrentLanguage(language);
     }
   };
 
   useEffect(() => {
-    if (!documents) {
+    if (!documents || language !== currentLanguage) {
       fetchDocumentList();
     }
-  }, []);
+  }, [language]);
 
   return documents;
 };

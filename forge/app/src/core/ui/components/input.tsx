@@ -45,12 +45,15 @@ const Input = ({ labelText, error, ...rest }: Props) => {
   // }).start();
 
   return (
-    <View style={styles.group}>
-      <View style={styles.row}>
+    <View style={styles.group} id="sign-up-group">
+      <View style={styles.row} id="sign-up-row">
         <TextInput
           {...rest}
           secureTextEntry={rest.secureTextEntry && !hidePassword}
-          style={styles.input}
+          style={[
+            styles.input,
+            rest.editable === false ? styles.disabledInput : {},
+          ]}
           onFocus={handleFocus}
           onBlur={handleBlur}
         />
@@ -122,14 +125,19 @@ const useInputStyles = () => {
       flexDirection: 'row',
     },
     group: {
-      marginBottom: 45,
+      marginBottom: 20,
+      width: '100%',
     },
     input: {
       fontSize: 18,
       padding: 10,
-      width: 300,
+      width: '100%',
       borderBottomWidth: 1,
       borderBottomColor: '#757575',
+    },
+
+    disabledInput: {
+      color: theme.greyscale500,
     },
     label: {
       color: '#999',
@@ -137,9 +145,7 @@ const useInputStyles = () => {
       left: 5,
       position: 'absolute',
     },
-    bar: {
-      width: 300,
-    },
+    bar: {},
     barBefore: {
       position: 'absolute',
       height: 2,

@@ -86,9 +86,10 @@ type PdfFile = {
 
 export interface Document {
   id: number;
-  title: string;
   link: string;
   name: string;
+  title: string;
+  agreement: boolean;
 }
 
 export interface faqResponse {

@@ -6,7 +6,6 @@
  *   OLYMP.DIGITAL Confidential Proprietary Information.
  */
 import { DrawerScreenProps } from '@react-navigation/drawer';
-import { Input } from 'core/components/input';
 import { NavigationStack } from 'core/types/navigation';
 import { Formik } from 'formik';
 import { useCallback, useMemo, useRef } from 'react';
@@ -29,6 +28,7 @@ import { TextTitle } from 'core/ui/components/typography/text-title';
 import { useToast } from 'react-native-toast-notifications';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import * as yup from 'yup';
+import Input from 'core/ui/components/input';
 
 // import Button from 'core/components/button';
 

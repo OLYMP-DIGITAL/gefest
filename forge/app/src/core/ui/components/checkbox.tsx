@@ -1,3 +1,10 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
 import { useStyles } from 'core/hooks/use-styles.hook';
 import { useTheme } from 'core/providers/theme.provider';
 import { useCallback, useEffect, useState } from 'react';
@@ -7,6 +14,7 @@ import { CheckBox } from 'react-native-web';
 
 interface Props {
   label?: string;
+  error?: string;
   checked?: boolean;
   disabled?: boolean;
   onChange?: (e: any) => void;
@@ -14,6 +22,7 @@ interface Props {
 
 export const Checkbox = ({
   label,
+  error,
   onChange,
   checked: propsChecked,
   disabled,
@@ -53,15 +62,19 @@ export const Checkbox = ({
   //  ==================== Render ==============================================
   if (Platform.OS === 'web') {
     return (
-      <View style={styles.container}>
-        <CheckBox
-          disabled={disabled}
-          color={theme.primary}
-          value={checked}
-          onChange={onPress}
-          // onValueChange={}
-        />
-        {label && <Text style={styles.label}>{label}</Text>}
+      <View>
+        <View style={styles.container}>
+          <CheckBox
+            disabled={disabled}
+            color={theme.primary}
+            value={checked}
+            onChange={onPress}
+            // onValueChange={}
+          />
+          {label && <Text style={styles.label}>{label}</Text>}
+        </View>
+
+        {error && <Text style={{ color: 'red' }}>{error}</Text>}
       </View>
     );
   }

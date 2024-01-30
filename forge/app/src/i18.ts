@@ -145,6 +145,7 @@ const resources = {
         askReferal: 'Ask the person who invited you for your referral number',
         setNameMessage:
           'Enter your full name exactly as it is written in your passport',
+        agreement: 'I agree with the conditions of the next documents',
       },
       finished: {
         title: 'Registration is completed',
@@ -391,6 +392,7 @@ const resources = {
         askReferal:
           'Спросите реферальный номер у человека, который вас пригласил',
         setNameMessage: 'Укажите ФИО именно так, как написано в паспорте',
+        agreement: 'Я согласен с условиями следующий документов',
       },
       signIn: {
         title: 'Вход',
