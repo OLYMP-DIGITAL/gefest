@@ -39,11 +39,13 @@ const useCurrentStyles = () => {
 
     title: {
       color: '#fff',
+      fontWeight: '600',
       textAlign: 'center',
     },
 
     description: {
       color: '#fff',
+      fontWeight: '600',
       textAlign: 'center',
       marginTop: 10,
     },

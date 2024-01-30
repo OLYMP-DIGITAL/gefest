@@ -26,7 +26,7 @@ export const Input = ({ style, ...rest }: Props) => {
           borderWidth: 0,
           borderRadius: 12,
           letterSpacing: 0.20000000298023224,
-          backgroundColor: theme.greyscale50,
+          backgroundColor: '#F1F2F6',
           paddingVertical: 20,
           paddingHorizontal: 18,
         },

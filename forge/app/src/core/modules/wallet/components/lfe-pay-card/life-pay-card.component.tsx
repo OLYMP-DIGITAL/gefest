@@ -43,6 +43,8 @@ import {
 } from '../../wallet.atoms';
 import { appLoadingAtom } from 'core/atoms/app-loading.atom';
 import { useBrand } from 'core/features/brand/use-brand';
+import { ButtonContained } from 'core/ui/components/button/button-contained';
+import { useStyles } from 'core/hooks/use-styles.hook';
 
 const MIN_AMOUNT = 1;
 
@@ -61,7 +63,7 @@ export const LifePayCard = ({ fetchTransactions, fetchUser }: Props) => {
   const user = useRecoilValue(userAtom);
   const brand = useBrand();
   const toast = useToast();
-  const styles = useStyles();
+  const styles = useComponentStyles();
   const navigation = useNavigation<StackNavigation>();
   const shareAmount = useShareAmount();
 
@@ -258,7 +260,7 @@ export const LifePayCard = ({ fetchTransactions, fetchUser }: Props) => {
                   </Text>
                 </Text>
 
-                <Text style={styles.marginTop10}>
+                <Text style={[styles.marginTop10, styles.grayText]}>
                   {t('lifePay.card.currentAmount')}: $
                   <Text style={styles.strong}>
                     {(shareAmount && Number(shareAmount / 100).toFixed(2)) ||
@@ -266,7 +268,7 @@ export const LifePayCard = ({ fetchTransactions, fetchUser }: Props) => {
                   </Text>
                 </Text>
 
-                <Text style={styles.marginTop10}>
+                <Text style={[styles.marginTop10, styles.grayText]}>
                   {t('lifePay.card.transactionLimit')}: $
                   <Text style={styles.strong}>
                     {Number(limit / 100).toFixed(0)}
@@ -302,7 +304,17 @@ export const LifePayCard = ({ fetchTransactions, fetchUser }: Props) => {
                   </TouchableOpacity> */}
 
                     {/* Make crypto transaction */}
-                    <TouchableOpacity
+                    <ButtonContained
+                      onPress={() => {
+                        setTransactionType(TransactionType.crypto);
+                        handleSubmit();
+                      }}
+                      disabled={Object.keys(errors).length > 0}
+                    >
+                      {t('lifePay.card.cryptoPay')}
+                    </ButtonContained>
+
+                    {/* <TouchableOpacity
                       style={[
                         styles.materialButton,
                         Object.keys(errors).length > 0 &&
@@ -323,10 +335,19 @@ export const LifePayCard = ({ fetchTransactions, fetchUser }: Props) => {
                       >
                         {t('lifePay.card.cryptoPay')}
                       </Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
 
                     {/* Make points transaction */}
-                    <TouchableOpacity
+                    <ButtonContained
+                      onPress={() => {
+                        setTransactionType(TransactionType.points);
+                        handleSubmit();
+                      }}
+                      disabled={Object.keys(errors).length > 0}
+                    >
+                      {t('lifePay.card.pointsPay')}
+                    </ButtonContained>
+                    {/* <TouchableOpacity
                       style={[
                         styles.materialButton,
                         Object.keys(errors).length > 0 &&
@@ -347,7 +368,7 @@ export const LifePayCard = ({ fetchTransactions, fetchUser }: Props) => {
                       >
                         {t('lifePay.card.pointsPay')}
                       </Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                   </View>
                 </>
               )) || (
@@ -368,96 +389,97 @@ export const LifePayCard = ({ fetchTransactions, fetchUser }: Props) => {
   );
 };
 
-const useStyles = () => {
+const useComponentStyles = () => {
   const brand = useBrand();
-  const { theme } = useTheme();
 
-  const styles = useMemo(
-    () =>
-      StyleSheet.create({
-        selectedCount: {
-          color: brand.primaryColor,
-        },
+  const styles = useStyles((theme) => ({
+    grayText: {
+      fontWeight: '600',
+      color: theme.fontTitle,
+    },
 
-        strong: {
-          fontWeight: '600',
-        },
+    selectedCount: {
+      color: brand.primaryColor,
+      fontWeight: '600',
+    },
 
-        marginTop10: {
-          marginTop: 10,
-        },
+    strong: {
+      fontWeight: '600',
+    },
 
-        wrapper: {
-          width: '100%',
-          backgroundColor: '#fff',
-        },
+    marginTop10: {
+      marginTop: 10,
+    },
 
-        infoLine: {
-          marginVertical: 15,
-        },
+    wrapper: {
+      width: '100%',
+      backgroundColor: '#F1F2F6',
+    },
 
-        titleWrapper: {
-          padding: 16,
-          paddingTop: 24,
-        },
+    infoLine: {
+      marginVertical: 15,
+    },
 
-        title: {
-          fontSize: 24,
-        },
+    titleWrapper: {
+      padding: 16,
+      paddingTop: 24,
+    },
 
-        contentWrapper: {
-          padding: 16,
-          paddingTop: 0,
-          fontSize: 14,
-          color: '#000000de',
-        },
+    title: {
+      fontSize: 24,
+    },
 
-        actionsWrapper: {
-          padding: 8,
-          paddingHorizontal: 16,
-          minHeight: 52,
-          marginTop: 'auto',
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-        },
+    contentWrapper: {
+      padding: 16,
+      paddingTop: 0,
+      fontSize: 14,
+      color: '#000000de',
+    },
 
-        materialButton: {
-          // ...
-        },
+    actionsWrapper: {
+      padding: 8,
+      paddingHorizontal: 16,
+      minHeight: 52,
+      marginTop: 'auto',
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+    },
 
-        disabledMaterialButton: {
-          // ...
-        },
+    materialButton: {
+      // ...
+    },
 
-        materialButtonText: {
-          color: '#D43238',
-          fontSize: 14,
-          fontWeight: '600',
-          textTransform: 'uppercase',
-        },
+    disabledMaterialButton: {
+      // ...
+    },
 
-        disabledMaterialButtonText: {
-          color: '#00000042',
-        },
+    materialButtonText: {
+      color: '#D43238',
+      fontSize: 14,
+      fontWeight: '600',
+      textTransform: 'uppercase',
+    },
 
-        inputWrapper: {
-          marginVertical: 13,
-          marginHorizontal: 13,
+    disabledMaterialButtonText: {
+      color: '#00000042',
+    },
 
-          borderTopColor: brand.primaryColor,
-          borderTopWidth: 2,
+    inputWrapper: {
+      marginVertical: 13,
+      marginHorizontal: 13,
 
-          borderBottomColor: brand.primaryColor,
-          borderBottomWidth: 2,
-        },
+      borderTopColor: brand.primaryColor,
+      borderTopWidth: 2,
 
-        warmMessage: {
-          color: theme.fontCaption,
-        },
-      }),
-    [theme]
-  );
+      borderBottomColor: brand.primaryColor,
+      borderBottomWidth: 2,
+    },
+
+    warmMessage: {
+      color: theme.fontCaption,
+    },
+  }));
 
   return styles;
 };

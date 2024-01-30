@@ -56,10 +56,16 @@ const useScreenLayoutStyles = () => {
         justifyContent: sizeType === ScreenSize.small ? 'flex-end' : 'center',
       },
 
-      titleText: { textAlign: 'center', marginBottom: 20 },
+      titleText: {
+        textAlign: 'center',
+        marginBottom: 20,
+        fontWeight: 600,
+        textTransform: 'uppercase',
+      },
 
       container: {
         flexGrow: 1,
+        backgroundColor: '#F1F2F6',
         alignItems: 'center',
       },
 

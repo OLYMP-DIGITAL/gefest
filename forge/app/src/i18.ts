@@ -155,8 +155,10 @@ const resources = {
       wallet: {
         portfolio: 'Investment Portfolio',
         takeShares: 'Acquisition of company shares',
-        description:
-          'To acquire shares, enter the desired quantity and press the "buy" button. Currently, shares can only be purchased online using cryptocurrency. If you are interested in an alternative method of funding, please write to the email address info@sfcglobal.dk, and we will propose an alternative solution to the issue',
+        description1:
+          'To acquire shares, enter the desired quantity and press the "buy" button. Currently, shares can only be purchased online using cryptocurrency. If you are interested in an alternative method of funding, please write to the email address ',
+        description2:
+          ', and we will propose an alternative solution to the issue',
         stagesLimit:
           'At this stage of the project, the volume of individual investments is limited.',
 
@@ -409,8 +411,9 @@ const resources = {
       wallet: {
         portfolio: 'Инвестиционный портфель',
         takeShares: 'Приобретение долей',
-        description:
-          'Чтобы приобрести доли, введите желаемое количество и нажмите кнопку «купить». На данный момент приобрести доли онлайн можно только с помощью крипто валюты. Если вас интересует другой способ пополнения, напишите пожалуйста на почту info@sfcglobal.dk, и мы прездлжим альтернативное решение вопроса',
+        description1:
+          'Чтобы приобрести доли, введите желаемое количество и нажмите кнопку «купить». На данный момент приобрести доли онлайн можно только с помощью криптовалюты. Если вас интересует другой способ пополнения, напишите, пожалуйста, на почту ',
+        description2: ', и мы предложим альтернативное решение вопроса',
         stagesLimit:
           'На данном этапе проекта объём индивидуальных инвестиций ограничен',
 
@@ -473,7 +476,8 @@ const resources = {
           title: 'Список транзакций',
           value: 'Сумма',
           date: 'Дата',
-          count: 'Количество долей',
+          countSmall: 'Кол-во долей',
+          countLarge: 'Количество долей',
           status: 'Статус',
           currency: 'Валюта',
         },

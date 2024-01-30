@@ -15,7 +15,7 @@ interface Props extends TextProps {
 export const TextBody = ({ children, ...rest }: Props) => {
   const styles = useStyles((theme) => ({
     text: {
-      color: theme.fontBody,
+      color: theme.fontTitle,
       fontSize: 15,
       fontWeight: '300',
     } as NativeStyles,

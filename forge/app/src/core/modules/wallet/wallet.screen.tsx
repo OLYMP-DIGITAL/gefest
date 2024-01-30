@@ -19,7 +19,7 @@ import { TextBody } from 'core/ui/components/typography/text-body';
 import { TextHeadline } from 'core/ui/components/typography/text-headline';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Linking, View } from 'react-native';
+import { Image, Linking, Text, View } from 'react-native';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import { useRecoilState } from 'recoil';
 import { LifePayCard } from './components/lfe-pay-card/life-pay-card.component';
@@ -34,9 +34,11 @@ import {
   walletMessageLinkAtom,
   walletShowMessageAtom,
 } from './wallet.atoms';
+import { useSupportEmail } from 'core/features/support/use-support-email.hook';
 
 const WalletScreen = () => {
   useReferralEarnings();
+  const email = useSupportEmail();
   const stage = useCurrentStage();
   const styles = useScreenStyles();
   const { t } = useTranslation();
@@ -56,7 +58,11 @@ const WalletScreen = () => {
 
         <Col between>
           <Row large={'45%'} small={'100%'} medium={'100%'}>
-            <TextBody>{t('wallet.description')}</TextBody>
+            <TextBody style={{ fontWeight: '600' }}>
+              {t('wallet.description1')}
+              <Text style={styles.email}>{email}</Text>
+              {t('wallet.description2')}
+            </TextBody>
 
             <TextBody style={styles.limit}>
               {t('wallet.stagesLimit')} {stage && Math.floor(stage?.max / 100)}$
@@ -98,6 +104,12 @@ const WalletScreen = () => {
             <PortfolioValue />
           </Row>
         </Col>
+
+        <Image
+          // style={{ width: '100%', height: '257' }}
+          style={{ height: 257, width: '100%' }}
+          source={{ uri: require('assets/chart.png') }}
+        />
 
         <View style={{ display: 'flex', flexDirection: 'column' }}>
           <View style={styles.title}>
@@ -144,9 +156,13 @@ const useScreenStyles = () => {
   const brand = useBrand();
 
   return useStyles((theme) => ({
+    email: {
+      color: brand.primaryColor,
+    },
     limit: {
       color: brand.primaryColor,
       marginTop: 50,
+      fontWeight: '600',
     },
 
     title: {

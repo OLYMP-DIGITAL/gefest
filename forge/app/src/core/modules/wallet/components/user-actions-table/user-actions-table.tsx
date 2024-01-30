@@ -5,6 +5,7 @@
  *   intended publication of such source code. The code contains
  *   OLYMP.DIGITAL Confidential Proprietary Information.
  */
+import { useBrand } from 'core/features/brand/use-brand';
 import { LifePayInvoiceStatus } from 'core/features/life-pay/life-pay.api';
 import { lifePayTransactionsAtom } from 'core/features/life-pay/life-pay.atom';
 import { useLanguage } from 'core/hooks/use-language';
@@ -55,7 +56,9 @@ export const UserActionsTable = () => {
         `${t('lifePay.table.value')}`,
         // t('lifePay.table.currency'),
         t('lifePay.table.date'),
-        t('lifePay.table.count'),
+        sizeType === ScreenSize.small
+          ? t('lifePay.table.countSmall')
+          : t('lifePay.table.countLarge'),
         t('lifePay.table.status'),
       ],
       tableData: [
@@ -117,7 +120,7 @@ export const UserActionsTable = () => {
             textStyle={styles.textHead}
           />
           <Rows
-            style={styles.head}
+            style={styles.rows}
             data={table.tableData}
             textStyle={styles.textContent}
           />
@@ -128,13 +131,12 @@ export const UserActionsTable = () => {
 };
 
 const useUserActionsTableStyels = () => {
+  const brand = useBrand();
   const { sizeType } = useWindowSize();
-
-  console.log('SIZE TYPE', sizeType);
 
   return useStyles((theme) => ({
     container: {
-      backgroundColor: '#fff',
+      backgroundColor: '#F1F2F6',
       borderWidth: 0,
       borderRadius: 2,
       padding: 16, // Если нужен внутренний отступ
@@ -151,16 +153,25 @@ const useUserActionsTableStyels = () => {
     head: {
       height: 40,
       borderBottomWidth: 1,
-      borderBottomColor: '#e0e0e0',
+      borderBottomColor: brand.primaryColor,
+    },
+
+    rows: {
+      height: 40,
+      borderBottomWidth: 1,
+      borderBottomColor: 'gray',
     },
 
     textContent: {
+      color: theme.fontTitle,
+      fontWeight: '600',
       paddingHorizontal: 0,
       paddingVertical: 0,
       fontSize:
         sizeType === ScreenSize.small || sizeType === undefined ? 12 : 20,
     },
     textHead: {
+      color: '#93A1B6',
       fontWeight: '600',
       paddingHorizontal: 0,
       paddingVertical: 0,

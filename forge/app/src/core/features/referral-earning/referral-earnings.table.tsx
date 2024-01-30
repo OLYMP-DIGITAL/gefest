@@ -12,6 +12,7 @@ import { Row, Rows, Table } from 'react-native-table-component';
 import { useRecoilValue } from 'recoil';
 import { referralEarningsAtom } from './referral-earning.atoms';
 import { ScreenSize, useWindowSize } from 'core/providers/theme.provider';
+import { useBrand } from '../brand/use-brand';
 
 export const ReferralEarningsTable = () => {
   const { t } = useTranslation();
@@ -65,10 +66,10 @@ export const ReferralEarningsTable = () => {
         <Row
           data={table.tableHead}
           style={styles.head}
-          textStyle={styles.textContent}
+          textStyle={styles.textHead}
         />
         <Rows
-          style={styles.head}
+          style={styles.rows}
           data={table.tableData}
           textStyle={styles.textContent}
         />
@@ -78,11 +79,12 @@ export const ReferralEarningsTable = () => {
 };
 
 const useComponentStyles = () => {
+  const brand = useBrand();
   const { sizeType } = useWindowSize();
 
   const styles = useStyles((theme) => ({
     container: {
-      backgroundColor: '#fff',
+      backgroundColor: '#F1F2F6',
       borderWidth: 0,
       borderRadius: 2,
       padding: 16, // Если нужен внутренний отступ
@@ -99,19 +101,30 @@ const useComponentStyles = () => {
     head: {
       height: 40,
       borderBottomWidth: 1,
-      borderBottomColor: '#e0e0e0',
+      borderBottomColor: brand.primaryColor,
+    },
+
+    rows: {
+      height: 40,
+      borderBottomWidth: 1,
+      borderBottomColor: 'gray',
     },
 
     textContent: {
-      // paddingHorizontal: 56,
+      color: theme.fontTitle,
+      fontWeight: '600',
       paddingVertical: 0,
       fontSize:
         sizeType === ScreenSize.small || sizeType === undefined ? 12 : 20,
     },
     textHead: {
-      textAlign: 'center',
+      color: '#93A1B6',
+      fontWeight: '600',
+      paddingHorizontal: 0,
+      paddingVertical: 0,
       fontSize:
         sizeType === ScreenSize.small || sizeType === undefined ? 12 : 20,
+      // textAlign: 'center',
     },
   }));
 

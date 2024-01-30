@@ -25,7 +25,7 @@ export const lightTheme = {
 
   // Typography
   fontDisplay: '#F1F2F6',
-  fontTitle: '#212121',
+  fontTitle: '#3E4157',
   fontBody: '#212121',
   fontCaption: '#757575',
 };
@@ -48,7 +48,7 @@ export const darkTheme: typeof lightTheme = {
 
   // Typography
   fontDisplay: '#F1F2F6',
-  fontTitle: '#212121',
+  fontTitle: '#3E4157',
   fontBody: '#212121',
   fontCaption: '#757575',
 };

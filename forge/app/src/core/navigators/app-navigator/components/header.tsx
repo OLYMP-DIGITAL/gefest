@@ -159,7 +159,8 @@ const styles = StyleSheet.create({
   },
 
   headerContainer: {
-    backgroundColor: '#35383F',
+    backgroundColor: '#272A37',
+    // backgroundColor: '#35383F',
     color: '#bdbdbd',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -184,12 +185,12 @@ const styles = StyleSheet.create({
   },
   mediumLogo: {
     width: 180,
-    height: 36,
+    height: 41,
     marginRight: 10,
   },
   largeLogo: {
     width: 180,
-    height: 36,
+    height: 41,
     marginRight: 10,
   },
 });

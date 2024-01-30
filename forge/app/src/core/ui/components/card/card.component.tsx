@@ -26,7 +26,7 @@ export const Card = (props: Props) => {
   const styles = useStyles((theme) => ({
     wrapper: {
       borderRadius: 4,
-      backgroundColor: '#fff',
+      backgroundColor: '#F1F2F6',
     },
   }));
 

@@ -31,6 +31,7 @@ const useComponentStyles = () => {
     text: {
       color: '#fff',
       fontSize: 16,
+      fontWeight: '600',
       textAlign: 'center',
       paddingVertical: 13,
     },
@@ -45,6 +46,7 @@ const useComponentStyles = () => {
 
     block: {
       minWidth: 300,
+      fontWeight: '600',
       backgroundColor: brand.primaryColor,
     },
   }));
