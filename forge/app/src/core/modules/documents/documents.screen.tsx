@@ -6,28 +6,15 @@
  *   OLYMP.DIGITAL Confidential Proprietary Information.
  */
 import Button from 'core/components/button';
-import { LangsEnum } from 'core/features/language/language.types';
-import { useLanguage } from 'core/providers/language.provider';
+import { useDocuments } from 'core/features/documents/use-documents';
 import env, { envKyes } from 'core/services/env';
 import { Card } from 'core/ui/components/card';
-import { TextBody } from 'core/ui/components/typography/text-body';
-import { TextDisplay } from 'core/ui/components/typography/text-display';
-import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import {
-  ActivityIndicator,
-  Linking,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
-import { useRecoilState } from 'recoil';
-import { fetchDocuments } from '../../features/documents/documents.api';
-import { documentsAtom } from '../../features/documents/documents.atom';
-import { Document } from '../../features/documents/documents.types';
-import { useDocuments } from 'core/features/documents/use-documents';
 import { ScreenLayout } from 'core/ui/components/screen-layout/screen-layout';
+import { TextBody } from 'core/ui/components/typography/text-body';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { Linking, Platform, StyleSheet } from 'react-native';
+import { Document } from '../../features/documents/documents.types';
 
 export const DocumentsScreen = () => {
   const { t } = useTranslation();
