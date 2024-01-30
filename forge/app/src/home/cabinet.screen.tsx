@@ -7,31 +7,28 @@
  */
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { Input } from 'core/components/input';
-import RoundedButton from 'core/components/rounded-button';
 import { NavigationStack } from 'core/types/navigation';
 import { Formik } from 'formik';
 import { useCallback, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { appLoadingAtom } from 'core/atoms/app-loading.atom';
 import { fetchMe, update } from 'core/features/users/users.api';
 import { userAtom } from 'core/features/users/users.atoms';
 import { UserPayload } from 'core/features/users/users.types';
 import { useLanguage } from 'core/hooks/use-language';
 import { useTheme } from 'core/providers/theme.provider';
 import api from 'core/services/api';
+import { ButtonContained } from 'core/ui/components/button/button-contained';
 import { Card } from 'core/ui/components/card';
+import { ScreenLayout } from 'core/ui/components/screen-layout/screen-layout';
 import { TextBody } from 'core/ui/components/typography/text-body';
-import { TextDisplay } from 'core/ui/components/typography/text-display';
 import { TextHeadline } from 'core/ui/components/typography/text-headline';
 import { TextTitle } from 'core/ui/components/typography/text-title';
-import { ScrollView } from 'react-native-gesture-handler';
 import { useToast } from 'react-native-toast-notifications';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import * as yup from 'yup';
-import { appLoadingAtom } from 'core/atoms/app-loading.atom';
-import { ScreenLayout } from 'core/ui/components/screen-layout/screen-layout';
-import { ButtonContained } from 'core/ui/components/button/button-contained';
 
 // import Button from 'core/components/button';
 
