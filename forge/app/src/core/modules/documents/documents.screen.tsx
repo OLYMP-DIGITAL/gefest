@@ -23,44 +23,17 @@ import {
   View,
 } from 'react-native';
 import { useRecoilState } from 'recoil';
-import { fetchDocuments } from './documents.api';
-import { documentsAtom } from './documents.atom';
-import { document } from './documents.types';
+import { fetchDocuments } from '../../features/documents/documents.api';
+import { documentsAtom } from '../../features/documents/documents.atom';
+import { Document } from '../../features/documents/documents.types';
+import { useDocuments } from 'core/features/documents/use-documents';
+import { ScreenLayout } from 'core/ui/components/screen-layout/screen-layout';
 
 export const DocumentsScreen = () => {
   const { t } = useTranslation();
-  const { lang } = useLanguage();
+  const documents = useDocuments();
 
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [documents, setDocuments] = useRecoilState(documentsAtom);
-
-  const fetchDocumentList = async () => {
-    try {
-      const response = await fetchDocuments(lang);
-
-      if (response && response.data && response.data.length !== 0) {
-        let cleanedData: document[] = response.data.map((value) => ({
-          id: value.id,
-          title: value.attributes.title,
-          link: value.attributes.document.data.attributes.url,
-          name: value.attributes.document.data.attributes.name,
-        }));
-        setDocuments(cleanedData);
-      } else {
-        console.error('No documents data', response);
-      }
-    } catch (e) {
-      console.error('Error fetching documents', e);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchDocumentList();
-  }, [lang]);
-
-  const handleDownload = (document: document) => {
+  const handleDownload = (document: Document) => {
     const url = `${env[envKyes.apiHost]}${document.link}`;
 
     if (url) {
@@ -72,39 +45,19 @@ export const DocumentsScreen = () => {
 
   return (
     <>
-      {isLoading ? (
-        <ActivityIndicator size="large" color="#fc440f" style={styles.loader} />
-      ) : (
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.container}
-        >
-          <TextDisplay>{t('documents.title')}</TextDisplay>
-          <Card style={styles.card}>
-            {(Array.isArray(documents) &&
-              documents.length &&
-              documents.map((document) => (
-                <View
-                  key={`document-${document.id}`}
-                  style={styles.btnContainer}
-                >
-                  <Button
-                    title={document.title}
-                    onPress={() => handleDownload(document)}
-                  />
-                </View>
-              ))) || <TextBody>{t('documents.documentsInWork')}</TextBody>}
-          </Card>
-          {/* <View style={styles.line}>
-        <Button
-          title="Go to parters"
-          onPress={() => navigation.navigate('Partners')}
-        />
-      </View>
-
-      <Button title="Open drawer" onPress={() => navigation.openDrawer()} /> */}
-        </ScrollView>
-      )}
+      <ScreenLayout title={t('documents.title')}>
+        <Card style={styles.card}>
+          {(Array.isArray(documents) &&
+            documents.length &&
+            documents.map((document) => (
+              <Button
+                key={`document-${document.id}`}
+                title={document.title}
+                onPress={() => handleDownload(document)}
+              />
+            ))) || <TextBody>{t('documents.documentsInWork')}</TextBody>}
+        </Card>
+      </ScreenLayout>
     </>
   );
 };
@@ -112,6 +65,7 @@ export const DocumentsScreen = () => {
 const styles = StyleSheet.create({
   card: {
     padding: 20,
+    marginTop: 20,
   },
 
   container: {

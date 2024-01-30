@@ -7,18 +7,11 @@
  */
 import { LangsEnum } from 'core/features/language/language.types';
 
-/*
- *   Copyright (c) 2024
- *   All rights reserved.
- *   The copyright notice above does not evidence any actual or
- *   intended publication of such source code. The code contains
- *   OLYMP.DIGITAL Confidential Proprietary Information.
- */
-export interface docResponse {
-  data: docResponseObject[];
+export interface DocumentsResponse {
+  data: DocumentsResponseData[];
 }
 
-type docResponseObject = {
+type DocumentsResponseData = {
   id: number;
   attributes: {
     createdAt: string;
@@ -91,14 +84,12 @@ type PdfFile = {
   };
 };
 
-export interface document {
+export interface Document {
   id: number;
   title: string;
   link: string;
   name: string;
 }
-
-export const DocumentsAtomKey = 'DocumentsAtomKey';
 
 export interface faqResponse {
   data: responseDataObject[];
