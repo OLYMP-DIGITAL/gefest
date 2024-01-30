@@ -1,58 +1,87 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ *   The copyright notice above does not evidence any actual or
+ *   intended publication of such source code. The code contains
+ *   OLYMP.DIGITAL Confidential Proprietary Information.
+ */
 import { useMemo } from 'react';
-import { articleAtom } from "core/features/news/news.atoms";
-import { ScrollView, View, Image, Text, StyleSheet } from "react-native"
-import { useRecoilState } from "recoil";
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { articleAtom } from 'core/features/news/news.atoms';
+import {
+  ScrollView,
+  View,
+  Image,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
+import { useRecoilState } from 'recoil';
 import { useTranslation } from 'react-i18next';
 import { NewsCard } from './news-card.component';
 
 const ArticleView = () => {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
 
-    const [article, setArticle] = useRecoilState(articleAtom);
+  const [article, setArticle] = useRecoilState(articleAtom);
 
-    const style = useMemo(() => StyleSheet.create({
+  const style = useMemo(
+    () =>
+      StyleSheet.create({
         wrapper: {
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: 20
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 20,
         },
         rowWrapper: {
-            display: 'flex',
-            flexDirection: 'row',
-            width: '90%',
-            justifyContent: 'flex-start',
-            alignItems: 'center'
+          display: 'flex',
+          flexDirection: 'row',
+          width: '90%',
+          justifyContent: 'flex-start',
+          alignItems: 'center',
         },
         normalText: {
-            marginLeft: 5,
-            fontSize: 14,
-            fontWeight: '400',
-            lineHeight: 19.6,
-            letterSpacing: 0.2,
+          marginLeft: 5,
+          fontSize: 14,
+          fontWeight: '400',
+          lineHeight: 19.6,
+          letterSpacing: 0.2,
         },
-    }), [])
+      }),
+    []
+  );
 
-    return (
-        <ScrollView>
-            <View style={style.wrapper}>
-                <View style={style.rowWrapper}>
-                    <TouchableOpacity onPress={() => { setArticle(null) }}>
-                        <View style={style.rowWrapper}>
-                            <Image style={{ width: 15, height: 15, tintColor: '#6842FF', paddingRight: 10 }}
-                                source={require('assets/arrow-left.png')} />
-                            <Text style={{ ...style.normalText, color: '#6842FF', marginLeft: 5 }}>
-                                {t('info.back')}
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-                {article &&
-                    <NewsCard data={article} details />}
+  return (
+    <ScrollView>
+      <View style={style.wrapper}>
+        <View style={style.rowWrapper}>
+          <TouchableOpacity
+            onPress={() => {
+              setArticle(null);
+            }}
+          >
+            <View style={style.rowWrapper}>
+              <Image
+                style={{
+                  width: 15,
+                  height: 15,
+                  tintColor: '#6842FF',
+                  paddingRight: 10,
+                }}
+                source={require('assets/arrow-left.png')}
+              />
+              <Text
+                style={{ ...style.normalText, color: '#6842FF', marginLeft: 5 }}
+              >
+                {t('info.back')}
+              </Text>
             </View>
-        </ScrollView>
-    )
-}
+          </TouchableOpacity>
+        </View>
+        {article && <NewsCard data={article} details />}
+      </View>
+    </ScrollView>
+  );
+};
 
-export default ArticleView
+export default ArticleView;

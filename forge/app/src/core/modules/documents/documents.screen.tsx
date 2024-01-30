@@ -18,10 +18,10 @@ import {
   ActivityIndicator,
   Linking,
   Platform,
+  ScrollView,
   StyleSheet,
   View,
 } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
 import { useRecoilState } from 'recoil';
 import { fetchDocuments } from './documents.api';
 import { documentsAtom } from './documents.atom';

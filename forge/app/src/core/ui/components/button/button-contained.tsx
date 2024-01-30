@@ -55,7 +55,11 @@ export const ButtonContained = ({ onPress, disabled, children }: Props) => {
       onPressOut={handlePressOut}
       onPress={onPress}
       disabled={disabled}
-      style={[styles.button, isPressed && styles.buttonActive]}
+      style={[
+        styles.button,
+        isPressed && styles.buttonActive,
+        disabled && styles.disabledButton,
+      ]}
     >
       <Animated.View style={[styles.overlay, { opacity: overlayOpacity }]} />
       <Animated.View
@@ -71,6 +75,13 @@ export const ButtonContained = ({ onPress, disabled, children }: Props) => {
 
 const useButtonStyles = () => {
   return useStyles((theme) => ({
+    disabledButton: {
+      color: 'rgba(0, 0, 0, 0.38)', // Adjust color values as needed
+      backgroundColor: 'rgba(0, 0, 0, 0.12)', // Adjust color values as needed
+      shadowColor: 'transparent', // Removes box-shadow
+      cursor: 'default', // Sets cursor style to default
+    },
+
     button: {
       position: 'relative',
       paddingHorizontal: 16,

@@ -33,7 +33,7 @@ fs.readFile(filePath, 'utf8', (err, data) => {
         if (err) {
           console.error('Error writing file:', err);
         } else {
-          console.log('File has been successfully updated.');
+          console.log('File has been successfully');
         }
       });
     } else {

@@ -15,8 +15,13 @@ import { AuthScreensEnum, NavigationStack } from 'core/types/navigation';
 import { NavigationProp } from '@react-navigation/native';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, Linking, StyleSheet, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {
+  Image,
+  Linking,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 interface SocialAttributes {
   link: string;

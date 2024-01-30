@@ -226,7 +226,7 @@ const resources = {
 
         transactionStatus: {
           pending: 'Pending',
-          success: 'Successfully paid',
+          success: 'Successfully',
         },
 
         createInvoiceError:

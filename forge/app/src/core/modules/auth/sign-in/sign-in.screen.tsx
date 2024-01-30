@@ -5,7 +5,6 @@
  *   intended publication of such source code. The code contains
  *   OLYMP.DIGITAL Confidential Proprietary Information.
  */
-import { Input } from 'core/components/input';
 import RoundedButton from 'core/components/rounded-button';
 import { SupportEmailLink } from 'core/features/support/support-email-link.component';
 import {
@@ -17,17 +16,17 @@ import { tokenAtom, userAtom } from 'core/features/users/users.atoms';
 import { useTheme } from 'core/providers/theme.provider';
 import api from 'core/services/api';
 import { ResponseErrorName } from 'core/types/requests';
+import { ButtonContained } from 'core/ui/components/button/button-contained';
+import Input from 'core/ui/components/input';
+import { ScreenLayout } from 'core/ui/components/screen-layout/screen-layout';
 import { Formik } from 'formik';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Alert, Linking, Modal, StyleSheet, Text, View } from 'react-native';
+import { Alert, Linking, Modal, StyleSheet, View } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
-import Icon from 'react-native-vector-icons/Feather';
 import { useSetRecoilState } from 'recoil';
 import * as yup from 'yup';
 import { ConfirmButton } from './components/confirm-button';
-import { envKyes, getEnv } from 'core/services/env';
-import { ScreenLayout } from 'core/ui/components/screen-layout/screen-layout';
 
 interface SignInUser {
   email: string;
@@ -45,7 +44,6 @@ function SignInScreen() {
   const { theme } = useTheme();
 
   const [showResendEmail, setShowResendEmail] = useState<boolean>(false);
-  const [hidePassword, setHidePassword] = useState<boolean>(true);
   const [isModalVisible, setModalVisible] = useState(false);
 
   const setUser = useSetRecoilState(userAtom);
@@ -219,51 +217,38 @@ function SignInScreen() {
           validationSchema={validationSchema}
         >
           {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
-            <View style={{ width: '70%' }}>
+            <View>
               <View style={{ marginVertical: 10 }}>
                 <Input
+                  error={errors.email}
                   placeholder={t('user.emailOrLogin')}
                   onChangeText={handleChange('email')}
                   onBlur={handleBlur('email')}
                   value={values.email}
                 />
-
-                {errors.email && (
-                  <Text style={{ color: 'red' }}>{errors.email}</Text>
-                )}
               </View>
 
               <View style={{ marginVertical: 10 }}>
                 <View style={styles.passwordContainer}>
                   <Input
-                    secureTextEntry={hidePassword}
+                    error={errors.password}
+                    secureTextEntry={true}
                     placeholder={t('user.password')}
                     onChangeText={handleChange('password')}
                     onBlur={handleBlur('password')}
                     value={values.password}
                     style={styles.passwordInput}
                   />
-                  <Icon
-                    name={hidePassword ? 'eye-off' : 'eye'}
-                    size={20}
-                    style={styles.icon}
-                    color={
-                      !values.password ? theme.greyscale500 : theme.primaryText
-                    }
-                    onPress={() => setHidePassword(!hidePassword)}
-                  />
                 </View>
-                {errors.password && (
-                  <Text style={{ color: 'red' }}>{errors.password}</Text>
-                )}
               </View>
 
               <View style={{ marginVertical: 20 }}>
-                <RoundedButton
-                  title={t('buttons.continue')}
+                <ButtonContained
                   onPress={handleSubmit as () => void}
                   disabled={Object.keys(errors).length > 0}
-                />
+                >
+                  {t('buttons.continue')}
+                </ButtonContained>
               </View>
 
               {showResendEmail && <ConfirmButton email={values.email} />}

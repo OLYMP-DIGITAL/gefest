@@ -8,9 +8,8 @@
 
 import { useCopyToClipboard } from 'usehooks-ts';
 import { useSupportEmail } from './use-support-email.hook';
-import { Text, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { useStyles } from 'core/hooks/use-styles.hook';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Entypo } from '@expo/vector-icons';
 import { useCallback } from 'react';
 import { useToast } from 'react-native-toast-notifications';
