@@ -173,6 +173,9 @@ const resources = {
         stagesDates: 'Stage period',
         pointsCount: 'Count of points',
 
+        cryptoPayInstruction:
+          'Instructions for buying shares with cryptocurrency',
+
         profitIncrease: 'Profit Increase Percentage',
         increaseValue: 'Increase in Value',
       },
@@ -203,6 +206,7 @@ const resources = {
           pointsPay: 'Buy with points',
           amount: 'Enter the number of company shares',
           currentAmount: 'Current share value',
+          minPackage: 'Minimum share purchase lot',
           amountOfSharedCounts: 'Amount of selected shares',
           transactionLimit: 'Remaining limit for stock purchase',
           toCabinet: 'To cabinet',
@@ -429,6 +433,8 @@ const resources = {
         stagesDates: 'Период этапа',
         pointsCount: 'баланс баллов по реферальной программе',
 
+        cryptoPayInstruction: 'Инструкция по покупке долей за криптовалюту',
+
         increaseValue: 'Прирост стоимости',
         profitIncrease: 'Прирост прибыли в %',
       },
@@ -460,12 +466,13 @@ const resources = {
           amount: 'Введите количество долей',
           toCabinet: 'Перейти в личный кабинет',
           currentAmount: 'Текущая стоимость доли',
+          minPackage: 'Минимальный пакет на покупку долей',
           amountOfSharedCounts: 'Выбрано долей на сумму',
           transactionLimit: 'Оставшийся лимит на покупку долей',
           pointsCount: 'Количество накопленных баллов',
 
           needConfirm:
-            'Чтобы купить доли заполните персональные данные в личном кабинете',
+            'Чтобы купить доли необходимо подтверждение персональных данных',
 
           warmMessage:
             'По клику вы будете переадресованы на страницу с оплатой. Убедитесь что у вас не блокируются вслывающие окна для сайта',

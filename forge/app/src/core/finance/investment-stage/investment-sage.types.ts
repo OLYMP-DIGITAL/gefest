@@ -10,7 +10,9 @@ export interface InvestmentStage {
   end: string;
   title: string;
   description: string;
-  max: number;
+  max: number; // Максимальная сумма на покупку долей
+  min: number; // Минимальный пак
+
   createdAt: string;
   updatedAt: string;
   publishedAt: string;

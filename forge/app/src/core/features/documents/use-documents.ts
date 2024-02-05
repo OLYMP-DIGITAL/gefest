@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { fetchDocuments } from './documents.api';
 import { documentsAtom } from './documents.atom';
-import { Document } from './documents.types';
+import { Document, DocumentKeys } from './documents.types';
 
 export const useDocuments = () => {
   const { language } = useLanguage();
@@ -33,6 +33,8 @@ export const useDocuments = () => {
           link: value.attributes.document.data.attributes.url,
           name: value.attributes.document.data.attributes.name,
           agreement: value.attributes.agreement,
+
+          key: value.attributes.key,
         }));
 
         setDocuments(cleanedData);
@@ -54,4 +56,17 @@ export const useDocuments = () => {
   }, [language]);
 
   return documents;
+};
+
+export const useKeyDocument = (key: DocumentKeys): Document | undefined => {
+  const documents = useDocuments();
+  const [document, setDocument] = useState<Document>();
+
+  useEffect(() => {
+    console.log('DOCUMENTS KEY', documents);
+
+    setDocument(documents?.find((d) => d.key === key));
+  }, [documents]);
+
+  return document;
 };

@@ -5,15 +5,12 @@
  *   intended publication of such source code. The code contains
  *   OLYMP.DIGITAL Confidential Proprietary Information.
  */
-import { TextBody } from 'core/ui/components/typography/text-body';
-import { TextTitle } from 'core/ui/components/typography/text-title';
-import { useTranslation } from 'react-i18next';
 import { useCurrentStage } from 'core/finance/investment-stage/use-current-stage';
-import { View } from 'react-native';
 import { useStyles } from 'core/hooks/use-styles.hook';
+import { TextBody } from 'core/ui/components/typography/text-body';
+import { View } from 'react-native';
 
 export const StepText = () => {
-  const { t } = useTranslation();
   const stage = useCurrentStage();
   const styles = useCurrentStyles();
 

@@ -7,6 +7,10 @@
  */
 import { LangsEnum } from 'core/features/language/language.types';
 
+export enum DocumentKeys {
+  cryptoInstruction = 'KRYPTO_INSTRUCTION',
+}
+
 export interface DocumentsResponse {
   data: DocumentsResponseData[];
 }
@@ -21,6 +25,7 @@ type DocumentsResponseData = {
     agreement: boolean;
     title: string;
     document: ImageFile | PdfFile;
+    key?: string;
   };
 };
 
@@ -90,6 +95,8 @@ export interface Document {
   name: string;
   title: string;
   agreement: boolean;
+
+  key?: string;
 }
 
 export interface faqResponse {

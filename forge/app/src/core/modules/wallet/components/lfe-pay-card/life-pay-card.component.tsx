@@ -12,7 +12,10 @@ import {
   makeTransaction,
 } from 'core/features/life-pay/life-pay.api';
 import { lifePayTransactionsAtom } from 'core/features/life-pay/life-pay.atom';
-import { calcLimitOfTransactionValue } from 'core/features/life-pay/life-pay.helpers';
+import {
+  calcLimitOfTransactionValue,
+  calcMinLimitOfSharePackageCount,
+} from 'core/features/life-pay/life-pay.helpers';
 import { useShareAmount } from 'core/features/share-amount/user-share-amount.hook';
 import { userAtom } from 'core/features/users/users.atoms';
 import { TransactionType } from 'core/finance/transaction/transaction.types';
@@ -45,6 +48,8 @@ import { appLoadingAtom } from 'core/atoms/app-loading.atom';
 import { useBrand } from 'core/features/brand/use-brand';
 import { ButtonContained } from 'core/ui/components/button/button-contained';
 import { useStyles } from 'core/hooks/use-styles.hook';
+import { Row } from 'core/ui/components/screen-layout/row';
+import { Col } from 'core/ui/components/screen-layout/col';
 
 const MIN_AMOUNT = 1;
 
@@ -65,12 +70,13 @@ export const LifePayCard = ({ fetchTransactions, fetchUser }: Props) => {
   const toast = useToast();
   const styles = useComponentStyles();
   const navigation = useNavigation<StackNavigation>();
-  const shareAmount = useShareAmount();
+  const shareValue = useShareAmount();
 
   const setLoading = useSetRecoilState(appLoadingAtom);
   const currentStage = useCurrentStage();
   const transactions = useRecoilValue(lifePayTransactionsAtom);
-  const [limit, setLimit] = useState<number>(0);
+  const [maxLimit, setMaxLimit] = useState<number>(0);
+  const [minLimit, setMinLimit] = useState<number>(MIN_AMOUNT);
   const [transactionType, setTransactionType] = useState<TransactionType>();
 
   // Alert
@@ -79,19 +85,20 @@ export const LifePayCard = ({ fetchTransactions, fetchUser }: Props) => {
   const [alertMessage, setAlertMessage] = useRecoilState(walletMessageAtom);
 
   useEffect(() => {
-    if (currentStage && transactions) {
-      setLimit(calcLimitOfTransactionValue(transactions, currentStage.max));
+    if (currentStage && transactions && shareValue) {
+      setMaxLimit(calcLimitOfTransactionValue(transactions, currentStage.max));
+      setMinLimit(calcMinLimitOfSharePackageCount(currentStage, shareValue));
     }
-  }, [currentStage, transactions]);
+  }, [currentStage, transactions, shareValue]);
 
   const onSubmit = useCallback(
     (values: PayForm) => {
-      if (transactionType && user && shareAmount) {
+      if (transactionType && user && shareValue) {
         if (transactionType === TransactionType.points) {
           const count = values.sharesCount;
           const points = user.points;
 
-          if (count * shareAmount > points) {
+          if (count * shareValue > points) {
             setAlertMessage(t('finance.noPoints'));
             setShowAlert(true);
 
@@ -153,7 +160,7 @@ export const LifePayCard = ({ fetchTransactions, fetchUser }: Props) => {
         });
       }
     },
-    [transactionType, shareAmount, alertMessage]
+    [transactionType, shareValue, alertMessage]
   );
 
   const validationSchema = useMemo(
@@ -161,23 +168,22 @@ export const LifePayCard = ({ fetchTransactions, fetchUser }: Props) => {
       yup.object().shape({
         sharesCount: yup
           .number()
-          .min(MIN_AMOUNT, `${t('messages.minValue')} ${MIN_AMOUNT}`)
+          .min(minLimit, `${t('messages.minValue')} ${minLimit}`)
           .max(
-            Math.floor(limit / Number(shareAmount)),
+            Math.floor(maxLimit / Number(shareValue)),
             `${t('messages.maxValue')} ${Math.floor(
-              limit / Number(shareAmount)
+              maxLimit / Number(shareValue)
             )}`
           )
           .required(`${t('messages.isRequired')}`)
           .nullable(),
       }),
-    [limit, shareAmount]
+    [maxLimit, minLimit, shareValue]
   );
 
   const calcAmountOfShares = (count: number): number => {
-    return count && shareAmount
-      ? ((Number((shareAmount * Number(count)) / 100).toFixed(2) ||
-          0) as number)
+    return count && shareValue
+      ? ((Number((shareValue * Number(count)) / 100).toFixed(2) || 0) as number)
       : 0;
   };
 
@@ -190,7 +196,8 @@ export const LifePayCard = ({ fetchTransactions, fetchUser }: Props) => {
       user?.passportNumber &&
       user?.faceWithPassport &&
       user?.registeredAddress &&
-      user?.passportRegistration,
+      user?.passportRegistration &&
+      user?.passportConfirmed,
     [user]
   );
 
@@ -263,7 +270,15 @@ export const LifePayCard = ({ fetchTransactions, fetchUser }: Props) => {
                 <Text style={[styles.marginTop10, styles.grayText]}>
                   {t('lifePay.card.currentAmount')}: $
                   <Text style={styles.strong}>
-                    {(shareAmount && Number(shareAmount / 100).toFixed(2)) ||
+                    {(shareValue && Number(shareValue / 100).toFixed(2)) || '0'}
+                  </Text>
+                </Text>
+
+                <Text style={[styles.marginTop10, styles.grayText]}>
+                  {t('lifePay.card.minPackage')}: $
+                  <Text style={styles.strong}>
+                    {(currentStage &&
+                      Number(currentStage.min / 100).toFixed(2)) ||
                       '0'}
                   </Text>
                 </Text>
@@ -271,115 +286,60 @@ export const LifePayCard = ({ fetchTransactions, fetchUser }: Props) => {
                 <Text style={[styles.marginTop10, styles.grayText]}>
                   {t('lifePay.card.transactionLimit')}: $
                   <Text style={styles.strong}>
-                    {Number(limit / 100).toFixed(0)}
+                    {Number(maxLimit / 100).toFixed(0)}
                   </Text>
                 </Text>
               </View>
 
               {(useDataExists && (
                 <>
-                  <View style={styles.actionsWrapper}>
-                    {/* Make Lifepay transaction */}
-                    {/* <TouchableOpacity
-                    style={[
-                      styles.materialButton,
-                      Object.keys(errors).length > 0 &&
-                        styles.disabledMaterialButton,
-                    ]}
-                    onPress={() => {
-                      setTransactionType(TransactionType.lifePay);
-                      handleSubmit();
-                    }}
-                    disabled={Object.keys(errors).length > 0}
-                  >
-                    <Text
-                      style={[
-                        styles.materialButtonText,
-                        Object.keys(errors).length > 0 &&
-                          styles.disabledMaterialButtonText,
-                      ]}
-                    >
-                      {t('lifePay.card.pay')}
-                    </Text>
-                  </TouchableOpacity> */}
-
-                    {/* Make crypto transaction */}
-                    <ButtonContained
-                      onPress={() => {
-                        setTransactionType(TransactionType.crypto);
-                        handleSubmit();
-                      }}
-                      disabled={Object.keys(errors).length > 0}
-                    >
-                      {t('lifePay.card.cryptoPay')}
-                    </ButtonContained>
-
-                    {/* <TouchableOpacity
-                      style={[
-                        styles.materialButton,
-                        Object.keys(errors).length > 0 &&
-                          styles.disabledMaterialButton,
-                      ]}
-                      onPress={() => {
-                        setTransactionType(TransactionType.crypto);
-                        handleSubmit();
-                      }}
-                      disabled={Object.keys(errors).length > 0}
-                    >
-                      <Text
-                        style={[
-                          styles.materialButtonText,
-                          Object.keys(errors).length > 0 &&
-                            styles.disabledMaterialButtonText,
-                        ]}
+                  <Col style={styles.actionsWrapper} between>
+                    <Row large={'49%'} small={'100%'}>
+                      {/* Make crypto transaction */}
+                      <ButtonContained
+                        onPress={() => {
+                          setTransactionType(TransactionType.crypto);
+                          handleSubmit();
+                        }}
+                        disabled={Object.keys(errors).length > 0}
                       >
                         {t('lifePay.card.cryptoPay')}
-                      </Text>
-                    </TouchableOpacity> */}
+                      </ButtonContained>
+                    </Row>
 
-                    {/* Make points transaction */}
-                    <ButtonContained
-                      onPress={() => {
-                        setTransactionType(TransactionType.points);
-                        handleSubmit();
-                      }}
-                      disabled={Object.keys(errors).length > 0}
+                    <Row
+                      large={'49%'}
+                      small={'100%'}
+                      smallStyle={{ marginTop: 13 }}
+                      mediumStyle={{ marginTop: 13 }}
                     >
-                      {t('lifePay.card.pointsPay')}
-                    </ButtonContained>
-                    {/* <TouchableOpacity
-                      style={[
-                        styles.materialButton,
-                        Object.keys(errors).length > 0 &&
-                          styles.disabledMaterialButton,
-                      ]}
-                      onPress={() => {
-                        setTransactionType(TransactionType.points);
-                        handleSubmit();
-                      }}
-                      disabled={Object.keys(errors).length > 0}
-                    >
-                      <Text
-                        style={[
-                          styles.materialButtonText,
-                          Object.keys(errors).length > 0 &&
-                            styles.disabledMaterialButtonText,
-                        ]}
+                      {/* Make points transaction */}
+                      <ButtonContained
+                        onPress={() => {
+                          setTransactionType(TransactionType.points);
+                          handleSubmit();
+                        }}
+                        disabled={Object.keys(errors).length > 0}
                       >
                         {t('lifePay.card.pointsPay')}
-                      </Text>
-                    </TouchableOpacity> */}
-                  </View>
+                      </ButtonContained>
+                    </Row>
+                  </Col>
                 </>
               )) || (
-                <Button
-                  onPress={() => {
-                    navigation.navigate(NavigatorScreensEnum.cabinet as any);
-                  }}
-                  primary
-                >
-                  {t('lifePay.card.toCabinet')}
-                </Button>
+                <View style={{ padding: 13 }}>
+                  <Text style={[styles.selectedCount, { marginBottom: 7 }]}>
+                    {t('lifePay.card.needConfirm')}
+                  </Text>
+
+                  <ButtonContained
+                    onPress={() => {
+                      navigation.navigate(NavigatorScreensEnum.cabinet as any);
+                    }}
+                  >
+                    {t('lifePay.card.toCabinet')}
+                  </ButtonContained>
+                </View>
               )}
             </View>
           );

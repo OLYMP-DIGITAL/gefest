@@ -35,15 +35,26 @@ import {
   walletShowMessageAtom,
 } from './wallet.atoms';
 import { useSupportEmail } from 'core/features/support/use-support-email.hook';
+import { ButtonContained } from 'core/ui/components/button/button-contained';
+import { useLanguage } from 'core/hooks/use-language';
+import { useKeyDocument } from 'core/features/documents/use-documents';
+import { DocumentKeys } from 'core/features/documents/documents.types';
+import { openDocument } from 'core/features/documents/helpers/open-document';
 
 const WalletScreen = () => {
   useReferralEarnings();
+  const { language } = useLanguage();
   const email = useSupportEmail();
   const stage = useCurrentStage();
   const styles = useScreenStyles();
   const { t } = useTranslation();
   const { fetchTransactions } = useLifePayTransactions();
   const { fetchUser } = useUser();
+  const cryptoInstructionDocument = useKeyDocument(
+    DocumentKeys.cryptoInstruction
+  );
+
+  console.log('CRYPTO INSTRUCTION', cryptoInstructionDocument);
 
   const [alertMessage] = useRecoilState(walletMessageAtom);
   const [showAlert, setShowAlert] = useRecoilState(walletShowMessageAtom);
@@ -63,6 +74,20 @@ const WalletScreen = () => {
               <Text style={styles.email}>{email}</Text>
               {t('wallet.description2')}
             </TextBody>
+
+            {language === 'ru' && (
+              <View style={styles.cryptoInstruction}>
+                <ButtonContained
+                  onPress={() => {
+                    if (cryptoInstructionDocument) {
+                      openDocument(cryptoInstructionDocument);
+                    }
+                  }}
+                >
+                  {t('wallet.cryptoPayInstruction')}
+                </ButtonContained>
+              </View>
+            )}
 
             <TextBody style={styles.limit}>
               {t('wallet.stagesLimit')} {stage && Math.floor(stage?.max / 100)}$
@@ -159,9 +184,14 @@ const useScreenStyles = () => {
     email: {
       color: brand.primaryColor,
     },
+
+    cryptoInstruction: {
+      marginTop: 25,
+    },
+
     limit: {
       color: brand.primaryColor,
-      marginTop: 50,
+      marginTop: 25,
       fontWeight: '600',
     },
 
