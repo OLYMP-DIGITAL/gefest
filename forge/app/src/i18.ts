@@ -229,6 +229,9 @@ const resources = {
           count: 'Shares count',
           status: 'Status',
           currency: 'Currency',
+
+          countSmall: 'Shares count',
+          countLarge: 'Shares count',
         },
 
         transactionStatus: {
