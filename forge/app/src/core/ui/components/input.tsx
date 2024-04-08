@@ -49,7 +49,7 @@ const Input = ({ labelText, error, ...rest }: Props) => {
       <View style={styles.row} id="sign-up-row">
         <TextInput
           {...rest}
-          secureTextEntry={rest.secureTextEntry && !hidePassword}
+          secureTextEntry={rest.secureTextEntry && hidePassword}
           style={[
             styles.input,
             rest.editable === false ? styles.disabledInput : {},

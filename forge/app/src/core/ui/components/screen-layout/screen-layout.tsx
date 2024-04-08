@@ -57,8 +57,9 @@ const useScreenLayoutStyles = () => {
       },
 
       titleText: {
+        fontSize: 20,
         textAlign: 'center',
-        marginBottom: 20,
+        marginBottom: -100,
         fontWeight: 600,
         textTransform: 'uppercase',
       },
